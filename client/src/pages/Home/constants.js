@@ -1,0 +1,2 @@
+export const GET_ALL_QUIZZES = 'GET_ALL_QUIZZES';
+export const SET_ALL_QUIZZES = 'SET_ALL_QUIZZES';

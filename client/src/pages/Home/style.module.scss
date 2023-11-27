@@ -23,7 +23,7 @@
       &__title {
         font-size: $font-size-huge;
         font-weight: bold;
-
+        text-shadow: $color-white 1px 0 3px;
         @include apply-at-md-size {
           font-size: $font-size-huger;
         }
@@ -44,7 +44,7 @@
         border-radius: 0.5rem;
         transition: all 0.2s ease;
         margin-top: 2rem;
-
+        font-weight: 500;
         &__icon {
           @include box(1rem);
           @include apply-at-md-size {

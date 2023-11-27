@@ -1,35 +1,67 @@
-import { ArrowRight } from '@mui/icons-material';
+import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { createStructuredSelector } from 'reselect';
+import { connect, useDispatch } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
+import { East } from '@mui/icons-material';
+
 import QuizCard from '@components/QuizCard';
+
+import { selectQuizzes } from './selectors';
+import { getAllQuizzes } from './actions';
 
 import classes from './style.module.scss';
 
-const Home = () => (
-  <div className={classes.container}>
-    <div className={classes.container__hero}>
-      <div className={classes.content}>
-        <div className={classes.content__title}>Explore the World, Challenge Your Mind.</div>
-        <div className={classes.content__subtitle}>
-          Embark on exciting geography quizzes and discover fascinating facts about our world!
-        </div>
-        <div className={classes.content__button}>
-          <span>Explore Now</span>
-          <ArrowRight className={classes.content__button__icon} />
-        </div>
-      </div>
-    </div>
-    <div className={classes.container__section}>
-      <div className={classes.header}>
-        <div className={classes.header__title}>Explore Quizzes</div>
-        <div className={classes.header__subtitle}>Dive into Our Curated Geography Quizzes</div>
-      </div>
-      <div className={classes.content}>
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-      </div>
-    </div>
-  </div>
-);
+const Home = ({ quizzes }) => {
+  const dispatch = useDispatch();
 
-export default Home;
+  useEffect(() => {
+    dispatch(getAllQuizzes());
+  }, [dispatch]);
+
+  return (
+    <div className={classes.container}>
+      <div className={classes.container__hero}>
+        <div className={classes.content}>
+          <div className={classes.content__title}>
+            <FormattedMessage id="app_hero_title" />
+          </div>
+          <div className={classes.content__subtitle}>
+            <FormattedMessage id="app_hero_subtitle" />
+          </div>
+          <div className={classes.content__button}>
+            <span>
+              <FormattedMessage id="app_hero_button" />
+            </span>
+            <East className={classes.content__button__icon} />
+          </div>
+        </div>
+      </div>
+      <div className={classes.container__section}>
+        <div className={classes.header}>
+          <div className={classes.header__title}>
+            <FormattedMessage id="app_home_section_title" />
+          </div>
+          <div className={classes.header__subtitle}>
+            <FormattedMessage id="app_home_section_subtitle" />
+          </div>
+        </div>
+        <div className={classes.content}>
+          {quizzes.map((quiz) => (
+            <QuizCard key={quiz?.id} quiz={quiz} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+Home.propTypes = {
+  quizzes: PropTypes.array,
+};
+
+const mapStateToProps = createStructuredSelector({
+  quizzes: selectQuizzes,
+});
+
+export default connect(mapStateToProps)(Home);
