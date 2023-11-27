@@ -7,3 +7,45 @@
   display: flex;
   flex-direction: row;
 }
+
+@mixin box($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+@mixin flex-column($gap: 0em) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
+
+@mixin flex-row($gap: 0em) {
+  display: flex;
+  flex-direction: row;
+  gap: $gap;
+}
+
+@mixin flex-center($gap: 0em) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $gap;
+}
+
+@mixin flex-center-column($gap: 0em) {
+  @include flex-center;
+  flex-direction: column;
+  gap: $gap;
+}
+
+@mixin flex-items-center($gap: 0em) {
+  display: flex;
+  align-items: center;
+  gap: $gap;
+}
+
+@mixin flex-justify-center($gap: 0em) {
+  display: flex;
+  justify-content: center;
+  gap: $gap;
+}
