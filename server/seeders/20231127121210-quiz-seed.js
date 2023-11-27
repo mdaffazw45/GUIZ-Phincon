@@ -7,8 +7,9 @@ module.exports = {
       'Quizzes',
       [
         {
-          title: 'Sample Quiz',
-          description: 'This is a sample quiz description',
+          title: 'Global Landmarks and Historical Mysteries',
+          description:
+            'Test your knowledge of world-famous landmarks, historical sites, and natural wonders.',
           noOfQuestions: 5,
           userId: 1,
           createdAt: new Date(),
