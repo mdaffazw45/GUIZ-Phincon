@@ -13,7 +13,7 @@ import PopupMessage from '@components/PopupMessage/Dialog';
 
 const App = ({ theme, popup, loading }) => {
   const dispatch = useDispatch();
-  const isDark = theme === 'dark';
+  const isDark = theme === 'light';
   const muiTheme = createTheme({
     palette: {
       mode: isDark ? 'dark' : 'light',
