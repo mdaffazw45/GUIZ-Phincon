@@ -1,0 +1,35 @@
+@import '@styles/base';
+
+.card {
+  @include box(15rem, auto);
+  @include flex-column(0.5rem);
+  border-radius: 0.5rem;
+  position: relative;
+  background-color: $color-white;
+  padding: 1rem;
+
+  &__title {
+    font-size: $font-size-large;
+  }
+  &__description {
+    font-size: $font-size-small;
+    color: $color-text-secondary;
+  }
+  &__question_number {
+    @include flex-items-center(0.25rem);
+    font-size: $font-size-small;
+    svg {
+      @include box(0.75em);
+    }
+  }
+  &__button {
+    font-family: 'Poppins', 'sans-serif';
+    font-weight: 500;
+    font-size: $font-size-small;
+    background-color: $color-text-primary;
+    border: none;
+    color: $color-bg-primary;
+    padding: 0.5em;
+    border-radius: 0.5rem;
+  }
+}
