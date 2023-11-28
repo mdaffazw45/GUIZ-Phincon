@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "root",
-    "password": null,
+    "password": "4Y4Mj4nt4n",
     "database": "guiz",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": null,
+    "password": "4Y4Mj4nt4n",
     "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": null,
+    "password": "4Y4Mj4nt4n",
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "mysql"
