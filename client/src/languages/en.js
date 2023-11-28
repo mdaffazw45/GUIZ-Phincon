@@ -15,4 +15,5 @@ export default {
   app_home_section_subtitle: 'Challenge Yourself with Our Curated Geography Quizzes! 🗺️🌍',
   app_questions: 'questions',
   app_quiz_card_button: 'Start Quiz',
+  app_back: 'Back',
 };

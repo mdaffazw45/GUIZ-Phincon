@@ -15,4 +15,5 @@ export default {
   app_home_section_subtitle: 'Tantang Diri Anda dengan Kuis Geografi Kami! 🗺️🌍',
   app_questions: 'pertanyaan',
   app_quiz_card_button: 'Mulai Kuis',
+  app_back: 'Kembali',
 };

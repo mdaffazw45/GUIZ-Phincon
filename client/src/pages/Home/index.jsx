@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { East } from '@mui/icons-material';
 
@@ -14,10 +15,20 @@ import classes from './style.module.scss';
 
 const Home = ({ quizzes }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getAllQuizzes());
   }, [dispatch]);
+
+  // Render for admin
+  // return (
+  //   <div className={classes.admin}>
+  //     <button type="button" onClick={() => navigate('/quiz/create')}>
+  //       Create Quiz
+  //     </button>
+  //   </div>
+  // );
 
   return (
     <div className={classes.container}>

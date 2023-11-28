@@ -32,3 +32,5 @@ export const ping = () => callAPI(endpoints.ping, 'get');
 
 export const getAllQuizzesApi = () => callAPI(`${endpoints.quiz}/all`, 'GET');
 export const getQuizByIdApi = (quizId) => callAPI(`${endpoints.quiz}/${quizId}`, 'GET');
+export const createQuizApi = (data, token) =>
+  callAPI(`${endpoints.quiz}/create`, 'POST', { Authorization: `Bearer ${token}` }, {}, data);
