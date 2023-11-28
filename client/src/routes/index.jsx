@@ -19,14 +19,14 @@ const routes = [
     name: 'Register',
     protected: false,
     component: Register,
-    // layout: MainLayout,
+    layout: MainLayout,
   },
   {
     path: '/login',
     name: 'Login',
     protected: false,
     component: Login,
-    // layout: MainLayout,
+    layout: MainLayout,
   },
   {
     path: '/quiz/create',

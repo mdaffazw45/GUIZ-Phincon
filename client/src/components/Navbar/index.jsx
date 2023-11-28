@@ -1,19 +1,27 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+
+import ProfileIcon from '@static/images/profile.svg';
+
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Logout from '@mui/icons-material/Logout';
 import { Public } from '@mui/icons-material';
 
 import { setLocale } from '@containers/App/actions';
+import { logout } from '@containers/Client/actions';
 
+import { selectToken } from '@containers/Client/selectors';
 import classes from './style.module.scss';
 
-const Navbar = ({ title, locale }) => {
+const Navbar = ({ title, locale, token }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [menuPosition, setMenuPosition] = useState(null);
@@ -49,6 +57,24 @@ const Navbar = ({ title, locale }) => {
     navigate('/');
   };
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const opened = Boolean(anchorEl);
+  const handleClickProfile = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseProfile = () => {
+    setAnchorEl(null);
+  };
+
+  const navigateLogin = () => {
+    navigate('/login');
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigateLogin();
+  };
+
   return (
     <div
       className={color ? `${classes.headerWrapper} ${classes.headerWrapperBg}` : ` ${classes.headerWrapper} `}
@@ -67,6 +93,56 @@ const Navbar = ({ title, locale }) => {
             <div className={classes.lang}>{locale}</div>
             <ExpandMoreIcon />
           </div>
+          {token && (
+            <>
+              <div className={classes.profileIconContainer} onClick={handleClickProfile}>
+                <img src={ProfileIcon} className={classes.profileIcon} alt="icon" />
+              </div>
+              <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={opened}
+                onClose={handleCloseProfile}
+                onClick={handleCloseProfile}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: 'visible',
+                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                    mt: 1.5,
+                    '& .MuiAvatar-root': {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    '&:before': {
+                      content: '""',
+                      display: 'block',
+                      position: 'absolute',
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: 'background.paper',
+                      transform: 'translateY(-50%) rotate(45deg)',
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+              >
+                <MenuItem onClick={handleLogout}>
+                  <ListItemIcon>
+                    <Logout fontSize="small" />
+                  </ListItemIcon>
+                  Logout
+                </MenuItem>
+              </Menu>
+            </>
+          )}
+          {/* <div> Hallo </div> */}
         </div>
         <Menu open={open} anchorEl={menuPosition} onClose={handleClose}>
           <MenuItem onClick={() => onSelectLang('id')} selected={locale === 'id'}>
@@ -94,6 +170,11 @@ const Navbar = ({ title, locale }) => {
 Navbar.propTypes = {
   title: PropTypes.string,
   locale: PropTypes.string.isRequired,
+  token: PropTypes.string,
 };
 
-export default Navbar;
+const mapStateToProps = createStructuredSelector({
+  token: selectToken,
+});
+
+export default connect(mapStateToProps)(Navbar);
