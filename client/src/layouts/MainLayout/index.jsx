@@ -16,7 +16,6 @@ const MainLayout = ({ children, locale, intl: { formatMessage } }) => (
 
 const mapStateToProps = createStructuredSelector({
   locale: selectLocale,
- 
 });
 
 MainLayout.propTypes = {

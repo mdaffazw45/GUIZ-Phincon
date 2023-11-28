@@ -1,10 +1,11 @@
 @import '@styles/base';
 
 .headerWrapper {
-  background-color: var(--color-bg) !important;
-  box-shadow: 0 0.25rem 0.75rem rgba(25, 49, 83, 0.2) !important;
-  position: sticky;
+  background-color: transparent !important;
+  position: fixed;
   top: 0;
+  width: 100%;
+  z-index: 900;
   .contentWrapper {
     @include directionX;
 
@@ -56,6 +57,7 @@
         @include directionX;
         align-items: center;
         cursor: pointer;
+        color: $color-white;
 
         .avatar {
           width: 1.2rem;
@@ -94,4 +96,8 @@
     font-family: Poppins, Arial, Helvetica, sans-serif;
     font-size: 0.8rem;
   }
+}
+
+.headerWrapperBg {
+  background-color: $color-primary !important;
 }

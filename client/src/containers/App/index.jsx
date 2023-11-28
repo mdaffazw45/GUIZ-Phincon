@@ -1,26 +1,24 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+
 import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-
 import { hidePopup } from '@containers/App/actions';
-import {  selectPopup, selectLoading } from '@containers/App/selectors';
+import { selectPopup, selectLoading } from '@containers/App/selectors';
 
 import Loader from '@components/Loader';
 import ClientRoutes from '@components/ClientRoutes';
 import PopupMessage from '@components/PopupMessage/Dialog';
 
-const App = ({  popup, loading }) => {
+const App = ({ popup, loading }) => {
   const dispatch = useDispatch();
- 
 
   const closePopup = () => {
     dispatch(hidePopup());
   };
 
   return (
-   <>
+    <>
       <ClientRoutes />
       <Loader isLoading={loading} />
       <PopupMessage open={popup.open} title={popup.title} message={popup.message} onClose={closePopup} />

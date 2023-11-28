@@ -3,8 +3,9 @@ import { merge } from 'lodash';
 
 import request from '@utils/request';
 
-const urls = {
+const endpoints = {
   ping: 'ping.json',
+  quiz: 'quiz',
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -27,4 +28,9 @@ export const callAPI = async (endpoint, method, header = {}, params = {}, data =
   });
 };
 
-export const ping = () => callAPI(urls.ping, 'get');
+export const ping = () => callAPI(endpoints.ping, 'get');
+
+export const getAllQuizzesApi = () => callAPI(`${endpoints.quiz}/all`, 'GET');
+export const getQuizByIdApi = (quizId) => callAPI(`${endpoints.quiz}/${quizId}`, 'GET');
+export const createQuizApi = (data, token) =>
+  callAPI(`${endpoints.quiz}/create`, 'POST', { Authorization: `Bearer ${token}` }, {}, data);
