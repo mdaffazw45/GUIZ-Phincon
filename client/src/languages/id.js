@@ -15,5 +15,20 @@ export default {
   app_home_section_subtitle: 'Tantang Diri Anda dengan Kuis Geografi Kami! 🗺️🌍',
   app_questions: 'pertanyaan',
   app_quiz_card_button: 'Mulai Kuis',
+
+  // Register
+  app_register_title: 'Daftar ke',
+  app_register_subTitle: 'Sistem Kuis Geografi',
+  app_register_username: 'Masukkan Nama Pengguna Anda',
+  app_register_email: 'Masukkan Email Anda',
+  app_register_password: 'Masukkan Kata Sandi Anda',
+  app_register_button: 'Daftar',
+
+  // Login
+  app_login_title: 'Masuk ke',
+  app_login_subTitle: 'Sistem Kuis Geografi',
+  app_login_email: 'Masukkan Email Anda',
+  app_login_password: 'Masukkan Kata Sandi Anda',
+  app_login_button: 'Masuk',
   app_back: 'Kembali',
 };
