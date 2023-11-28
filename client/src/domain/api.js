@@ -5,6 +5,8 @@ import request from '@utils/request';
 
 const endpoints = {
   ping: 'ping.json',
+  login: 'auth/login',
+  register: 'auth/register',
   quiz: 'quiz',
 };
 
@@ -29,6 +31,9 @@ export const callAPI = async (endpoint, method, header = {}, params = {}, data =
 };
 
 export const ping = () => callAPI(endpoints.ping, 'get');
+
+export const loginApi = (user) => callAPI(endpoints.login, 'POST', {}, {}, user);
+export const registerApi = (user) => callAPI(endpoints.register, 'POST', {}, {}, user);
 
 export const getAllQuizzesApi = () => callAPI(`${endpoints.quiz}/all`, 'GET');
 export const getQuizByIdApi = (quizId) => callAPI(`${endpoints.quiz}/${quizId}`, 'GET');
