@@ -2,8 +2,8 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import toast from 'react-hot-toast';
 
 import { setLoading } from '@containers/App/actions';
-import { LOGIN_REQUEST } from '@containers/Client/constants';
-import { setLogin, setToken } from '@containers/Client/actions';
+import { LOGIN_REQUEST, SET_LOGIN } from '@containers/Client/constants';
+import { setToken } from '@containers/Client/actions';
 import { loginApi } from '@domain/api';
 
 function* handleLogin(action) {
@@ -11,8 +11,7 @@ function* handleLogin(action) {
   try {
     const response = yield call(loginApi, action.payload);
     yield put(setToken(response.token));
-    yield put(setLogin(response.role));
-    yield put(setLogin(true));
+    yield put({ type: SET_LOGIN, login: true, role: response.role });
     toast.success('Logged In Successfully');
     window.location.href = '/';
   } catch (err) {
