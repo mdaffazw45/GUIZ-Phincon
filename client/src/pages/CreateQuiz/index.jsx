@@ -1,12 +1,18 @@
 import PropTypes from 'prop-types';
-
+import { connect, useDispatch } from 'react-redux';
 import { useState } from 'react';
+import { createStructuredSelector } from 'reselect';
+
 import { AddCommentOutlined, Clear, Quiz } from '@mui/icons-material';
 import BackButton from '@components/BackButton';
 
+import { selectRole, selectToken } from '@containers/Client/selectors';
+import { createQuiz } from './actions';
+
 import classes from './style.module.scss';
 
-const CreateQuiz = () => {
+const CreateQuiz = ({ token, role }) => {
+  const dispatch = useDispatch();
   const [quizData, setQuizData] = useState({
     title: '',
     description: '',
@@ -41,8 +47,7 @@ const CreateQuiz = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Dispatch quizData and token
-    console.log(quizData);
+    dispatch(createQuiz(quizData, token));
   };
 
   return (
@@ -127,4 +132,14 @@ const CreateQuiz = () => {
   );
 };
 
-export default CreateQuiz;
+CreateQuiz.propTypes = {
+  token: PropTypes.string,
+  role: PropTypes.string,
+};
+
+const mapStateToProps = createStructuredSelector({
+  token: selectToken,
+  role: selectRole,
+});
+
+export default connect(mapStateToProps)(CreateQuiz);

@@ -9,12 +9,13 @@ import { Delete, DeleteOutline, East, Edit, EditOutlined, Gavel } from '@mui/ico
 import QuizCard from '@components/QuizCard';
 import ConfirmDeleteModal from '@components/ConfirmDeleteModal';
 
+import { selectRole, selectToken } from '@containers/Client/selectors';
 import { selectQuizzes } from './selectors';
-import { getAllQuizzes } from './actions';
+import { deleteQuizById, getAllQuizzes } from './actions';
 
 import classes from './style.module.scss';
 
-const Home = ({ quizzes, intl: { formatMessage } }) => {
+const Home = ({ quizzes, intl: { formatMessage }, token, role }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -32,7 +33,7 @@ const Home = ({ quizzes, intl: { formatMessage } }) => {
   ];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userToDelete, setUserToDelete] = useState(null);
+  const [dataToDelete, setDataToDelete] = useState(null);
   const [activeTab, setActiveTab] = useState('quizzes');
   const [deleteType, setDeleteType] = useState(null);
 
@@ -46,130 +47,134 @@ const Home = ({ quizzes, intl: { formatMessage } }) => {
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setUserToDelete(null);
+    setDataToDelete(null);
   };
 
   const handleDeleteClick = (id, type) => {
-    setUserToDelete(id);
+    setDataToDelete(id);
     setDeleteType(type); // Set the type of deletion
     setIsModalOpen(true);
   };
 
   const handleConfirmDelete = () => {
-    if (userToDelete) {
+    if (dataToDelete) {
       if (deleteType === 'user') {
-        console.log('Deleting user:', userToDelete);
+        console.log('Deleting user:', dataToDelete);
         // Dispatch action to delete user
       } else if (deleteType === 'quiz') {
-        console.log('Deleting quiz:', userToDelete);
-        // Dispatch action to delete quiz
+        console.log('Deleting quiz:', dataToDelete);
+        dispatch(deleteQuizById(dataToDelete, token));
       }
     }
     setIsModalOpen(false);
-    setUserToDelete(null);
+    setDataToDelete(null);
     setDeleteType(null);
   };
 
-  // Render for admin
-  // return (
-  //   <div className={classes.admin}>
-  //     <div className={classes.tabs}>
-  //       <button
-  //         type="button"
-  //         className={activeTab === 'quizzes' ? classes.activeTab : ''}
-  //         onClick={() => selectTab('quizzes')}
-  //       >
-  //         Quizzes
-  //       </button>
-  //       <button
-  //         type="button"
-  //         className={activeTab === 'users' ? classes.activeTab : ''}
-  //         onClick={() => selectTab('users')}
-  //       >
-  //         Users
-  //       </button>
-  //     </div>
-  //     {activeTab === 'users' && (
-  //       <table className={classes.table}>
-  //         <thead>
-  //           <tr>
-  //             <th>
-  //               <FormattedMessage id="app_username" />
-  //             </th>
-  //             <th>
-  //               <FormattedMessage id="app_email" />
-  //             </th>
-  //             <th>
-  //               <FormattedMessage id="app_actions" />
-  //             </th>
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           {users.map((user) => (
-  //             <tr key={user?.id}>
-  //               <td>{user?.username}</td>
-  //               <td>{user?.email}</td>
-  //               <td>
-  //                 {user?.role !== 1 && (
-  //                   <Gavel className={classes.removeButton} onClick={() => handleDeleteClick(user?.id, 'user')} />
-  //                 )}
-  //               </td>
-  //             </tr>
-  //           ))}
-  //         </tbody>
-  //       </table>
-  //     )}
-  //     {activeTab === 'quizzes' && (
-  //       <div className={classes.wrapper}>
-  //         <table className={classes.table}>
-  //           <thead>
-  //             <tr>
-  //               <th>
-  //                 <FormattedMessage id="app_title" />
-  //               </th>
-  //               <th>
-  //                 <FormattedMessage id="app_description" />
-  //               </th>
-  //               <th>
-  //                 <FormattedMessage id="app_actions" />
-  //               </th>
-  //             </tr>
-  //           </thead>
-  //           <tbody>
-  //             {quizzes.map((quiz) => (
-  //               <tr key={quiz?.id}>
-  //                 <td>{quiz?.title}</td>
-  //                 <td>{quiz?.description}</td>
-  //                 <td>
-  //                   <EditOutlined className={classes.editButton} />
-  //                   <DeleteOutline
-  //                     className={classes.removeButton}
-  //                     onClick={() => handleDeleteClick(quiz?.id, 'quiz')}
-  //                   />
-  //                 </td>
-  //               </tr>
-  //             ))}
-  //           </tbody>
-  //         </table>
+  if (role === 'admin') {
+    return (
+      <div className={classes.admin}>
+        <div className={classes.tabs}>
+          <button
+            type="button"
+            className={activeTab === 'quizzes' ? classes.activeTab : ''}
+            onClick={() => selectTab('quizzes')}
+          >
+            Quizzes
+          </button>
+          <button
+            type="button"
+            className={activeTab === 'users' ? classes.activeTab : ''}
+            onClick={() => selectTab('users')}
+          >
+            Users
+          </button>
+        </div>
+        {activeTab === 'users' && (
+          <table className={classes.table}>
+            <thead>
+              <tr>
+                <th>
+                  <FormattedMessage id="app_username" />
+                </th>
+                <th>
+                  <FormattedMessage id="app_email" />
+                </th>
+                <th>
+                  <FormattedMessage id="app_actions" />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user?.id}>
+                  <td>{user?.username}</td>
+                  <td>{user?.email}</td>
+                  <td>
+                    {user?.role !== 1 && (
+                      <Gavel className={classes.removeButton} onClick={() => handleDeleteClick(user?.id, 'user')} />
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        {activeTab === 'quizzes' && (
+          <div className={classes.wrapper}>
+            <table className={classes.table}>
+              <thead>
+                <tr>
+                  <th>
+                    <FormattedMessage id="app_title" />
+                  </th>
+                  <th>
+                    <FormattedMessage id="app_description" />
+                  </th>
+                  <th>
+                    <FormattedMessage id="app_no_of_questions" />
+                  </th>
+                  <th>
+                    <FormattedMessage id="app_actions" />
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {quizzes.map((quiz) => (
+                  <tr key={quiz?.id}>
+                    <td>{quiz?.title}</td>
+                    <td>{quiz?.description}</td>
+                    <td>{quiz?.noOfQuestions}</td>
+                    <td>
+                      <EditOutlined className={classes.editButton} />
+                      <DeleteOutline
+                        className={classes.removeButton}
+                        onClick={() => handleDeleteClick(quiz?.id, 'quiz')}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-  //         <div className={classes.createButton} onClick={() => navigate('/quiz/create')}>
-  //           Create Quiz
-  //         </div>
-  //       </div>
-  //     )}
-  //     <ConfirmDeleteModal
-  //       isOpen={isModalOpen}
-  //       onClose={handleModalClose}
-  //       onConfirm={handleConfirmDelete}
-  //       message={
-  //         deleteType === 'user'
-  //           ? formatMessage({ id: 'app_are_you_sure_delete_user' })
-  //           : formatMessage({ id: 'app_are_you_sure_delete_quiz' })
-  //       }
-  //     />
-  //   </div>
-  // );
-
+            <div className={classes.createButton} onClick={() => navigate('/quiz/create')}>
+              Create Quiz
+            </div>
+          </div>
+        )}
+        <ConfirmDeleteModal
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+          onConfirm={handleConfirmDelete}
+          message={
+            deleteType === 'user'
+              ? formatMessage({ id: 'app_are_you_sure_delete_user' })
+              : formatMessage({ id: 'app_are_you_sure_delete_quiz' })
+          }
+        />
+      </div>
+    );
+  }
   return (
     <div className={classes.container}>
       <div className={classes.container__hero}>
@@ -210,10 +215,14 @@ const Home = ({ quizzes, intl: { formatMessage } }) => {
 Home.propTypes = {
   quizzes: PropTypes.array,
   intl: PropTypes.object,
+  token: PropTypes.string,
+  role: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   quizzes: selectQuizzes,
+  token: selectToken,
+  role: selectRole,
 });
 
 export default injectIntl(connect(mapStateToProps)(Home));
