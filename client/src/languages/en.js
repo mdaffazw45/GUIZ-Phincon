@@ -30,4 +30,5 @@ export default {
   app_login_email: 'Enter Your Email',
   app_login_password: 'Enter Your Password',
   app_login_button: 'Login',
+  app_back: 'Back',
 };

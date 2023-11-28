@@ -37,3 +37,5 @@ export const registerApi = (user) => callAPI(endpoints.register, 'POST', {}, {},
 
 export const getAllQuizzesApi = () => callAPI(`${endpoints.quiz}/all`, 'GET');
 export const getQuizByIdApi = (quizId) => callAPI(`${endpoints.quiz}/${quizId}`, 'GET');
+export const createQuizApi = (data, token) =>
+  callAPI(`${endpoints.quiz}/create`, 'POST', { Authorization: `Bearer ${token}` }, {}, data);

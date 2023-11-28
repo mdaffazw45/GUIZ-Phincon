@@ -30,4 +30,5 @@ export default {
   app_login_email: 'Masukkan Email Anda',
   app_login_password: 'Masukkan Kata Sandi Anda',
   app_login_button: 'Masuk',
+  app_back: 'Kembali',
 };
