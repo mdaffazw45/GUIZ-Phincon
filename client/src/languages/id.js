@@ -31,4 +31,13 @@ export default {
   app_login_password: 'Masukkan Kata Sandi Anda',
   app_login_button: 'Masuk',
   app_back: 'Kembali',
+  app_username: 'Nama User',
+  app_email: 'Alamat Email',
+  app_actions: 'Tindakan',
+  app_title: 'Judul',
+  app_description: 'Deskripsi',
+  app_are_you_sure_delete_user: 'Apakah Anda yakin ingin menghapus user ini?',
+  app_cancel: 'Batal',
+  app_delete: 'Hapus',
+  app_are_you_sure_delete_quiz: 'Apakah Anda yakin ingin menghapus kuis ini?',
 };

@@ -71,3 +71,23 @@ exports.createQuizWithQuestions = async (req, res) => {
     return handleServerError(res);
   }
 };
+
+exports.deleteQuizById = async (req, res) => {
+  try {
+    const quizId = req.params.quizId;
+
+    const quizToDelete = await Quiz.findByPk(quizId);
+
+    if (!quizToDelete) {
+      return handleResponse(res, 404, {
+        message: 'Quiz not found',
+      });
+    }
+    await quizToDelete.destroy();
+
+    return handleResponse(res, 200, { message: 'Quiz deleted successfully' });
+  } catch (error) {
+    console.log(error);
+    return handleServerError(res);
+  }
+};
