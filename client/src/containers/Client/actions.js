@@ -1,4 +1,4 @@
-import { LOGIN_REQUEST, REGISTER_REQUEST, SET_LOGIN, SET_TOKEN } from '@containers/Client/constants';
+import { LOGIN_REQUEST, LOGOUT, REGISTER_REQUEST, SET_LOGIN, SET_TOKEN } from '@containers/Client/constants';
 
 export const setLogin = (login, role) => ({
   type: SET_LOGIN,
@@ -14,6 +14,10 @@ export const setToken = (token) => ({
 export const loginRequest = (user) => ({
   type: LOGIN_REQUEST,
   payload: user,
+});
+
+export const logout = () => ({
+  type: LOGOUT,
 });
 
 // REGISTER
