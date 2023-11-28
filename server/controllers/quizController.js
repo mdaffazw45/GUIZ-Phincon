@@ -39,7 +39,7 @@ exports.createQuizWithQuestions = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const quizData = req.body;
-    //const userId = req.user.id
+    const userId = req.user.id;
     const { error, value } = createQuizValidator.validate(quizData);
     if (error) {
       return handleResponse(res, 400, { message: error.details[0].message });
@@ -51,7 +51,7 @@ exports.createQuizWithQuestions = async (req, res) => {
         title,
         description,
         noOfQuestions: questions.length,
-        //userId,
+        userId,
       },
       { transaction: t }
     );
@@ -64,10 +64,33 @@ exports.createQuizWithQuestions = async (req, res) => {
     await Question.bulkCreate(createdQuestions, { transaction: t });
 
     await t.commit();
-    return handleResponse(res, 201, { quiz, questions: createdQuestions });
+    return handleResponse(res, 201, {
+      quiz,
+      questions: createdQuestions,
+      message: 'Quiz successfully created!',
+    });
   } catch (error) {
     await t.rollback();
-    console.error(error);
+    return handleServerError(res);
+  }
+};
+
+exports.deleteQuizById = async (req, res) => {
+  try {
+    const quizId = req.params.quizId;
+
+    const quizToDelete = await Quiz.findByPk(quizId);
+
+    if (!quizToDelete) {
+      return handleResponse(res, 404, {
+        message: 'Quiz not found',
+      });
+    }
+    await quizToDelete.destroy();
+
+    return handleResponse(res, 200, { message: 'Quiz deleted successfully' });
+  } catch (error) {
+    console.log(error);
     return handleServerError(res);
   }
 };

@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'quizId',
         onDelete: 'CASCADE',
       });
+      Quiz.belongsToMany(models.User, {
+        as: 'takers',
+        foreignKey: 'quizId',
+        through: models.QuizTaker,
+      });
     }
   }
   Quiz.init(
