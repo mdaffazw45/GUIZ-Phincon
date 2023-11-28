@@ -3,6 +3,7 @@ import MainLayout from '@layouts/MainLayout';
 import Home from '@pages/Home';
 import NotFound from '@pages/NotFound';
 import Map from '@pages/Map'
+import IndonesiaMap from '@pages/IndonesiaMap'
 
 const routes = [
   {
@@ -13,12 +14,19 @@ const routes = [
     layout: MainLayout,
   },
   {
-    path: '/map',
+    path: '/worldMap',
     name: 'Map',
     protected: false,
     component: Map,
     layout: MainLayout,
   },
+  // {
+  //   path: '/IndonesiaMap',
+  //   name: 'IndonesiaMap',
+  //   protected: false,
+  //   component: IndonesiaMap,
+  //   layout: MainLayout,
+  // },
   { path: '*', name: 'Not Found', component: NotFound, layout: MainLayout, protected: false },
 ];
 
