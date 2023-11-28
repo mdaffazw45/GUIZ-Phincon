@@ -2,9 +2,11 @@ import MainLayout from '@layouts/MainLayout';
 import CreateQuiz from '@pages/CreateQuiz';
 
 import Home from '@pages/Home';
+import Login from '@pages/Login';
 import NotFound from '@pages/NotFound';
 import Map from '@pages/Map'
 import IndonesiaMap from '@pages/IndonesiaMap'
+import Register from '@pages/Register';
 
 const routes = [
   {
@@ -28,6 +30,20 @@ const routes = [
   //   component: IndonesiaMap,
   //   layout: MainLayout,
   // },
+  {
+    path: '/register',
+    name: 'Register',
+    protected: false,
+    component: Register,
+    // layout: MainLayout,
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    protected: false,
+    component: Login,
+    // layout: MainLayout,
+  },
   {
     path: '/quiz/create',
     name: 'CreateQuiz',

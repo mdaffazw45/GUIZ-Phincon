@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
 
     const emailExist = await User.findOne({ where: { email } });
     if (emailExist) {
-      return handleResponse(res, 404, 'Email already exist');
+      return handleResponse(res, 404, { message: 'Email already exist' });
     }
 
     const hashedPassword = hashPassword(password);
@@ -53,18 +53,20 @@ exports.login = async (req, res) => {
 
     const findUser = await User.findOne({ where: { email } });
     if (!findUser) {
-      return handleResponse(res, 404, 'User with this email does not exist.');
+      return handleResponse(res, 404, { message: 'User with this email does not exist.' });
     }
 
     const isPassword = await comparePassword(password, findUser.password);
     if (!isPassword) {
-      return handleResponse(res, 404, 'Your password does correct.');
+      return handleResponse(res, 404, { message: 'Email or Password is incorrect.' });
     }
 
     if (isPassword) {
       const accessToken = generateToken(findUser);
+      const role = findUser.role
 
       return handleResponse(res, 200, {
+        role,
         token: accessToken,
         message: 'Successfully Login Account.',
       });

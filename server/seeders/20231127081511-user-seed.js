@@ -14,6 +14,14 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        username: 'ajipriya',
+        email: 'ajip@gmail.com',
+        password: bcrypt.hashSync('ajip12345', salt),
+        role: 'customer',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
     ]);
   },
 

@@ -15,5 +15,20 @@ export default {
   app_home_section_subtitle: 'Challenge Yourself with Our Curated Geography Quizzes! 🗺️🌍',
   app_questions: 'questions',
   app_quiz_card_button: 'Start Quiz',
+
+  // Register
+  app_register_title: 'Register to',
+  app_register_subTitle: 'Geography Quiz System',
+  app_register_username: 'Enter Your Username',
+  app_register_email: 'Enter Your Email',
+  app_register_password: 'Enter Your Password',
+  app_register_button: 'Register',
+
+  // Login
+  app_login_title: 'Login to',
+  app_login_subTitle: 'Geography Quiz System',
+  app_login_email: 'Enter Your Email',
+  app_login_password: 'Enter Your Password',
+  app_login_button: 'Login',
   app_back: 'Back',
 };
