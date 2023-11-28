@@ -47,6 +47,9 @@
 
     .toolbar {
       @include directionX;
+      .profileIconContainer {
+        padding-left: 30px;
+      }
       .theme {
         @include directionX;
         align-items: center;
