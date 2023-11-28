@@ -8,7 +8,6 @@ function* doCreateQuiz(action) {
   yield put(setLoading(true));
   try {
     const response = yield call(createQuizApi, action.payload.data, action.payload.token);
-
     toast.success(response.message);
   } catch (error) {
     toast.error(error.response.data.message);

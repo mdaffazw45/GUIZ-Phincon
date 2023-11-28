@@ -1,35 +1,180 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
-import { East } from '@mui/icons-material';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { Delete, DeleteOutline, East, Edit, EditOutlined, Gavel } from '@mui/icons-material';
 
 import QuizCard from '@components/QuizCard';
+import ConfirmDeleteModal from '@components/ConfirmDeleteModal';
 
+import { selectRole, selectToken } from '@containers/Client/selectors';
 import { selectQuizzes } from './selectors';
-import { getAllQuizzes } from './actions';
+import { deleteQuizById, getAllQuizzes } from './actions';
 
 import classes from './style.module.scss';
 
-const Home = ({ quizzes }) => {
+const Home = ({ quizzes, intl: { formatMessage }, token, role }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const users = [
+    {
+      id: 1,
+      username: 'lol',
+      email: 'lol@gmail.com',
+    },
+    {
+      id: 2,
+      username: 'lel',
+      email: 'lel@gmail.com',
+    },
+  ];
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dataToDelete, setDataToDelete] = useState(null);
+  const [activeTab, setActiveTab] = useState('quizzes');
+  const [deleteType, setDeleteType] = useState(null);
 
   useEffect(() => {
     dispatch(getAllQuizzes());
   }, [dispatch]);
 
-  // Render for admin
-  // return (
-  //   <div className={classes.admin}>
-  //     <button type="button" onClick={() => navigate('/quiz/create')}>
-  //       Create Quiz
-  //     </button>
-  //   </div>
-  // );
+  const selectTab = (tabName) => {
+    setActiveTab(tabName);
+  };
 
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setDataToDelete(null);
+  };
+
+  const handleDeleteClick = (id, type) => {
+    setDataToDelete(id);
+    setDeleteType(type); // Set the type of deletion
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (dataToDelete) {
+      if (deleteType === 'user') {
+        console.log('Deleting user:', dataToDelete);
+        // Dispatch action to delete user
+      } else if (deleteType === 'quiz') {
+        console.log('Deleting quiz:', dataToDelete);
+        dispatch(deleteQuizById(dataToDelete, token));
+      }
+    }
+    setIsModalOpen(false);
+    setDataToDelete(null);
+    setDeleteType(null);
+  };
+
+  if (role === 'admin') {
+    return (
+      <div className={classes.admin}>
+        <div className={classes.tabs}>
+          <button
+            type="button"
+            className={activeTab === 'quizzes' ? classes.activeTab : ''}
+            onClick={() => selectTab('quizzes')}
+          >
+            Quizzes
+          </button>
+          <button
+            type="button"
+            className={activeTab === 'users' ? classes.activeTab : ''}
+            onClick={() => selectTab('users')}
+          >
+            Users
+          </button>
+        </div>
+        {activeTab === 'users' && (
+          <table className={classes.table}>
+            <thead>
+              <tr>
+                <th>
+                  <FormattedMessage id="app_username" />
+                </th>
+                <th>
+                  <FormattedMessage id="app_email" />
+                </th>
+                <th>
+                  <FormattedMessage id="app_actions" />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user?.id}>
+                  <td>{user?.username}</td>
+                  <td>{user?.email}</td>
+                  <td>
+                    {user?.role !== 1 && (
+                      <Gavel className={classes.removeButton} onClick={() => handleDeleteClick(user?.id, 'user')} />
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        {activeTab === 'quizzes' && (
+          <div className={classes.wrapper}>
+            <table className={classes.table}>
+              <thead>
+                <tr>
+                  <th>
+                    <FormattedMessage id="app_title" />
+                  </th>
+                  <th>
+                    <FormattedMessage id="app_description" />
+                  </th>
+                  <th>
+                    <FormattedMessage id="app_no_of_questions" />
+                  </th>
+                  <th>
+                    <FormattedMessage id="app_actions" />
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {quizzes.map((quiz) => (
+                  <tr key={quiz?.id}>
+                    <td>{quiz?.title}</td>
+                    <td>{quiz?.description}</td>
+                    <td>{quiz?.noOfQuestions}</td>
+                    <td>
+                      <EditOutlined className={classes.editButton} />
+                      <DeleteOutline
+                        className={classes.removeButton}
+                        onClick={() => handleDeleteClick(quiz?.id, 'quiz')}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div className={classes.createButton} onClick={() => navigate('/quiz/create')}>
+              Create Quiz
+            </div>
+          </div>
+        )}
+        <ConfirmDeleteModal
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+          onConfirm={handleConfirmDelete}
+          message={
+            deleteType === 'user'
+              ? formatMessage({ id: 'app_are_you_sure_delete_user' })
+              : formatMessage({ id: 'app_are_you_sure_delete_quiz' })
+          }
+        />
+      </div>
+    );
+  }
   return (
     <div className={classes.container}>
       <div className={classes.container__hero}>
@@ -69,10 +214,15 @@ const Home = ({ quizzes }) => {
 
 Home.propTypes = {
   quizzes: PropTypes.array,
+  intl: PropTypes.object,
+  token: PropTypes.string,
+  role: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   quizzes: selectQuizzes,
+  token: selectToken,
+  role: selectRole,
 });
 
-export default connect(mapStateToProps)(Home);
+export default injectIntl(connect(mapStateToProps)(Home));

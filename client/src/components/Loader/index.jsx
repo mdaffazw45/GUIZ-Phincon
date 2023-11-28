@@ -12,7 +12,7 @@ const Loader = ({ isLoading }) => (
       [classes.showLoader]: isLoading || false,
     })}
   >
-    <LinearProgress className={classes.loader} color="warning" />
+    <LinearProgress className={classes.loader} color="primary" />
   </div>
 );
 
