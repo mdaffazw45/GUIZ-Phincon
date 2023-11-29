@@ -61,13 +61,6 @@
           }
         }
       }
-      .info {
-        @include flex-center(0.25rem);
-        font-size: $font-size-small;
-        svg {
-          @include box(1rem);
-        }
-      }
       &__add {
         cursor: pointer;
         @include flex-center(0.5rem);

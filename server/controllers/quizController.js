@@ -1,9 +1,13 @@
+const { Op } = require('sequelize');
 const {
   handleServerError,
   handleResponse,
 } = require('../helper/responseHandler');
 const { Quiz, Question, sequelize } = require('../models');
-const { createQuizValidator } = require('../validators/quizValidator');
+const {
+  createQuizValidator,
+  editQuizValidator,
+} = require('../validators/quizValidator');
 
 exports.getAllQuiz = async (req, res) => {
   try {
@@ -34,7 +38,6 @@ exports.getQuizById = async (req, res) => {
   }
 };
 
-//TODO: Uncomment userId when authentication middleware is created
 exports.createQuizWithQuestions = async (req, res) => {
   const t = await sequelize.transaction();
   try {
@@ -68,6 +71,81 @@ exports.createQuizWithQuestions = async (req, res) => {
       quiz,
       questions: createdQuestions,
       message: 'Quiz successfully created!',
+    });
+  } catch (error) {
+    console.log(error);
+    await t.rollback();
+    return handleServerError(res);
+  }
+};
+
+exports.editQuizWithQuestions = async (req, res) => {
+  const t = await sequelize.transaction();
+  try {
+    const { quizId } = req.params;
+    const updatedQuizData = req.body;
+    const { error, value } = editQuizValidator.validate(updatedQuizData);
+    if (error) {
+      return handleResponse(res, 400, { message: error.details[0].message });
+    }
+    const { title, description, questions } = value;
+
+    // Update Quiz
+    const quiz = await Quiz.findByPk(quizId, { transaction: t });
+    if (!quiz) {
+      await t.rollback();
+      return handleResponse(res, 404, { message: 'Quiz not found.' });
+    }
+    quiz.title = title;
+    quiz.description = description;
+    quiz.noOfQuestions = questions.length;
+    await quiz.save({ transaction: t });
+
+    // Update Existing Questions
+    const existingQuestionIds = questions.filter((q) => q.id).map((q) => q.id);
+    const existingQuestions = await Question.findAll({
+      where: {
+        quizId,
+        id: existingQuestionIds,
+      },
+      transaction: t,
+    });
+
+    for (const question of existingQuestions) {
+      const updatedQuestion = questions.find((q) => q.id === question.id);
+      question.content = updatedQuestion.content;
+      question.answer = updatedQuestion.answer;
+      await question.save({ transaction: t });
+    }
+
+    // Delete Removed Questions
+    if (existingQuestionIds.length > 0) {
+      await Question.destroy({
+        where: {
+          quizId,
+          id: { [Op.notIn]: existingQuestionIds },
+        },
+        transaction: t,
+      });
+    }
+
+    // Add New Questions
+    const newQuestions = questions
+      .filter((q) => !q.id)
+      .map((question) => ({
+        ...question,
+        quizId,
+      }));
+    if (newQuestions.length > 0) {
+      await Question.bulkCreate(newQuestions, {
+        transaction: t,
+      });
+    }
+
+    await t.commit();
+    return handleResponse(res, 200, {
+      quiz,
+      message: 'Quiz successfully updated!',
     });
   } catch (error) {
     await t.rollback();

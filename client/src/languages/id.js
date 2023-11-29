@@ -42,4 +42,5 @@ export default {
   app_delete: 'Hapus',
   app_are_you_sure_delete_quiz: 'Apakah Anda yakin ingin menghapus kuis ini?',
   app_no_of_questions: 'Jumlah Pertanyaan',
+  app_access_denied: 'Akses ditolak',
 };
