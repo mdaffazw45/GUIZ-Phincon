@@ -8,12 +8,13 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 
 import { AddCommentOutlined, Clear, Info, Quiz } from '@mui/icons-material';
 import BackButton from '@components/BackButton';
-import { selectRole, selectToken } from '@containers/Client/selectors';
 
+import { selectRole, selectToken } from '@containers/Client/selectors';
+import { getQuizById } from '@pages/Map/actions';
+import { selectQuiz } from '@pages/Map/selectors';
 import { selectActionSuccess } from '@pages/CreateQuiz/selectors';
 import { resetActionSuccess } from '@pages/CreateQuiz/actions';
-import { editQuizById, getQuizById } from './actions';
-import { selectQuiz } from './selectors';
+import { editQuizById } from './actions';
 
 import classes from './style.module.scss';
 

@@ -1,16 +1,12 @@
-import { FETCH_QUIZ_BY_ID_REQUEST, FETCH_QUIZ_BY_ID_SUCCESS, FETCH_QUIZ_BY_ID_FAILURE } from './constants'; // Import the new constants
+import { GET_QUIZ_BY_ID, SET_QUIZ_BY_ID } from './constants';
 
-export const fetchQuizRequest = (quizId) => ({
-    type: FETCH_QUIZ_BY_ID_REQUEST,
-    payload: quizId,
-  });
-  
-  export const fetchQuizSuccess = (quiz) => ({
-    type: FETCH_QUIZ_BY_ID_SUCCESS,
-    payload: quiz,
-  });
-  
-  export const fetchQuizFailure = (error) => ({
-    type: FETCH_QUIZ_BY_ID_FAILURE,
-    payload: error,
-  });
+export const getQuizById = (quizId) => ({
+  type: GET_QUIZ_BY_ID,
+  quizId,
+});
+
+export const setQuizById = (quiz, quizId) => ({
+  type: SET_QUIZ_BY_ID,
+  quiz,
+  quizId,
+});
