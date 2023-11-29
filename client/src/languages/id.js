@@ -45,4 +45,13 @@ export default {
   app_are_you_sure_delete_quiz: 'Apakah Anda yakin ingin menghapus kuis ini?',
   app_no_of_questions: 'Jumlah Pertanyaan',
   app_access_denied: 'Akses ditolak',
+  app_note: 'Perhatikan bahwa jawabannya harus berupa nama negara.',
+  app_edit_quiz: 'Edit Kuis',
+  app_question: 'Pertanyaan',
+  app_answer: 'Jawaban',
+  app_create_quiz: 'Buat Kuis',
+  app_add_question: 'Tambah Pertanyaan',
+  app_save: 'Simpan',
+  app_quizzes: 'Kuis',
+  app_users: 'User',
 };

@@ -83,14 +83,14 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
             className={activeTab === 'quizzes' ? classes.activeTab : ''}
             onClick={() => selectTab('quizzes')}
           >
-            Quizzes
+            <FormattedMessage id="app_quizzes" />
           </button>
           <button
             type="button"
             className={activeTab === 'users' ? classes.activeTab : ''}
             onClick={() => selectTab('users')}
           >
-            Users
+            <FormattedMessage id="app_users" />
           </button>
         </div>
         {activeTab === 'users' && (
@@ -184,22 +184,24 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
   }
   return (
     <div className={classes.container}>
-      <div className={classes.container__hero}>
-        <div className={classes.content}>
-          <div className={classes.content__title}>
-            <FormattedMessage id="app_hero_title" />
-          </div>
-          <div className={classes.content__subtitle}>
-            <FormattedMessage id="app_hero_subtitle" />
-          </div>
-          <div className={classes.content__button} onClick={() => navigate('/register')}>
-            <span>
-              <FormattedMessage id="app_hero_button" />
-            </span>
-            <East className={classes.content__button__icon} />
+      {!token && (
+        <div className={classes.container__hero}>
+          <div className={classes.content}>
+            <div className={classes.content__title}>
+              <FormattedMessage id="app_hero_title" />
+            </div>
+            <div className={classes.content__subtitle}>
+              <FormattedMessage id="app_hero_subtitle" />
+            </div>
+            <div className={classes.content__button} onClick={() => navigate('/register')}>
+              <span>
+                <FormattedMessage id="app_hero_button" />
+              </span>
+              <East className={classes.content__button__icon} />
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className={classes.container__section}>
         <div className={classes.header}>

@@ -90,8 +90,9 @@
           text-transform: uppercase;
         }
 
-        .arrow {
-          font-size: 1rem;
+        svg {
+          stroke: $color-text-primary;
+          color: $color-white;
         }
       }
     }

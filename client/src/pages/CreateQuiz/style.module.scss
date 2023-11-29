@@ -32,6 +32,7 @@
         margin: 0 auto;
         margin-top: 1rem;
         width: fit-content;
+        text-transform: capitalize;
         border-bottom: 5px solid $color-text-primary;
         svg {
           @include box(1.25rem);
