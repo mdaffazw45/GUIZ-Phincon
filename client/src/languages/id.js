@@ -32,6 +32,14 @@ export default {
   app_login_email: 'Masukkan Email Anda',
   app_login_password: 'Masukkan Kata Sandi Anda',
   app_login_button: 'Masuk',
+  app_login_already: 'Tidak memiliki akun?',
+  app_login_register: 'Daftar disini..',
+  app_login_forgot_password: 'Lupa Password?',
+
+  // Forgot Password
+  app_forgot_password_title: 'Lupa Kata Sandi Anda?',
+  app_forgot_password_subTitle: 'Masukkan alamat email Anda',
+  app_forgot_password_send: 'Kirim Reset Kata Sandi',
   app_back: 'Kembali',
   app_username: 'Nama User',
   app_email: 'Alamat Email',

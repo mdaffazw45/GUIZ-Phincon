@@ -12,10 +12,10 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { Logout, Person, Public } from '@mui/icons-material';
+import { Lock, Logout, Person, Public } from '@mui/icons-material';
 
 import { setLocale } from '@containers/App/actions';
-import { getUser, getUserById, logout } from '@containers/Client/actions';
+import { getUserById, logout } from '@containers/Client/actions';
 
 import { selectToken } from '@containers/Client/selectors';
 import classes from './style.module.scss';
@@ -31,7 +31,6 @@ const Navbar = ({ title, locale, token }) => {
   useEffect(() => {
     if (token) {
       dispatch(getUserById(token));
-      dispatch(getUser(token));
     }
   }, [dispatch, token]);
 
@@ -150,6 +149,12 @@ const Navbar = ({ title, locale, token }) => {
                     <Person fontSize="small" />
                   </ListItemIcon>
                   Profile
+                </MenuItem>
+                <MenuItem onClick="/">
+                  <ListItemIcon>
+                    <Lock fontSize="small" />
+                  </ListItemIcon>
+                  Change Password
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   <ListItemIcon>

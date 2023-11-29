@@ -32,6 +32,14 @@ export default {
   app_login_email: 'Enter Your Email',
   app_login_password: 'Enter Your Password',
   app_login_button: 'Login',
+  app_login_already: `Don't have an account?`,
+  app_login_register: 'Register Here..',
+  app_login_forgot_password: 'Forgot Password?',
+
+  // Forgot Password
+  app_forgot_password_title: 'Forgot Your Password?',
+  app_forgot_password_subTitle: 'Input your email address',
+  app_forgot_password_send: 'Send Reset Password',
   app_back: 'Back',
   app_username: 'Username',
   app_email: 'Email Address',

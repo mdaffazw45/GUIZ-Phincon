@@ -6,9 +6,12 @@ const {
 const {
   registerValidator,
   loginValidator,
+  forgotPasswordValidator,
+  changePasswordValidator,
 } = require('../validators/userValidator');
 const { hashPassword, comparePassword } = require('../utils/bcrypt');
 const { generateToken } = require('../utils/jwt');
+const { sendForgotPasswordEmail } = require('../utils/nodemailer');
 
 // User Register
 exports.register = async (req, res) => {
@@ -75,6 +78,69 @@ exports.login = async (req, res) => {
     handleServerError(res);
   }
 };
+
+// PASSWORD
+exports.forgotPassword = async (req, res) => {
+  try {
+    const newData = req.body
+
+    const { error, value } = forgotPasswordValidator.validate(newData);
+    if (error) {
+      return handleResponse(res, 400, { message: error.details[0].message });
+    }
+    const { email } = value;
+
+    const user = await User.findOne({ where: { email }})
+    if (!user) {
+      return handleResponse(res, 404, { message: 'Email not Registered' })
+    }
+
+    const temporaryPassword = 'secretpassteamguiz'
+    const hashedPassword = hashPassword(temporaryPassword)
+
+    await user.update({ password: hashedPassword })
+    await sendForgotPasswordEmail(email, temporaryPassword)
+
+    return handleResponse(res, 200, { message: 'Temporary password sent via email' })
+  } catch (err) {
+    console.log(err);
+    handleServerError(res)
+  }
+}
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body
+    const userId = req.user.id
+
+    const { error, value } = changePasswordValidator.validate({
+      currentPassword,
+      newPassword,
+    });
+    if (error) {
+      return handleResponse(res, 400, { message: error.details[0].message });
+    }
+
+    const user = await User.findByPk(userId)
+    const isPasswordMatch = await comparePassword(
+      value.currentPassword,
+      user.password,
+    )
+
+    if(!isPasswordMatch) {
+      return handleResponse(res, 401, { message: 'Current password is incorrect' })
+    }
+
+    const newHashedPassword = hashPassword(value.newPassword)
+    await user.update({ password: newHashedPassword })
+
+    return handleResponse(res, 200, { message: 'Password changed successfully' })
+
+  } catch (err) {
+    console.log(err);
+    handleServerError(res)
+  }
+}
 
 // USER
 exports.getUser = async (req, res) => {
