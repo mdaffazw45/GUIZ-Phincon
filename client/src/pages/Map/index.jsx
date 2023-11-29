@@ -50,10 +50,48 @@ const Map = ({ quiz }) => {
     setCurrentQuestionIndex(0);
   };
 
-  useEffect(() => {
-    resetQuiz();
-  }, []);
-
+  const handleGeographyClick = (geo) => {
+    if (isQuizFinished || !quiz.questions) {
+      return;
+    }
+    
+    const currentQuestion = quiz.questions[currentQuestionIndex];
+    console.log(currentQuestion, 'Current Question')
+    if (!currentQuestion) {
+      return;
+    }
+  
+    const { answer, question } = currentQuestion;
+    const countryName = geo.properties.name;
+    console.log(countryName , 'Nama Negara')
+    if (countryName === answer) {
+      // Correct answer
+      setScore((prevScore) => prevScore + 1);
+      toast.success(`Correct! The country with the question "${quiz?.questions && quiz?.questions[currentQuestionIndex]?.content}" is ${countryName}.`);
+    } else {
+      // Incorrect answer
+      toast.error(`Incorrect. The correct answer is ${answer}.`);
+    }
+  
+    const nextQuestionIndex = currentQuestionIndex + 1;
+  
+    if (nextQuestionIndex < quiz.questions.length) {
+      setCurrentQuestionIndex(nextQuestionIndex);
+    } else {
+      finishQuiz();
+    }
+  };
+  
+  
+  const updateScoreAndDisplayToast = (isCorrect, question, countryName) => {
+    if (isCorrect) {
+      setScore((prevScore) => prevScore + 1);
+      toast.success(`Correct! The country with the question "${quiz?.questions && quiz?.questions[currentQuestionIndex]?.content}" is ${countryName}.`);
+    } else {
+      toast.error(`Incorrect. The correct answer is ${question.country}.`);
+    }
+  };
+  
   const finishQuiz = () => {
     setIsQuizFinished(true);
     MySwal.fire({
@@ -72,50 +110,6 @@ const Map = ({ quiz }) => {
     });
   };
 
-  const handleGeographyClick = (geo) => {
-    if (isQuizFinished || !quiz.questions) {
-      return;
-    }
-
-    const currentQuestion = quiz.questions[currentQuestionIndex];
-
-    if (!currentQuestion) {
-      return;
-    }
-
-    const { answer, question } = currentQuestion;
-    const countryName = geo.properties.name;
-    console.log(countryName, 'Nama Negara');
-    if (countryName === answer) {
-      // Correct answer
-      setScore((prevScore) => prevScore + 1);
-      toast.success(
-        `Correct! The country with the question "${
-          quiz?.questions && quiz?.questions[currentQuestionIndex]?.content
-        }" is ${countryName}.`
-      );
-    } else {
-      // Incorrect answer
-      toast.error(`Incorrect. The correct answer is ${answer}.`);
-    }
-
-    const nextQuestionIndex = currentQuestionIndex + 1;
-
-    if (nextQuestionIndex < quiz.questions.length) {
-      setCurrentQuestionIndex(nextQuestionIndex);
-    } else {
-      finishQuiz();
-    }
-  };
-
-  // const updateScoreAndDisplayToast = (isCorrect, question, countryName) => {
-  //   if (isCorrect) {
-  //     setScore((prevScore) => prevScore + 1);
-  //     toast.success(`Correct! The country with the question "${quiz?.questions && quiz?.questions[currentQuestionIndex]?.content}" is ${countryName}.`);
-  //   } else {
-  //     toast.error(`Incorrect. The correct answer is ${question.country}.`);
-  //   }
-  // };
 
   console.log(quiz?.questions && quiz?.questions[0], 'quiz?.questions[currentQuestionIndex]');
   return (
