@@ -1,15 +1,25 @@
 import { produce } from 'immer';
 
-import { LOGOUT, REGISTER_SUCCESS, SET_LOGIN, SET_TOKEN } from '@containers/Client/constants';
+import {
+  DELETE_USER_SUCCESS,
+  LOGOUT,
+  REGISTER_SUCCESS,
+  SET_LOGIN,
+  SET_TOKEN,
+  SET_USER,
+  SET_USER_BY_ID,
+} from '@containers/Client/constants';
 
 export const initialState = {
   login: false,
   token: null,
   role: null,
   user: null,
+  data: null,
+  allUser: [],
 };
 
-export const storedKey = ['token', 'login', 'role'];
+export const storedKey = ['token', 'login', 'role', 'user', 'allUser'];
 
 const clientReducer = (state = initialState, action) =>
   produce(state, (draft) => {
@@ -21,8 +31,17 @@ const clientReducer = (state = initialState, action) =>
       case SET_TOKEN:
         draft.token = action.token;
         break;
+      case SET_USER:
+        draft.allUser = action.user;
+        break;
       case REGISTER_SUCCESS:
-        draft.user = action.user;
+        draft.data = action.data;
+        break;
+      case SET_USER_BY_ID:
+        draft.user = action.payload;
+        break;
+      case DELETE_USER_SUCCESS:
+        draft.allUser = draft.allUser.filter((aUser) => aUser.id !== action.payload);
         break;
       case LOGOUT:
         return initialState;

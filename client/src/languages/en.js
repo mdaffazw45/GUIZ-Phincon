@@ -33,6 +33,7 @@ export default {
   app_back: 'Back',
   app_username: 'Username',
   app_email: 'Email Address',
+  app_role: 'Role',
   app_actions: 'Actions',
   app_title: 'Title',
   app_description: 'Description',

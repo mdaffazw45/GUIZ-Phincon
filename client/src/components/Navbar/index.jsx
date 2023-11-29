@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ import Logout from '@mui/icons-material/Logout';
 import { Public } from '@mui/icons-material';
 
 import { setLocale } from '@containers/App/actions';
-import { logout } from '@containers/Client/actions';
+import { getUser, getUserById, logout } from '@containers/Client/actions';
 
 import { selectToken } from '@containers/Client/selectors';
 import classes from './style.module.scss';
@@ -27,6 +27,16 @@ const Navbar = ({ title, locale, token }) => {
   const [menuPosition, setMenuPosition] = useState(null);
   const open = Boolean(menuPosition);
   const [color, setColor] = useState(false);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(getUserById(token));
+    }
+  }, [dispatch, token]);
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
 
   const changeColor = () => {
     if (window.scrollY >= 100) {
