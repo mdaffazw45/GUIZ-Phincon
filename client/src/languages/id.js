@@ -33,6 +33,7 @@ export default {
   app_back: 'Kembali',
   app_username: 'Nama User',
   app_email: 'Alamat Email',
+  app_role: 'Peran',
   app_actions: 'Tindakan',
   app_title: 'Judul',
   app_description: 'Deskripsi',

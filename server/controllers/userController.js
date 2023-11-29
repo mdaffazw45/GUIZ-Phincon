@@ -62,12 +62,11 @@ exports.login = async (req, res) => {
     }
 
     if (isPassword) {
-      const accessToken = generateToken(findUser);
       const role = findUser.role
 
       return handleResponse(res, 200, {
         role,
-        token: accessToken,
+        token: generateToken(findUser),
         message: 'Successfully Login Account.',
       });
     }
@@ -76,3 +75,59 @@ exports.login = async (req, res) => {
     handleServerError(res);
   }
 };
+
+// USER
+exports.getUser = async (req, res) => {
+  try {
+    const user = await User.findAll({})
+    return handleResponse(res, 200, user)
+
+  } catch (err) {
+    console.log(err);
+    handleServerError(res)
+  }
+}
+
+exports.getUserById = async (req, res) => {
+  try {
+    const userId = req.user.id
+
+    const user = await User.findByPk(userId)
+    if (!user) {
+      return handleResponse(res, 404, { message: 'User Not Found' })
+    }
+
+    const { username, email } = user
+
+    return handleResponse(res, 200, {
+      username,
+      email
+    })
+
+  } catch (err) {
+    console.log(err);
+    handleServerError(res)
+  }
+}
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const { userId } = req.params
+
+    const user = await User.findByPk(userId)
+    if (!user) {
+      return handleResponse(res, 404, { message: 'User Not Found' })
+    }
+
+    await user.destroy()
+
+    return handleResponse(res, 200, {
+      data: user,
+      message: 'Successfully Deleted User'
+    })
+
+  } catch (err) {
+    console.log(err);
+    handleServerError(res)
+  }
+}

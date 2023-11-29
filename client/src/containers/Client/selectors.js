@@ -7,3 +7,4 @@ export const selectLogin = createSelector(selectClientState, (state) => state.lo
 export const selectToken = createSelector(selectClientState, (state) => state.token);
 export const selectRole = createSelector(selectClientState, (state) => state.role);
 export const selectUser = createSelector(selectClientState, (state) => state.user);
+export const selectAllUser = createSelector(selectClientState, (state) => state.allUser);

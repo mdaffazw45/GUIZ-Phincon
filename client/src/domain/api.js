@@ -5,8 +5,8 @@ import request from '@utils/request';
 
 const endpoints = {
   ping: 'ping.json',
-  login: 'auth/login',
-  register: 'auth/register',
+  auth: 'auth',
+  user: 'user',
   quiz: 'quiz',
 };
 
@@ -32,8 +32,13 @@ export const callAPI = async (endpoint, method, header = {}, params = {}, data =
 
 export const ping = () => callAPI(endpoints.ping, 'get');
 
-export const loginApi = (user) => callAPI(endpoints.login, 'POST', {}, {}, user);
-export const registerApi = (user) => callAPI(endpoints.register, 'POST', {}, {}, user);
+export const loginApi = (user) => callAPI(`${endpoints.auth}/login`, 'POST', {}, {}, user);
+export const registerApi = (user) => callAPI(`${endpoints.auth}/register`, 'POST', {}, {}, user);
+
+export const getAllUserApi = () => callAPI(`${endpoints.user}/all`, 'GET');
+export const getUserByIdApi = (token) => callAPI(endpoints.user, 'GET', { Authorization: `Bearer ${token}` });
+export const deleteUserByIdApi = (userId, token) =>
+  callAPI(`${endpoints.user}/delete/${userId}`, 'DELETE', { Authorization: `Bearer ${token}` });
 
 export const getAllQuizzesApi = () => callAPI(`${endpoints.quiz}/all`, 'GET');
 export const getQuizByIdApi = (quizId) => callAPI(`${endpoints.quiz}/${quizId}`, 'GET');

@@ -4,33 +4,34 @@ import { createStructuredSelector } from 'reselect';
 import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Delete, DeleteOutline, East, Edit, EditOutlined, Gavel } from '@mui/icons-material';
+import { Delete, DeleteOutline, East, Edit, EditOutlined, Gavel, ManageAccounts, PeopleAlt } from '@mui/icons-material';
 
 import QuizCard from '@components/QuizCard';
 import ConfirmDeleteModal from '@components/ConfirmDeleteModal';
 
-import { selectRole, selectToken } from '@containers/Client/selectors';
+import { selectAllUser, selectRole, selectToken } from '@containers/Client/selectors';
+import { deleteUserById } from '@containers/Client/actions';
 import { selectQuizzes } from './selectors';
 import { deleteQuizById, getAllQuizzes } from './actions';
 
 import classes from './style.module.scss';
 
-const Home = ({ quizzes, intl: { formatMessage }, token, role }) => {
+const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const users = [
-    {
-      id: 1,
-      username: 'lol',
-      email: 'lol@gmail.com',
-    },
-    {
-      id: 2,
-      username: 'lel',
-      email: 'lel@gmail.com',
-    },
-  ];
+  // const users = [
+  //   {
+  //     id: 1,
+  //     username: 'lol',
+  //     email: 'lol@gmail.com',
+  //   },
+  //   {
+  //     id: 2,
+  //     username: 'lel',
+  //     email: 'lel@gmail.com',
+  //   },
+  // ];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dataToDelete, setDataToDelete] = useState(null);
@@ -60,6 +61,7 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role }) => {
     if (dataToDelete) {
       if (deleteType === 'user') {
         console.log('Deleting user:', dataToDelete);
+        dispatch(deleteUserById(dataToDelete, token));
         // Dispatch action to delete user
       } else if (deleteType === 'quiz') {
         console.log('Deleting quiz:', dataToDelete);
@@ -101,6 +103,9 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role }) => {
                   <FormattedMessage id="app_email" />
                 </th>
                 <th>
+                  <FormattedMessage id="app_role" />
+                </th>
+                <th>
                   <FormattedMessage id="app_actions" />
                 </th>
               </tr>
@@ -110,8 +115,9 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role }) => {
                 <tr key={user?.id}>
                   <td>{user?.username}</td>
                   <td>{user?.email}</td>
+                  <td>{user?.role === 'admin' ? <ManageAccounts /> : <PeopleAlt />}</td>
                   <td>
-                    {user?.role !== 1 && (
+                    {user?.role !== 'admin' && (
                       <Gavel className={classes.removeButton} onClick={() => handleDeleteClick(user?.id, 'user')} />
                     )}
                   </td>
@@ -217,12 +223,14 @@ Home.propTypes = {
   intl: PropTypes.object,
   token: PropTypes.string,
   role: PropTypes.string,
+  users: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   quizzes: selectQuizzes,
   token: selectToken,
   role: selectRole,
+  users: selectAllUser,
 });
 
 export default injectIntl(connect(mapStateToProps)(Home));
