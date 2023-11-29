@@ -1,8 +1,8 @@
 /* eslint-disable react/button-has-type */
-/* eslint-disable arrow-body-style */
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
 import { registerRequest } from '@containers/Client/actions';
 
@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -27,6 +28,10 @@ const Register = () => {
 
   const handleRegister = () => {
     dispatch(registerRequest(formData));
+  };
+
+  const handleToLogin = () => {
+    navigate('/login');
   };
 
   return (
@@ -67,7 +72,7 @@ const Register = () => {
               <div className={classes.account__have}>
                 <FormattedMessage id="app_register_already" />
               </div>
-              <div>
+              <div className={classes.account__login} onClick={handleToLogin}>
                 <FormattedMessage id="app_register_login" />
               </div>
             </div>

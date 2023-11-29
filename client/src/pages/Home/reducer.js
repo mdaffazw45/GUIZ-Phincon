@@ -1,11 +1,12 @@
 import { produce } from 'immer';
-import { DELETE_QUIZ_SUCCESS, SET_ALL_QUIZZES } from './constants';
+import { DELETE_QUIZ_SUCCESS, SET_ALL_QUIZZES, SET_USER } from './constants';
 
 export const initialState = {
   quizzes: [],
+  allUser: [],
 };
 
-export const storedKey = [];
+export const storedKey = ['allUser'];
 
 const homeReducer = (state = initialState, action) =>
   produce(state, (draft) => {
@@ -15,6 +16,9 @@ const homeReducer = (state = initialState, action) =>
         break;
       case DELETE_QUIZ_SUCCESS:
         draft.quizzes = draft.quizzes.filter((quiz) => quiz.id !== action.payload);
+        break;
+      case SET_USER:
+        draft.allUser = action.user;
         break;
     }
   });

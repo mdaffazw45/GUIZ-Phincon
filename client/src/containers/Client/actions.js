@@ -1,14 +1,12 @@
 import {
   DELETE_USER,
   DELETE_USER_SUCCESS,
-  GET_USER,
   GET_USER_BY_ID,
   LOGIN_REQUEST,
   LOGOUT,
   REGISTER_REQUEST,
   SET_LOGIN,
   SET_TOKEN,
-  SET_USER,
   SET_USER_BY_ID,
 } from '@containers/Client/constants';
 
@@ -43,15 +41,6 @@ export const registerSuccess = () => ({
 });
 
 // USER
-export const getUser = () => ({
-  type: GET_USER,
-});
-
-export const setUser = (user) => ({
-  type: SET_USER,
-  user,
-});
-
 export const getUserById = (token) => ({
   type: GET_USER_BY_ID,
   token,

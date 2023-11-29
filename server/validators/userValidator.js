@@ -30,7 +30,27 @@ const loginValidator = Joi.object({
   }),
 })
 
+const forgotPasswordValidator = Joi.object({
+  email: Joi.string().email().required().messages({
+    'string.base': 'Email must be a string',
+    'string.email': 'Email must be a valid email',
+    'string.empty': 'Email is required',
+  }),
+})
+
+const changePasswordValidator = Joi.object({
+  currentPassword: Joi.string().required().messages({
+    'string.empty': 'Current password is required',
+  }),
+  newPassword: Joi.string().min(5).required().messages({
+    'string.min': 'New password must be at least {#limit} characters long',
+    'string.empty': 'New password is required',
+  }),
+})
+
 module.exports = {
   registerValidator,
   loginValidator,
+  forgotPasswordValidator,
+  changePasswordValidator,
 }

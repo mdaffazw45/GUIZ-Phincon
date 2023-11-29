@@ -1,6 +1,7 @@
 import MainLayout from '@layouts/MainLayout';
 import CreateQuiz from '@pages/CreateQuiz';
 import EditQuiz from '@pages/EditQuiz';
+import ForgotPassword from '@pages/ForgotPassword';
 
 import Home from '@pages/Home';
 import Login from '@pages/Login';
@@ -43,6 +44,13 @@ const routes = [
     name: 'Login',
     protected: false,
     component: Login,
+    layout: MainLayout,
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    protected: false,
+    component: ForgotPassword,
     layout: MainLayout,
   },
   {
