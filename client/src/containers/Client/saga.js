@@ -38,7 +38,7 @@ function* handleLogin({ data }) {
     yield put(setToken(response.token));
     yield put({ type: SET_LOGIN, login: true, role: response.role });
     toast.success('Logged In Successfully');
-    // window.location.href = '/';
+    window.location.href = '/';
   } catch (err) {
     toast.error(err.response.data.message);
   } finally {

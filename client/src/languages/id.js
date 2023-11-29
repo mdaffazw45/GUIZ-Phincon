@@ -23,6 +23,8 @@ export default {
   app_register_email: 'Masukkan Email Anda',
   app_register_password: 'Masukkan Kata Sandi Anda',
   app_register_button: 'Daftar',
+  app_register_already: 'Sudah memiliki akun!',
+  app_register_login: 'Masuk di sini..',
 
   // Login
   app_login_title: 'Masuk ke',
