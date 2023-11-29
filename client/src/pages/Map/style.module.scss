@@ -1,0 +1,22 @@
+// .mainContainer {
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     padding: 20px; /* Add padding to the main container */
+//   }
+  
+  .questionContainer {
+    margin-bottom: 20px; /* Add a gap between questionContainer and mapContainer */
+    padding: 10px; /* Add padding to the question container */
+    background-color: #f0f0f0; /* Add a background color for better separation */
+    border-radius: 5px; /* Add some border radius for styling */
+    // border: 2px solid red;
+  }
+
+.mapContainer {
+    margin-top: -280px;
+}
+  
+//   .mapContainer {
+//     // padding: 20px; /* Add padding to the map container */
+// }

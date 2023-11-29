@@ -5,6 +5,8 @@ import EditQuiz from '@pages/EditQuiz';
 import Home from '@pages/Home';
 import Login from '@pages/Login';
 import NotFound from '@pages/NotFound';
+import Map from '@pages/Map'
+import IndonesiaMap from '@pages/IndonesiaMap'
 import Register from '@pages/Register';
 
 const routes = [
@@ -15,6 +17,20 @@ const routes = [
     component: Home,
     layout: MainLayout,
   },
+  {
+    path: '/map/:id',
+    name: 'Map',
+    protected: false,
+    component: Map,
+    layout: MainLayout,
+  },
+  // {
+  //   path: '/IndonesiaMap',
+  //   name: 'IndonesiaMap',
+  //   protected: false,
+  //   component: IndonesiaMap,
+  //   layout: MainLayout,
+  // },
   {
     path: '/register',
     name: 'Register',
