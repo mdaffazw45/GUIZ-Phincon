@@ -47,8 +47,21 @@
 
     .toolbar {
       @include directionX;
-      .profileIconContainer {
-        padding-left: 30px;
+      align-items: center;
+      gap: 1rem;
+      .loginButton {
+        cursor: pointer;
+        background-color: $color-bg-primary;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: $font-size-regular;
+        border: 2px solid $color-text-primary;
+        height: fit-content;
+        &:hover {
+          color: $color-bg-primary;
+          background-color: $color-text-primary;
+          border: 2px solid $color-white;
+        }
       }
       .theme {
         @include directionX;
@@ -60,8 +73,9 @@
         @include directionX;
         align-items: center;
         cursor: pointer;
-        color: $color-text-secondary;
-
+        -webkit-text-fill-color: $color-white; /* Will override color (regardless of order) */
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: $color-text-primary;
         .avatar {
           width: 1.2rem;
           height: 1.2rem;
@@ -102,5 +116,6 @@
 }
 
 .headerWrapperBg {
-  background-color: $color-primary !important;
+  background-color: $color-bg-primary !important;
+  border-bottom: 1px solid $color-text-secondary;
 }

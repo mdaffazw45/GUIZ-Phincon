@@ -42,4 +42,5 @@ export default {
   app_delete: 'Delete',
   app_are_you_sure_delete_quiz: 'Are you sure you want to delete this quiz?',
   app_no_of_questions: 'No. of Questions',
+  app_access_denied: 'Access denied',
 };

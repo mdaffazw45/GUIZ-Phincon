@@ -1,7 +1,7 @@
 @import '@styles/base';
 .container {
   &__hero {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('@static/images/hero.png');
+    background-image: linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('@static/images/hero.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -21,15 +21,21 @@
         max-width: 40rem;
       }
       &__title {
-        font-size: $font-size-huge;
+        font-size: $font-size-large;
         font-weight: bold;
         text-shadow: $color-white 1px 0 3px;
+        @include apply-at-sm-size {
+          font-size: $font-size-huge;
+        }
         @include apply-at-md-size {
           font-size: $font-size-huger;
         }
       }
       &__subtitle {
-        font-size: $font-size-large;
+        font-size: $font-size-medium;
+        @include apply-at-sm-size {
+          font-size: $font-size-large;
+        }
         @include apply-at-md-size {
           font-size: $font-size-larger;
         }
@@ -45,6 +51,9 @@
         transition: all 0.2s ease;
         margin-top: 2rem;
         font-weight: 500;
+        &:hover {
+          box-shadow: 0 0 10px 1px $color-white;
+        }
         &__icon {
           @include box(1rem);
           @include apply-at-md-size {
@@ -57,7 +66,8 @@
   &__section {
     max-width: 80%;
     margin: 0 auto;
-    padding: 0.5rem 1rem;
+    padding: 5rem 2rem;
+
     .header {
       @include flex-column;
       &__title {

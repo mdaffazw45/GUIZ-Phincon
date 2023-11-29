@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 
 import ProfileIcon from '@static/images/profile.svg';
@@ -24,6 +24,7 @@ import classes from './style.module.scss';
 const Navbar = ({ title, locale, token }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [menuPosition, setMenuPosition] = useState(null);
   const open = Boolean(menuPosition);
   const [color, setColor] = useState(false);
@@ -98,6 +99,11 @@ const Navbar = ({ title, locale, token }) => {
           </div>
         </div>
         <div className={classes.toolbar}>
+          {!token && location.pathname !== '/register' && location.pathname !== '/login' && (
+            <div className={classes.loginButton} onClick={() => navigate('/login')}>
+              <FormattedMessage id="app_login_button" />
+            </div>
+          )}
           <div className={classes.toggle} onClick={handleClick}>
             <Avatar className={classes.avatar} src={locale === 'id' ? '/id.png' : '/en.png'} />
             <div className={classes.lang}>{locale}</div>
@@ -152,7 +158,6 @@ const Navbar = ({ title, locale, token }) => {
               </Menu>
             </>
           )}
-          {/* <div> Hallo </div> */}
         </div>
         <Menu open={open} anchorEl={menuPosition} onClose={handleClose}>
           <MenuItem onClick={() => onSelectLang('id')} selected={locale === 'id'}>

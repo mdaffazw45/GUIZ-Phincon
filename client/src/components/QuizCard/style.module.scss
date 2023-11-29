@@ -4,7 +4,8 @@
   @include box(15rem, auto);
   @include flex-column(0.5rem);
   justify-content: space-between;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px 0 $color-primary;
   position: relative;
   background-color: $color-white;
   padding: 1rem;

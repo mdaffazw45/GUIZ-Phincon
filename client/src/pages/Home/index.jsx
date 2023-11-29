@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Delete, DeleteOutline, East, Edit, EditOutlined, Gavel, ManageAccounts, PeopleAlt } from '@mui/icons-material';
+import { DeleteOutline, East, EditOutlined, Gavel, ManageAccounts, PeopleAlt } from '@mui/icons-material';
 
 import QuizCard from '@components/QuizCard';
 import ConfirmDeleteModal from '@components/ConfirmDeleteModal';
@@ -57,14 +57,15 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
     setIsModalOpen(true);
   };
 
+  const handleEditClick = (id) => {
+    navigate(`/quiz/edit/${id}`);
+  };
+
   const handleConfirmDelete = () => {
     if (dataToDelete) {
       if (deleteType === 'user') {
-        console.log('Deleting user:', dataToDelete);
         dispatch(deleteUserById(dataToDelete, token));
-        // Dispatch action to delete user
       } else if (deleteType === 'quiz') {
-        console.log('Deleting quiz:', dataToDelete);
         dispatch(deleteQuizById(dataToDelete, token));
       }
     }
@@ -152,7 +153,7 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
                     <td>{quiz?.description}</td>
                     <td>{quiz?.noOfQuestions}</td>
                     <td>
-                      <EditOutlined className={classes.editButton} />
+                      <EditOutlined className={classes.editButton} onClick={() => handleEditClick(quiz?.id)} />
                       <DeleteOutline
                         className={classes.removeButton}
                         onClick={() => handleDeleteClick(quiz?.id, 'quiz')}
@@ -191,7 +192,7 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
           <div className={classes.content__subtitle}>
             <FormattedMessage id="app_hero_subtitle" />
           </div>
-          <div className={classes.content__button}>
+          <div className={classes.content__button} onClick={() => navigate('/register')}>
             <span>
               <FormattedMessage id="app_hero_button" />
             </span>
@@ -199,6 +200,7 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
           </div>
         </div>
       </div>
+
       <div className={classes.container__section}>
         <div className={classes.header}>
           <div className={classes.header__title}>

@@ -2,20 +2,23 @@ import PropTypes from 'prop-types';
 import { connect, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { createStructuredSelector } from 'reselect';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { injectIntl } from 'react-intl';
 
-import { AddCommentOutlined, Clear, Info, Quiz } from '@mui/icons-material';
+import { AddCommentOutlined, Clear, Quiz } from '@mui/icons-material';
 import BackButton from '@components/BackButton';
-
 import { selectRole, selectToken } from '@containers/Client/selectors';
-import { createQuiz, resetActionSuccess } from './actions';
+
+import { selectActionSuccess } from '@pages/CreateQuiz/selectors';
+import { resetActionSuccess } from '@pages/CreateQuiz/actions';
+import { editQuizById, getQuizById } from './actions';
+import { selectQuiz } from './selectors';
 
 import classes from './style.module.scss';
-import { selectActionSuccess } from './selectors';
 
-const CreateQuiz = ({ token, role, intl: { formatMessage }, actionSuccess }) => {
+const EditQuiz = ({ token, role, intl: { formatMessage }, quiz, actionSuccess }) => {
+  const { quizId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [quizData, setQuizData] = useState({
@@ -28,8 +31,20 @@ const CreateQuiz = ({ token, role, intl: { formatMessage }, actionSuccess }) => 
     if (role !== 'admin') {
       navigate('/');
       toast.error(formatMessage({ id: 'app_access_denied' }));
+    } else {
+      dispatch(getQuizById(quizId));
     }
-  }, [formatMessage, navigate, role]);
+  }, [dispatch, formatMessage, navigate, quizId, role]);
+
+  useEffect(() => {
+    if (quiz) {
+      setQuizData({
+        title: quiz.title,
+        description: quiz.description,
+        questions: quiz.questions || [],
+      });
+    }
+  }, [quiz]);
 
   useEffect(() => {
     if (actionSuccess) {
@@ -59,21 +74,29 @@ const CreateQuiz = ({ token, role, intl: { formatMessage }, actionSuccess }) => 
 
   const handleQuestionChange = (index, e) => {
     const { name, value } = e.target;
-    const updatedQuestions = [...quizData.questions];
-    updatedQuestions[index][name] = value;
-    setQuizData({ ...quizData, questions: updatedQuestions });
+    setQuizData((prevQuizData) => {
+      const updatedQuestions = prevQuizData.questions.map((question, idx) =>
+        idx === index ? { ...question, [name]: value } : question
+      );
+      return { ...prevQuizData, questions: updatedQuestions };
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createQuiz(quizData, token));
+    const formattedQuestions = quizData.questions.map((question) => {
+      question.id ? question : { ...question, id: null };
+      const { id, content, answer } = question;
+      return { id, content, answer };
+    });
+    dispatch(editQuizById(quizId, { ...quizData, questions: formattedQuestions }, token));
   };
 
   return (
     <div className={classes.page}>
       <BackButton />
       <div className={classes.container}>
-        <div className={classes.container__header}>Create a quiz</div>
+        <div className={classes.container__header}>Edit quiz</div>
         <form onSubmit={handleSubmit} className={classes.form}>
           <div className={`${classes.form__title} ${classes.form_item}`}>
             <label htmlFor="title" className={classes.form_label}>
@@ -103,9 +126,6 @@ const CreateQuiz = ({ token, role, intl: { formatMessage }, actionSuccess }) => 
           </div>
           <div className={classes.question}>
             <Quiz /> Questions
-          </div>
-          <div className={classes.info}>
-            <Info /> Note that the answer should be the name of a country.
           </div>
           {quizData.questions.map((question, index) => (
             <div key={index} className={classes.question__item}>
@@ -146,7 +166,7 @@ const CreateQuiz = ({ token, role, intl: { formatMessage }, actionSuccess }) => 
             <AddCommentOutlined /> <div className={classes.form__add__text}>Add Question</div>
           </div>
           <button className={classes.form__create} type="submit">
-            Create Quiz
+            Save
           </button>
         </form>
       </div>
@@ -154,17 +174,19 @@ const CreateQuiz = ({ token, role, intl: { formatMessage }, actionSuccess }) => 
   );
 };
 
-CreateQuiz.propTypes = {
+EditQuiz.propTypes = {
   token: PropTypes.string,
   role: PropTypes.string,
   intl: PropTypes.object,
+  quiz: PropTypes.object,
   actionSuccess: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   token: selectToken,
   role: selectRole,
+  quiz: selectQuiz,
   actionSuccess: selectActionSuccess,
 });
 
-export default injectIntl(connect(mapStateToProps)(CreateQuiz));
+export default injectIntl(connect(mapStateToProps)(EditQuiz));

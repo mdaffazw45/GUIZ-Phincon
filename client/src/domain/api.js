@@ -44,5 +44,7 @@ export const getAllQuizzesApi = () => callAPI(`${endpoints.quiz}/all`, 'GET');
 export const getQuizByIdApi = (quizId) => callAPI(`${endpoints.quiz}/${quizId}`, 'GET');
 export const createQuizApi = (data, token) =>
   callAPI(`${endpoints.quiz}/create`, 'POST', { Authorization: `Bearer ${token}` }, {}, data);
+export const editQuizApi = (quizId, data, token) =>
+  callAPI(`${endpoints.quiz}/edit/${quizId}`, 'PUT', { Authorization: `Bearer ${token}` }, {}, data);
 export const deleteQuizByIdApi = (quizId, token) =>
   callAPI(`${endpoints.quiz}/delete/${quizId}`, 'DELETE', { Authorization: `Bearer ${token}` });
