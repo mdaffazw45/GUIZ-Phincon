@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
+import PropTypes from 'prop-types';
+import { createStructuredSelector } from 'reselect';
+
 import { toast, Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
+import { connect , useDispatch, useSelector } from 'react-redux';
 import withReactContent from 'sweetalert2-react-content';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import questions from './question.json'; // Import updated question.json
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { fetchQuizRequest } from './actions';
+import { selectorQuizById } from './selectors';
 import classes from './style.module.scss';
 
 const MySwal = withReactContent(Swal);
@@ -18,15 +25,27 @@ const shuffleArray = (array) => {
   return shuffledArray;
 };
 
-const Index = () => {
+const Map = ({quiz}) => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); 
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchQuizRequest(id));
+    }
+  }, [id, dispatch]);
+
+
+  // console.log(quiz?.questions , 'QUIZ ini')
   const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
   const [score, setScore] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isQuizFinished, setIsQuizFinished] = useState(true);
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
+  // const params = useParams()
+  // console.log(params, '<<<<< PARAMS')
 
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     resetQuiz();
@@ -41,33 +60,46 @@ const Index = () => {
   };
 
   const handleGeographyClick = (geo) => {
-    if (isQuizFinished) return;
+    if (isQuizFinished || !quiz.questions) {
+      return;
+    }
+    
+    const currentQuestion = quiz.questions[currentQuestionIndex];
   
-    const question = questions[currentQuestionIndex];
+    if (!currentQuestion) {
+      return;
+    }
+  
+    const { answer, question } = currentQuestion;
     const countryName = geo.properties.name;
-    const correctCountry = question.country;
-  
-    const isCorrectAnswer = countryName === correctCountry;
-  
-    updateScoreAndDisplayToast(isCorrectAnswer, question, countryName);
+    console.log(countryName , 'Nama Negara')
+    if (countryName === answer) {
+      // Correct answer
+      setScore((prevScore) => prevScore + 1);
+      toast.success(`Correct! The country with the question "${quiz?.questions && quiz?.questions[currentQuestionIndex]?.content}" is ${countryName}.`);
+    } else {
+      // Incorrect answer
+      toast.error(`Incorrect. The correct answer is ${answer}.`);
+    }
   
     const nextQuestionIndex = currentQuestionIndex + 1;
   
-    if (nextQuestionIndex < questions.length) {
+    if (nextQuestionIndex < quiz.questions.length) {
       setCurrentQuestionIndex(nextQuestionIndex);
     } else {
       finishQuiz();
     }
   };
   
-  const updateScoreAndDisplayToast = (isCorrect, question, countryName) => {
-    if (isCorrect) {
-      setScore((prevScore) => prevScore + 1);
-      toast.success(`Correct! The country with the question "${question.question}" is ${countryName}.`);
-    } else {
-      toast.error(`Incorrect. The correct answer is ${question.country}.`);
-    }
-  };
+  
+  // const updateScoreAndDisplayToast = (isCorrect, question, countryName) => {
+  //   if (isCorrect) {
+  //     setScore((prevScore) => prevScore + 1);
+  //     toast.success(`Correct! The country with the question "${quiz?.questions && quiz?.questions[currentQuestionIndex]?.content}" is ${countryName}.`);
+  //   } else {
+  //     toast.error(`Incorrect. The correct answer is ${question.country}.`);
+  //   }
+  // };
   
   const finishQuiz = () => {
     setIsQuizFinished(true);
@@ -86,14 +118,14 @@ const Index = () => {
       }
     });
   };
-
+  console.log(quiz?.questions && quiz?.questions[0], 'quiz?.questions[currentQuestionIndex]')
   return (
     <div className={classes.mainContainer}>
       <Toaster />
       <div className={classes.questionContainer}>
       <h1>World Map Quiz</h1>
       <p>Score: {score}</p>
-      <p>{questions[currentQuestionIndex].question}?</p>
+      <p>{quiz?.questions && quiz?.questions[currentQuestionIndex]?.content}?</p>
       </div>
       <div className={classes.mapContainer}>
       <ComposableMap
@@ -137,4 +169,12 @@ const Index = () => {
   );
 };
 
-export default Index;
+Map.propTypes = {
+  quiz: PropTypes.array
+};
+
+const mapStateToProps = createStructuredSelector({
+  quiz: selectorQuizById
+});
+
+export default injectIntl(connect(mapStateToProps)(Map));

@@ -18,7 +18,7 @@ const routes = [
     layout: MainLayout,
   },
   {
-    path: '/worldMap',
+    path: '/map/:id',
     name: 'Map',
     protected: false,
     component: Map,
