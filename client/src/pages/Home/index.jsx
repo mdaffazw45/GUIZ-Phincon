@@ -4,33 +4,34 @@ import { createStructuredSelector } from 'reselect';
 import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Delete, DeleteOutline, East, Edit, EditOutlined, Gavel } from '@mui/icons-material';
+import { DeleteOutline, East, EditOutlined, Gavel, ManageAccounts, PeopleAlt } from '@mui/icons-material';
 
 import QuizCard from '@components/QuizCard';
 import ConfirmDeleteModal from '@components/ConfirmDeleteModal';
 
-import { selectRole, selectToken } from '@containers/Client/selectors';
+import { selectAllUser, selectRole, selectToken } from '@containers/Client/selectors';
+import { deleteUserById } from '@containers/Client/actions';
 import { selectQuizzes } from './selectors';
 import { deleteQuizById, getAllQuizzes } from './actions';
 
 import classes from './style.module.scss';
 
-const Home = ({ quizzes, intl: { formatMessage }, token, role }) => {
+const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const users = [
-    {
-      id: 1,
-      username: 'lol',
-      email: 'lol@gmail.com',
-    },
-    {
-      id: 2,
-      username: 'lel',
-      email: 'lel@gmail.com',
-    },
-  ];
+  // const users = [
+  //   {
+  //     id: 1,
+  //     username: 'lol',
+  //     email: 'lol@gmail.com',
+  //   },
+  //   {
+  //     id: 2,
+  //     username: 'lel',
+  //     email: 'lel@gmail.com',
+  //   },
+  // ];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dataToDelete, setDataToDelete] = useState(null);
@@ -56,13 +57,15 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role }) => {
     setIsModalOpen(true);
   };
 
+  const handleEditClick = (id) => {
+    navigate(`/quiz/edit/${id}`);
+  };
+
   const handleConfirmDelete = () => {
     if (dataToDelete) {
       if (deleteType === 'user') {
-        console.log('Deleting user:', dataToDelete);
-        // Dispatch action to delete user
+        dispatch(deleteUserById(dataToDelete, token));
       } else if (deleteType === 'quiz') {
-        console.log('Deleting quiz:', dataToDelete);
         dispatch(deleteQuizById(dataToDelete, token));
       }
     }
@@ -101,6 +104,9 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role }) => {
                   <FormattedMessage id="app_email" />
                 </th>
                 <th>
+                  <FormattedMessage id="app_role" />
+                </th>
+                <th>
                   <FormattedMessage id="app_actions" />
                 </th>
               </tr>
@@ -110,8 +116,9 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role }) => {
                 <tr key={user?.id}>
                   <td>{user?.username}</td>
                   <td>{user?.email}</td>
+                  <td>{user?.role === 'admin' ? <ManageAccounts /> : <PeopleAlt />}</td>
                   <td>
-                    {user?.role !== 1 && (
+                    {user?.role !== 'admin' && (
                       <Gavel className={classes.removeButton} onClick={() => handleDeleteClick(user?.id, 'user')} />
                     )}
                   </td>
@@ -146,7 +153,7 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role }) => {
                     <td>{quiz?.description}</td>
                     <td>{quiz?.noOfQuestions}</td>
                     <td>
-                      <EditOutlined className={classes.editButton} />
+                      <EditOutlined className={classes.editButton} onClick={() => handleEditClick(quiz?.id)} />
                       <DeleteOutline
                         className={classes.removeButton}
                         onClick={() => handleDeleteClick(quiz?.id, 'quiz')}
@@ -185,7 +192,7 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role }) => {
           <div className={classes.content__subtitle}>
             <FormattedMessage id="app_hero_subtitle" />
           </div>
-          <div className={classes.content__button}>
+          <div className={classes.content__button} onClick={() => navigate('/register')}>
             <span>
               <FormattedMessage id="app_hero_button" />
             </span>
@@ -193,6 +200,7 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role }) => {
           </div>
         </div>
       </div>
+
       <div className={classes.container__section}>
         <div className={classes.header}>
           <div className={classes.header__title}>
@@ -217,12 +225,14 @@ Home.propTypes = {
   intl: PropTypes.object,
   token: PropTypes.string,
   role: PropTypes.string,
+  users: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   quizzes: selectQuizzes,
   token: selectToken,
   role: selectRole,
+  users: selectAllUser,
 });
 
 export default injectIntl(connect(mapStateToProps)(Home));

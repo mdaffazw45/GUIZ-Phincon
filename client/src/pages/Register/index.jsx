@@ -61,6 +61,15 @@ const Register = () => {
             <button className={classes.button} onClick={handleRegister}>
               <FormattedMessage id="app_register_button" />
             </button>
+
+            <div className={classes.account}>
+              <div className={classes.account__have}>
+                <FormattedMessage id="app_register_already" />
+              </div>
+              <div>
+                <FormattedMessage id="app_register_login" />
+              </div>
+            </div>
           </div>
         </div>
       </div>

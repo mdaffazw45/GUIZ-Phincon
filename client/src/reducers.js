@@ -4,6 +4,8 @@ import appReducer, { storedKey as storedAppState } from '@containers/App/reducer
 import clientReducer, { storedKey as storedClientState } from '@containers/Client/reducer';
 import languageReducer from '@containers/Language/reducer';
 import homeReducer from '@pages/Home/reducer';
+import quizReducer from '@pages/EditQuiz/reducer';
+import createQuizReducer from '@pages/CreateQuiz/reducer';
 
 import { mapWithPersistor } from './persistence';
 
@@ -15,6 +17,8 @@ const storedReducers = {
 const temporaryReducers = {
   language: languageReducer,
   home: homeReducer,
+  quiz: quizReducer,
+  createQuiz: createQuizReducer,
 };
 
 const createReducer = () => {

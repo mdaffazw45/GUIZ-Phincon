@@ -23,6 +23,8 @@ export default {
   app_register_email: 'Enter Your Email',
   app_register_password: 'Enter Your Password',
   app_register_button: 'Register',
+  app_register_already: 'Already have an account!',
+  app_register_login: 'Login Here..',
 
   // Login
   app_login_title: 'Login to',
@@ -33,6 +35,7 @@ export default {
   app_back: 'Back',
   app_username: 'Username',
   app_email: 'Email Address',
+  app_role: 'Role',
   app_actions: 'Actions',
   app_title: 'Title',
   app_description: 'Description',
@@ -41,4 +44,5 @@ export default {
   app_delete: 'Delete',
   app_are_you_sure_delete_quiz: 'Are you sure you want to delete this quiz?',
   app_no_of_questions: 'No. of Questions',
+  app_access_denied: 'Access denied',
 };

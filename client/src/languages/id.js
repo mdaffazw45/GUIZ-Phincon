@@ -23,6 +23,8 @@ export default {
   app_register_email: 'Masukkan Email Anda',
   app_register_password: 'Masukkan Kata Sandi Anda',
   app_register_button: 'Daftar',
+  app_register_already: 'Sudah memiliki akun!',
+  app_register_login: 'Masuk di sini..',
 
   // Login
   app_login_title: 'Masuk ke',
@@ -33,6 +35,7 @@ export default {
   app_back: 'Kembali',
   app_username: 'Nama User',
   app_email: 'Alamat Email',
+  app_role: 'Peran',
   app_actions: 'Tindakan',
   app_title: 'Judul',
   app_description: 'Deskripsi',
@@ -41,4 +44,5 @@ export default {
   app_delete: 'Hapus',
   app_are_you_sure_delete_quiz: 'Apakah Anda yakin ingin menghapus kuis ini?',
   app_no_of_questions: 'Jumlah Pertanyaan',
+  app_access_denied: 'Akses ditolak',
 };
