@@ -23,6 +23,8 @@ export default {
   app_register_email: 'Enter Your Email',
   app_register_password: 'Enter Your Password',
   app_register_button: 'Register',
+  app_register_already: 'Already have an account!',
+  app_register_login: 'Login Here..',
 
   // Login
   app_login_title: 'Login to',

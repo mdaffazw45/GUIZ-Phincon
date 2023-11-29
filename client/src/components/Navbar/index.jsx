@@ -12,8 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import Logout from '@mui/icons-material/Logout';
-import { Public } from '@mui/icons-material';
+import { Logout, Person, Public } from '@mui/icons-material';
 
 import { setLocale } from '@containers/App/actions';
 import { getUser, getUserById, logout } from '@containers/Client/actions';
@@ -32,12 +31,9 @@ const Navbar = ({ title, locale, token }) => {
   useEffect(() => {
     if (token) {
       dispatch(getUserById(token));
+      dispatch(getUser(token));
     }
   }, [dispatch, token]);
-
-  useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
 
   const changeColor = () => {
     if (window.scrollY >= 100) {
@@ -149,6 +145,12 @@ const Navbar = ({ title, locale, token }) => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
+                <MenuItem onClick="/">
+                  <ListItemIcon>
+                    <Person fontSize="small" />
+                  </ListItemIcon>
+                  Profile
+                </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   <ListItemIcon>
                     <Logout fontSize="small" />
