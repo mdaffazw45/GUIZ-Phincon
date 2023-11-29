@@ -7,6 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import { registerRequest } from '@containers/Client/actions';
 
 import classes from './style.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const dispatch = useDispatch();

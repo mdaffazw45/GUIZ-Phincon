@@ -20,13 +20,13 @@
     .form {
       background-color: $color-bg-primary;
       border-radius: 3px;
-      box-shadow: 0 0 0 3px rgba(0, 0, 0, .2);
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
       width: 30%;
       height: 25rem;
       padding: 0 15px;
 
       &__title {
-        @include flex-center-column(.3em);
+        @include flex-center-column(0.3em);
         padding: 1.5rem;
         padding-bottom: 2rem;
         .title1 {
@@ -78,7 +78,7 @@
         }
 
         .account {
-          @include flex-center(.2rem);
+          @include flex-center(0.2rem);
           font-size: $font-size-small;
           padding-top: 15px;
 

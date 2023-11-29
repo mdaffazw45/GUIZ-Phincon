@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { createStructuredSelector } from 'reselect';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 import { AddCommentOutlined, Clear, Info, Quiz } from '@mui/icons-material';
 import BackButton from '@components/BackButton';
@@ -73,11 +73,13 @@ const CreateQuiz = ({ token, role, intl: { formatMessage }, actionSuccess }) => 
     <div className={classes.page}>
       <BackButton />
       <div className={classes.container}>
-        <div className={classes.container__header}>Create a quiz</div>
+        <div className={classes.container__header}>
+          <FormattedMessage id="app_create_quiz" />
+        </div>
         <form onSubmit={handleSubmit} className={classes.form}>
           <div className={`${classes.form__title} ${classes.form_item}`}>
             <label htmlFor="title" className={classes.form_label}>
-              Title
+              <FormattedMessage id="app_title" />
             </label>
             <input
               className={classes.input}
@@ -90,7 +92,7 @@ const CreateQuiz = ({ token, role, intl: { formatMessage }, actionSuccess }) => 
           </div>
           <div className={`${classes.form__description} ${classes.form_item}`}>
             <label htmlFor="description" className={classes.form_label}>
-              Description
+              <FormattedMessage id="app_description" />
             </label>
             <input
               className={classes.input}
@@ -102,17 +104,17 @@ const CreateQuiz = ({ token, role, intl: { formatMessage }, actionSuccess }) => 
             />
           </div>
           <div className={classes.question}>
-            <Quiz /> Questions
+            <Quiz /> <FormattedMessage id="app_questions" />
           </div>
           <div className={classes.info}>
-            <Info /> Note that the answer should be the name of a country.
+            <Info /> <FormattedMessage id="app_note" />
           </div>
           {quizData.questions.map((question, index) => (
             <div key={index} className={classes.question__item}>
               <div className={`${classes.form_item_wrapper}`}>
                 <div className={`${classes.form_item}`}>
                   <label htmlFor={`content${index}`} className={classes.form_label}>
-                    Question {index + 1}
+                    <FormattedMessage id="app_question" /> {index + 1}
                   </label>
                   <input
                     className={classes.input}
@@ -125,7 +127,7 @@ const CreateQuiz = ({ token, role, intl: { formatMessage }, actionSuccess }) => 
                 </div>
                 <div className={`${classes.form_item}`}>
                   <label htmlFor={`answer${index}`} className={classes.form_label}>
-                    Answer
+                    <FormattedMessage id="app_answer" />
                   </label>
                   <input
                     className={classes.input}
@@ -143,10 +145,13 @@ const CreateQuiz = ({ token, role, intl: { formatMessage }, actionSuccess }) => 
             </div>
           ))}
           <div className={classes.form__add} onClick={handleAddQuestion}>
-            <AddCommentOutlined /> <div className={classes.form__add__text}>Add Question</div>
+            <AddCommentOutlined />
+            <div className={classes.form__add__text}>
+              <FormattedMessage id="app_add_question" />
+            </div>
           </div>
           <button className={classes.form__create} type="submit">
-            Create Quiz
+            <FormattedMessage id="app_create_quiz" />
           </button>
         </form>
       </div>

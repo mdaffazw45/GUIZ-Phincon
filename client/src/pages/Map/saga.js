@@ -1,19 +1,22 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { setLoading } from '@containers/App/actions';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { getQuizByIdApi } from '@domain/api';
-import { FETCH_QUIZ_BY_ID_REQUEST } from './constants';
-import { fetchQuizSuccess, fetchQuizFailure } from './actions';
+import toast from 'react-hot-toast';
+import { setQuizById } from './actions';
+import { GET_QUIZ_BY_ID } from './constants';
 
-function* fetchQuizSaga(action) {
+export function* doGetQuizById(action) {
+  yield put(setLoading(true));
   try {
-    console.log(action , 'action fetch by id ')
-    const quiz = yield call(getQuizByIdApi, action.payload);
-    console.log(quiz , 'Hasil Quiz nya')
-    yield put(fetchQuizSuccess(quiz));
+    const response = yield call(getQuizByIdApi, action.quizId);
+    yield put(setQuizById(response));
   } catch (error) {
-    yield put(fetchQuizFailure(error.toString()));
+    toast.error(error.response.data.message);
+  } finally {
+    yield put(setLoading(false));
   }
 }
 
-export default function* quizMapSaga() {
-  yield takeEvery(FETCH_QUIZ_BY_ID_REQUEST, fetchQuizSaga);
+export default function* quizSaga() {
+  yield takeLatest(GET_QUIZ_BY_ID, doGetQuizById);
 }

@@ -45,4 +45,13 @@ export default {
   app_are_you_sure_delete_quiz: 'Are you sure you want to delete this quiz?',
   app_no_of_questions: 'No. of Questions',
   app_access_denied: 'Access denied',
+  app_note: 'Note that the answer should be the name of a country.',
+  app_edit_quiz: 'Edit Quiz',
+  app_question: 'Question',
+  app_answer: 'Answer',
+  app_create_quiz: 'Create Quiz',
+  app_add_question: 'Add Question',
+  app_save: 'Save',
+  app_quizzes: 'Quizzes',
+  app_users: 'Users',
 };

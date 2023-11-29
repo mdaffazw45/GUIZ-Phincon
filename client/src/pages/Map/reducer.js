@@ -1,39 +1,19 @@
-// reducer.js
-import { FETCH_QUIZ_BY_ID_REQUEST, FETCH_QUIZ_BY_ID_SUCCESS, FETCH_QUIZ_BY_ID_FAILURE} from './constants';
+import { produce } from 'immer';
+import { SET_QUIZ_BY_ID } from './constants';
 
 export const initialState = {
   quiz: {},
-  loading: false,
-  error: null,
 };
 
-export const storedKey = []
+export const storedKey = [];
 
-const quizMapReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case FETCH_QUIZ_BY_ID_REQUEST:
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
-    case FETCH_QUIZ_BY_ID_SUCCESS:
-    console.log(action , 'Hasil Action')
-      return {
-        ...state,
-        loading: false,
-        quiz: action.payload,
-      };
-    case FETCH_QUIZ_BY_ID_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-        quiz: {},
-      };
-    default:
-      return state;
-  }
-};
+const quizReducer = (state = initialState, action) =>
+  produce(state, (draft) => {
+    switch (action.type) {
+      case SET_QUIZ_BY_ID:
+        draft.quiz = action.quiz;
+        break;
+    }
+  });
 
-export default quizMapReducer;
+export default quizReducer;
