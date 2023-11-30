@@ -10,8 +10,9 @@ import { setUserByUsername } from './action';
 export function* getUserByUsername(action) {
   yield put(setLoading(true));
   try {
-    const response = yield call(getUserByUsernameApi, action.username);
-    yield put(setUserByUsername(response));
+    const { username, token } = action;
+    const response = yield call(getUserByUsernameApi, username, token);
+    yield put(setUserByUsername(response.user));
   } catch (err) {
     toast.error(err.response.data.message);
   } finally {
