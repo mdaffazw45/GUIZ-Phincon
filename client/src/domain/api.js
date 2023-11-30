@@ -8,6 +8,7 @@ const endpoints = {
   auth: 'auth',
   user: 'user',
   quiz: 'quiz',
+  quizTaker: 'taker',
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -51,3 +52,7 @@ export const editQuizApi = (quizId, data, token) =>
   callAPI(`${endpoints.quiz}/edit/${quizId}`, 'PUT', { Authorization: `Bearer ${token}` }, {}, data);
 export const deleteQuizByIdApi = (quizId, token) =>
   callAPI(`${endpoints.quiz}/delete/${quizId}`, 'DELETE', { Authorization: `Bearer ${token}` });
+
+export const finishQuizApi = (quizId, data, token) =>
+  callAPI(`${endpoints.quizTaker}/finish/${quizId}`, 'POST', { Authorization: `Bearer ${token}` }, {}, data);
+export const getAllUsersTotalScoresApi = () => callAPI(`${endpoints.quizTaker}/all/score`, 'GET');

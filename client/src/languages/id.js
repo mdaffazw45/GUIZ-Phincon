@@ -69,4 +69,6 @@ export default {
   app_save: 'Simpan',
   app_quizzes: 'Kuis',
   app_users: 'User',
+  app_leaderboard: 'Papan Peringkat',
+  app_need_login: 'Anda harus login untuk memulai kuis',
 };
