@@ -12,7 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { Lock, Logout, Person } from '@mui/icons-material';
+import { LeaderboardOutlined, Lock, Logout, Person } from '@mui/icons-material';
 
 import Logo from '@components/Logo';
 
@@ -93,8 +93,18 @@ const Navbar = ({ title, locale, token }) => {
           <Logo title={title} />
 
           {token && (
-            <div className={classes.leaderboard}>
-              <FormattedMessage id="app_leaderboard" />
+            <div
+              className={
+                location.pathname === '/leaderboard'
+                  ? `${classes.leaderboard} ${classes.active}`
+                  : `${classes.leaderboard} `
+              }
+              onClick={() => navigate('/leaderboard')}
+            >
+              <LeaderboardOutlined />
+              <div className={classes.leaderboard__text}>
+                <FormattedMessage id="app_leaderboard" />
+              </div>
             </div>
           )}
         </div>

@@ -55,4 +55,5 @@ export const deleteQuizByIdApi = (quizId, token) =>
 
 export const finishQuizApi = (quizId, data, token) =>
   callAPI(`${endpoints.quizTaker}/finish/${quizId}`, 'POST', { Authorization: `Bearer ${token}` }, {}, data);
-export const getAllUsersTotalScoresApi = () => callAPI(`${endpoints.quizTaker}/all/score`, 'GET');
+export const getAllUsersTotalScoresApi = (token) =>
+  callAPI(`${endpoints.quizTaker}/all/score`, 'GET', { Authorization: `Bearer ${token}` });

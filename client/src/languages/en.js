@@ -71,4 +71,5 @@ export default {
   app_users: 'Users',
   app_leaderboard: 'Leaderboard',
   app_need_login: 'You need to be logged in to start a quiz',
+  app_must_login: 'You need to login first',
 };

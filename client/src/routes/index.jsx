@@ -10,6 +10,7 @@ import Map from '@pages/Map';
 import Register from '@pages/Register';
 import ChangePassword from '@pages/ChangePassword';
 import GameLayout from '@layouts/GameLayout';
+import Leaderboard from '@pages/Leaderboard';
 
 const routes = [
   {
@@ -73,6 +74,13 @@ const routes = [
     name: 'EditQuiz',
     protected: true,
     component: EditQuiz,
+    layout: MainLayout,
+  },
+  {
+    path: '/leaderboard',
+    name: 'Leaderboard',
+    protected: true,
+    component: Leaderboard,
     layout: MainLayout,
   },
   { path: '*', name: 'Not Found', component: NotFound, layout: MainLayout, protected: false },

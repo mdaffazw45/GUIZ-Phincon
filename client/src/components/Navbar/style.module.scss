@@ -17,6 +17,7 @@
     .left {
       @include flex-items-center(1rem);
       .leaderboard {
+        @include flex-items-center(0.25rem);
         cursor: pointer;
         font-size: $font-size-regular;
         color: $color-text-secondary;
@@ -26,6 +27,20 @@
           background: rgba(0, 0, 0, 0.1);
           color: $color-text-primary;
         }
+        svg {
+          @include box(1rem);
+        }
+        &__text {
+          display: none;
+          @include apply-at-sm-size {
+            display: block;
+          }
+        }
+      }
+      .active {
+        background: rgba(0, 0, 0, 0.5);
+        color: $color-bg-primary;
+        font-weight: 500;
       }
     }
 

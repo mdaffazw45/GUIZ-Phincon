@@ -1,0 +1,61 @@
+@import '@styles/base';
+
+.container {
+  margin: 0 auto;
+  max-width: 80%;
+  position: relative;
+  margin-top: 4rem;
+  @include flex-center-column(1rem);
+  box-sizing: border-box;
+  @include apply-at-md-size {
+    max-width: 30rem;
+  }
+  .back {
+    align-self: flex-start;
+    position: absolute;
+    top: 25px;
+    left: 0;
+  }
+  .title {
+    @include flex-items-center(0.25rem);
+    font-size: $font-size-larger;
+    font-weight: 700;
+    position: absolute;
+    top: 65px;
+    z-index: 100;
+    background-color: $color-secondary;
+    border: 5px solid $color-text-primary;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    @include apply-at-md-size {
+      top: 85px;
+    }
+  }
+  .leaderboardContainer {
+    border-radius: 1rem;
+    border: 5px solid $color-text-primary;
+    padding: 0.5rem;
+    width: 100%;
+    margin-top: 6rem;
+    @include apply-at-md-size {
+      padding: 2rem;
+    }
+    .leaderboard {
+      margin-top: 2rem;
+      @include flex-center-column(0.25rem);
+      width: 100%;
+    }
+  }
+}
+
+.goldRank {
+  color: gold;
+}
+
+.silverRank {
+  color: silver;
+}
+
+.bronzeRank {
+  color: #cd7f32;
+}

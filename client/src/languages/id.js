@@ -71,4 +71,5 @@ export default {
   app_users: 'User',
   app_leaderboard: 'Papan Peringkat',
   app_need_login: 'Anda harus login untuk memulai kuis',
+  app_must_login: 'You harus login terlebih dahulu',
 };
