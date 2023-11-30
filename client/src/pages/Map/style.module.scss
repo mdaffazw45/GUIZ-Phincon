@@ -1,7 +1,7 @@
 @import '@styles/base';
 
 .sidebar {
-  @include box(10rem);
+  @include box(10rem, 13rem);
   box-sizing: border-box;
   padding: 1rem;
   position: fixed;
@@ -9,10 +9,22 @@
   top: 0;
   background: rgba(0, 0, 0, 0.5);
   color: $color-bg-primary;
-  @include flex-center-column(2rem);
-  .score {
+  @include flex-center-column(1rem);
+  .country {
+    position: absolute;
+    top: 0;
+    text-align: center;
+    width: 80%;
+    min-height: 1.6rem;
+    margin: 0.5rem;
+    &__name {
+      color: $color-bg-primary;
+    }
   }
-  .reset {
+  .score {
+    @include flex-items-center(0.25rem);
+  }
+  .restart {
     cursor: pointer;
     color: $color-text-primary;
     background-color: $color-bg-primary;
@@ -40,6 +52,21 @@
   text-align: center;
   @include apply-at-md-size {
     width: 20rem;
+  }
+  .startButton {
+    cursor: pointer;
+    width: fit-content;
+    margin: 0 auto;
+    background-color: $color-text-primary;
+    color: $color-bg-primary;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    border: 2px solid transparent;
+    &:hover {
+      background-color: $color-bg-primary;
+      color: $color-text-primary;
+      border-color: $color-text-primary;
+    }
   }
 }
 

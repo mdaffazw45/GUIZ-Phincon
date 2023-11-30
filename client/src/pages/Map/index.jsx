@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { connect, useDispatch } from 'react-redux';
 import withReactContent from 'sweetalert2-react-content';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Star } from '@mui/icons-material';
 // import questions from './question.json';
 
 import { selectToken } from '@containers/Client/selectors';
@@ -42,6 +43,8 @@ const Map = ({ quiz, token }) => {
   const [score, setScore] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isQuizFinished, setIsQuizFinished] = useState(false);
+  const [quizStarted, setQuizStarted] = useState(false);
+  const [hoveredCountry, setHoveredCountry] = useState('');
   // const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [mapPosition, setMapPosition] = useState({
     zoom: 1,
@@ -49,20 +52,25 @@ const Map = ({ quiz, token }) => {
   });
   const questions = quiz?.questions;
 
-  const resetQuiz = () => {
+  const restartQuiz = () => {
     setScore(0);
     setIsQuizFinished(false);
-
+    setQuizStarted(false);
     // setShuffledQuestions(shuffleArray(questions));
     setCurrentQuestionIndex(0);
     setMapPosition({ zoom: 1, center: [0, 0] });
-    toast('Quiz Reset', {
-      icon: '🔄',
-    });
+    // toast('Quiz restart', {
+    //   icon: '🔄',
+    // });
+  };
+
+  const startQuiz = () => {
+    setQuizStarted(true);
   };
 
   const finishQuiz = (finalScore) => {
     setIsQuizFinished(true);
+    setQuizStarted(false);
     MySwal.fire({
       title: 'Congratulations!',
       text: `You've completed the quiz with a score of ${finalScore}!`,
@@ -74,14 +82,14 @@ const Map = ({ quiz, token }) => {
       if (result.isConfirmed) {
         navigate('/');
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        resetQuiz();
+        restartQuiz();
       }
     });
     dispatch(finishQuizAction(quiz?.id, { score: finalScore }, token));
   };
 
   const handleGeographyClick = (geo) => {
-    if (isQuizFinished || !questions) {
+    if (!quizStarted || isQuizFinished || !questions) {
       return;
     }
 
@@ -122,15 +130,24 @@ const Map = ({ quiz, token }) => {
       {questions && (
         <>
           <div className={classes.sidebar}>
-            <div className={classes.score}>
-              Score: {score}/{questions.length}
+            <div className={classes.country}>
+              {!quizStarted && <div className={classes.country__name}>{hoveredCountry}</div>}
             </div>
-            <div className={classes.reset} onClick={resetQuiz}>
-              Reset
+            <div className={classes.score}>
+              <Star /> Score: {score}/{questions.length}
+            </div>
+            <div className={classes.restart} onClick={restartQuiz}>
+              Restart
             </div>
           </div>
           <div className={classes.questionContainer}>
-            <div>{questions[currentQuestionIndex]?.content}</div>
+            {quizStarted ? (
+              <div>{questions[currentQuestionIndex]?.content}</div>
+            ) : (
+              <div className={classes.startButton} onClick={startQuiz}>
+                Start Quiz
+              </div>
+            )}
           </div>
 
           <div className={classes.mapContainer}>
@@ -142,6 +159,13 @@ const Map = ({ quiz, token }) => {
                       <Geography
                         key={geo.rsmKey}
                         geography={geo}
+                        onMouseEnter={() => {
+                          const countryName = geo.properties.name;
+                          setHoveredCountry(countryName);
+                        }}
+                        onMouseLeave={() => {
+                          setHoveredCountry('');
+                        }}
                         onClick={() => handleGeographyClick(geo)}
                         className={classes.geography}
                         style={{
