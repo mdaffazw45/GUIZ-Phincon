@@ -15,6 +15,15 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          title: 'Find The Country (Easy)',
+          description:
+            'If you at least have basic knowledge of geography, you should be able to pass this one.',
+          noOfQuestions: 5,
+          userId: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );

@@ -32,6 +32,21 @@ export default {
   app_login_email: 'Masukkan Email Anda',
   app_login_password: 'Masukkan Kata Sandi Anda',
   app_login_button: 'Masuk',
+  app_login_already: 'Tidak memiliki akun?',
+  app_login_register: 'Daftar disini..',
+  app_login_forgot_password: 'Lupa Password?',
+
+  // Forgot Password
+  app_forgot_password_title: 'Lupa Kata Sandi Anda?',
+  app_forgot_password_subTitle: 'Masukkan alamat email Anda',
+  app_forgot_password_send: 'Kirim Reset Kata Sandi',
+
+  // Change Password
+  app_change_password_title: 'Buat kata sandi baru',
+  app_change_password_subTitle: 'Masukkan kata sandi baru yang Anda inginkan',
+  app_change_password_current: 'Masukkan Kata Sandi Anda Saat Ini',
+  app_change_password_new: 'Masukkan Kata Sandi Baru Anda',
+  app_change_password_save: 'Simpan Perubahan',
   app_back: 'Kembali',
   app_username: 'Nama User',
   app_email: 'Alamat Email',
@@ -54,4 +69,6 @@ export default {
   app_save: 'Simpan',
   app_quizzes: 'Kuis',
   app_users: 'User',
+  app_leaderboard: 'Papan Peringkat',
+  app_need_login: 'Anda harus login untuk memulai kuis',
 };

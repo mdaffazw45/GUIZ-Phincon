@@ -1,16 +1,23 @@
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Quiz } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import { selectToken } from '@containers/Client/selectors';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import toast from 'react-hot-toast';
+
 import classes from './style.module.scss';
 
-const QuizCard = ({ quiz }) => {
-  const navigate = useNavigate(); // Initialize useNavigate
+const QuizCard = ({ quiz, token, intl: { formatMessage } }) => {
+  const navigate = useNavigate();
 
   const handleQuizCardClick = () => {
-    // Navigate to '/map/:id' where ':id' is the quiz id
-    navigate(`/map/${quiz.id}`);
-    console.log(quiz.id)
+    if (token) {
+      navigate(`/map/${quiz.id}`);
+    } else {
+      toast.error(formatMessage({ id: 'app_need_login' }));
+    }
   };
 
   return (
@@ -33,6 +40,12 @@ const QuizCard = ({ quiz }) => {
 
 QuizCard.propTypes = {
   quiz: PropTypes.object,
+  token: PropTypes.string,
+  intl: PropTypes.object,
 };
 
-export default QuizCard;
+const mapStateToProps = createStructuredSelector({
+  token: selectToken,
+});
+
+export default injectIntl(connect(mapStateToProps)(QuizCard));

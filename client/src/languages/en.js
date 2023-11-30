@@ -32,6 +32,21 @@ export default {
   app_login_email: 'Enter Your Email',
   app_login_password: 'Enter Your Password',
   app_login_button: 'Login',
+  app_login_already: `Don't have an account?`,
+  app_login_register: 'Register Here..',
+  app_login_forgot_password: 'Forgot Password?',
+
+  // Forgot Password
+  app_forgot_password_title: 'Forgot Your Password?',
+  app_forgot_password_subTitle: 'Input your email address',
+  app_forgot_password_send: 'Send Reset Password',
+
+  // Change Password
+  app_change_password_title: 'Create a new password',
+  app_change_password_subTitle: 'Enter the new password you want',
+  app_change_password_current: 'Enter Your Current Password',
+  app_change_password_new: 'Enter Your New Password',
+  app_change_password_save: 'Save Change',
   app_back: 'Back',
   app_username: 'Username',
   app_email: 'Email Address',
@@ -54,4 +69,6 @@ export default {
   app_save: 'Save',
   app_quizzes: 'Quizzes',
   app_users: 'Users',
+  app_leaderboard: 'Leaderboard',
+  app_need_login: 'You need to be logged in to start a quiz',
 };

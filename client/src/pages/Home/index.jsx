@@ -9,10 +9,10 @@ import { DeleteOutline, East, EditOutlined, Gavel, ManageAccounts, PeopleAlt } f
 import QuizCard from '@components/QuizCard';
 import ConfirmDeleteModal from '@components/ConfirmDeleteModal';
 
-import { selectAllUser, selectRole, selectToken } from '@containers/Client/selectors';
+import { selectRole, selectToken } from '@containers/Client/selectors';
 import { deleteUserById } from '@containers/Client/actions';
-import { selectQuizzes } from './selectors';
-import { deleteQuizById, getAllQuizzes } from './actions';
+import { selectAllUser, selectQuizzes } from './selectors';
+import { deleteQuizById, getAllQuizzes, getUser } from './actions';
 
 import classes from './style.module.scss';
 
@@ -20,18 +20,11 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // const users = [
-  //   {
-  //     id: 1,
-  //     username: 'lol',
-  //     email: 'lol@gmail.com',
-  //   },
-  //   {
-  //     id: 2,
-  //     username: 'lel',
-  //     email: 'lel@gmail.com',
-  //   },
-  // ];
+  useEffect(() => {
+    if (role === 'admin') {
+      dispatch(getUser(token));
+    }
+  }, [dispatch, role, token]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dataToDelete, setDataToDelete] = useState(null);
@@ -53,7 +46,7 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
 
   const handleDeleteClick = (id, type) => {
     setDataToDelete(id);
-    setDeleteType(type); // Set the type of deletion
+    setDeleteType(type);
     setIsModalOpen(true);
   };
 
@@ -182,6 +175,7 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
       </div>
     );
   }
+
   return (
     <div className={classes.container}>
       {!token && (

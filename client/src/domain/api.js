@@ -8,6 +8,7 @@ const endpoints = {
   auth: 'auth',
   user: 'user',
   quiz: 'quiz',
+  quizTaker: 'taker',
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -34,6 +35,9 @@ export const ping = () => callAPI(endpoints.ping, 'get');
 
 export const loginApi = (user) => callAPI(`${endpoints.auth}/login`, 'POST', {}, {}, user);
 export const registerApi = (user) => callAPI(`${endpoints.auth}/register`, 'POST', {}, {}, user);
+export const forgotPasswordApi = (data) => callAPI(`${endpoints.auth}/forgot-password`, 'POST', {}, {}, data);
+export const changePasswordApi = (data, token) =>
+  callAPI(`${endpoints.user}/change-password`, 'PUT', { Authorization: `Bearer ${token}` }, {}, data);
 
 export const getAllUserApi = () => callAPI(`${endpoints.user}/all`, 'GET');
 export const getUserByIdApi = (token) => callAPI(endpoints.user, 'GET', { Authorization: `Bearer ${token}` });
@@ -48,3 +52,7 @@ export const editQuizApi = (quizId, data, token) =>
   callAPI(`${endpoints.quiz}/edit/${quizId}`, 'PUT', { Authorization: `Bearer ${token}` }, {}, data);
 export const deleteQuizByIdApi = (quizId, token) =>
   callAPI(`${endpoints.quiz}/delete/${quizId}`, 'DELETE', { Authorization: `Bearer ${token}` });
+
+export const finishQuizApi = (quizId, data, token) =>
+  callAPI(`${endpoints.quizTaker}/finish/${quizId}`, 'POST', { Authorization: `Bearer ${token}` }, {}, data);
+export const getAllUsersTotalScoresApi = () => callAPI(`${endpoints.quizTaker}/all/score`, 'GET');

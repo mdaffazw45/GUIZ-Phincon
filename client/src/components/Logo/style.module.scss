@@ -1,0 +1,26 @@
+@import '@styles/base';
+
+.logoImage {
+  @include directionX;
+  cursor: pointer;
+  align-items: center;
+
+  .title {
+    @include flex-items-center(0.25em);
+    font-weight: 700;
+    color: $color-text-primary;
+    border-radius: 0.5rem;
+    border: 2px solid $color-text-primary;
+    border-bottom-width: 4px;
+    border-right-width: 4px;
+    padding: 0 0.5rem;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    svg {
+      @include box(0.75em);
+    }
+  }
+}
