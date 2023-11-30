@@ -12,17 +12,17 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { LeaderboardOutlined, Lock, Logout, Person } from '@mui/icons-material';
+import { LeaderboardOutlined, Lock, Logout, Person, Public } from '@mui/icons-material';
 
 import Logo from '@components/Logo';
 
 import { setLocale } from '@containers/App/actions';
 import { getUserById, logout } from '@containers/Client/actions';
 
-import { selectToken } from '@containers/Client/selectors';
+import { selectToken, selectUser } from '@containers/Client/selectors';
 import classes from './style.module.scss';
 
-const Navbar = ({ title, locale, token }) => {
+const Navbar = ({ title, locale, token, user }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -72,10 +72,6 @@ const Navbar = ({ title, locale, token }) => {
 
   const navigateLogin = () => {
     navigate('/login');
-  };
-
-  const navigateChangePassword = () => {
-    navigate('/change-password');
   };
 
   const handleLogout = () => {
@@ -159,17 +155,11 @@ const Navbar = ({ title, locale, token }) => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
-                <MenuItem onClick="/">
+                <MenuItem onClick={() => navigate(`/profile/${user.username}`)}>
                   <ListItemIcon>
                     <Person fontSize="small" />
                   </ListItemIcon>
                   Profile
-                </MenuItem>
-                <MenuItem onClick={navigateChangePassword}>
-                  <ListItemIcon>
-                    <Lock fontSize="small" />
-                  </ListItemIcon>
-                  Change Password
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   <ListItemIcon>
@@ -208,10 +198,12 @@ Navbar.propTypes = {
   title: PropTypes.string,
   locale: PropTypes.string.isRequired,
   token: PropTypes.string,
+  user: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   token: selectToken,
+  user: selectUser,
 });
 
 export default connect(mapStateToProps)(Navbar);

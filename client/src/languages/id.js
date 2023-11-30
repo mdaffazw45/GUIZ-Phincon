@@ -47,6 +47,10 @@ export default {
   app_change_password_current: 'Masukkan Kata Sandi Anda Saat Ini',
   app_change_password_new: 'Masukkan Kata Sandi Baru Anda',
   app_change_password_save: 'Simpan Perubahan',
+
+  // Profile
+  app_profile_edit: 'Perbarui profil',
+  app_profile_change: 'Ubah Kata Sandi',
   app_back: 'Kembali',
   app_username: 'Nama User',
   app_email: 'Alamat Email',

@@ -11,6 +11,8 @@ import Register from '@pages/Register';
 import ChangePassword from '@pages/ChangePassword';
 import GameLayout from '@layouts/GameLayout';
 import Leaderboard from '@pages/Leaderboard';
+import Profile from '@pages/Profile';
+import UpdateProfile from '@pages/UpdateProfile';
 
 const routes = [
   {
@@ -49,6 +51,20 @@ const routes = [
     layout: MainLayout,
   },
   {
+    path: '/profile/:username',
+    name: 'Profile',
+    protected: true,
+    component: Profile,
+    layout: MainLayout,
+  },
+  {
+    path: '/profile/update',
+    name: 'UpdateProfile',
+    protected: true,
+    component: UpdateProfile,
+    layout: MainLayout,
+  },
+  {
     path: '/forgot-password',
     name: 'ForgotPassword',
     protected: false,
@@ -58,7 +74,7 @@ const routes = [
   {
     path: '/change-password',
     name: 'ChangePassword',
-    protected: false,
+    protected: true,
     component: ChangePassword,
     layout: MainLayout,
   },

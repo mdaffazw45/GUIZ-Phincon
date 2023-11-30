@@ -1,0 +1,77 @@
+@import '@styles/base';
+
+.container {
+  @include flex-row;
+  justify-content: center;
+  min-height: 100vh;
+
+  &__header {
+    position: absolute;
+    margin-top: 7rem;
+    background-color: $color-bg-primary;
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 8px;
+    width: 15rem;
+    height: 11rem;
+    // z-index: -1;
+
+    .content {
+      @include flex-center-column;
+
+      .img {
+        position: relative;
+        margin-top: -2rem;
+        background: lightblue;
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+      }
+
+      .info {
+        @include flex-center-column;
+        padding: 15px 0;
+
+        &__username {
+          font-size: $font-size-large;
+          font-weight: 600;
+        }
+
+        &__email {
+          font-size: $font-size-small;
+          font-weight: 400;
+        }
+      }
+
+      .button {
+        @include flex-center-column(.5rem);
+        
+        button {
+          border: none;
+          height: 30px;
+          cursor: pointer;
+          border-radius: 5px;
+          background: $color-text-primary;
+          color: $color-white;
+          font-size: $font-size-small;
+          font-weight: 600;
+          z-index: 100;
+
+          .updateUser,
+          .changePassword {
+            @include flex-row(.3rem);
+            align-items: center;
+          }
+
+          .edit,
+          .password {
+            font-size: $font-size-medium;
+          }
+        }
+
+        button:hover {
+          background: lighten($color-primary, 10%);
+        }
+      }
+    }
+  }
+}
