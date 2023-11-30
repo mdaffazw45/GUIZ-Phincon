@@ -3,5 +3,7 @@ export const SET_ALL_QUIZZES = 'SET_ALL_QUIZZES';
 export const DELETE_QUIZ = 'DELETE_QUIZ';
 export const DELETE_QUIZ_SUCCESS = 'DELETE_QUIZ_SUCCESS';
 
-export const GET_USER = 'Client/GET_USER';
-export const SET_USER = 'Client/SET_USER';
+export const GET_USER = 'Home/GET_USER';
+export const SET_USER = 'Home/SET_USER';
+export const DELETE_USER = 'Home/DELETE_USER';
+export const DELETE_USER_SUCCESS = 'Home/DELETE_USER_SUCCESS';

@@ -2,9 +2,9 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import toast from 'react-hot-toast';
 
 import { setLoading } from '@containers/App/actions';
-import { DELETE_USER, GET_USER_BY_ID, LOGIN_REQUEST, REGISTER_REQUEST, SET_LOGIN } from '@containers/Client/constants';
-import { deleteUserSuccess, setToken, setUserById } from '@containers/Client/actions';
-import { deleteUserByIdApi, getUserByIdApi, loginApi, registerApi } from '@domain/api';
+import { GET_USER_BY_ID, LOGIN_REQUEST, REGISTER_REQUEST, SET_LOGIN } from '@containers/Client/constants';
+import { setToken, setUserById } from '@containers/Client/actions';
+import { getUserByIdApi, loginApi, registerApi } from '@domain/api';
 
 function* handleRegister(action) {
   yield put(setLoading(true));
@@ -50,19 +50,8 @@ function* getUserById(action) {
   }
 }
 
-function* deleteUser(action) {
-  try {
-    const response = yield call(deleteUserByIdApi, action.payload.userId, action.payload.token);
-    yield put(deleteUserSuccess(action.payload.userId));
-    toast.success(response.message);
-  } catch (err) {
-    toast.error(err.response.data.message);
-  }
-}
-
 export default function* clientSaga() {
   yield takeLatest(REGISTER_REQUEST, handleRegister);
   yield takeLatest(LOGIN_REQUEST, handleLogin);
   yield takeLatest(GET_USER_BY_ID, getUserById);
-  yield takeLatest(DELETE_USER, deleteUser);
 }
