@@ -1,9 +1,9 @@
 import { setLoading } from '@containers/App/actions';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { getQuizByIdApi } from '@domain/api';
+import { finishQuizApi, getQuizByIdApi } from '@domain/api';
 import toast from 'react-hot-toast';
 import { setQuizById } from './actions';
-import { GET_QUIZ_BY_ID } from './constants';
+import { FINISH_QUIZ, GET_QUIZ_BY_ID } from './constants';
 
 export function* doGetQuizById(action) {
   yield put(setLoading(true));
@@ -17,6 +17,16 @@ export function* doGetQuizById(action) {
   }
 }
 
+export function* doFinishQuiz(action) {
+  try {
+    const { quizId, data, token } = action.payload;
+    yield call(finishQuizApi, quizId, data, token);
+  } catch (error) {
+    toast.error(error.response.data.message);
+  }
+}
+
 export default function* quizSaga() {
   yield takeLatest(GET_QUIZ_BY_ID, doGetQuizById);
+  yield takeLatest(FINISH_QUIZ, doFinishQuiz);
 }

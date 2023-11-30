@@ -69,4 +69,6 @@ export default {
   app_save: 'Save',
   app_quizzes: 'Quizzes',
   app_users: 'Users',
+  app_leaderboard: 'Leaderboard',
+  app_need_login: 'You need to be logged in to start a quiz',
 };

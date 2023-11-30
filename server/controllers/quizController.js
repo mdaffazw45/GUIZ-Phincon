@@ -3,7 +3,7 @@ const {
   handleServerError,
   handleResponse,
 } = require('../helper/responseHandler');
-const { Quiz, Question, sequelize } = require('../models');
+const { Quiz, Question, QuizTaker, sequelize } = require('../models');
 const {
   createQuizValidator,
   editQuizValidator,

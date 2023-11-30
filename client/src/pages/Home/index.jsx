@@ -46,7 +46,7 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
 
   const handleDeleteClick = (id, type) => {
     setDataToDelete(id);
-    setDeleteType(type); // Set the type of deletion
+    setDeleteType(type);
     setIsModalOpen(true);
   };
 
@@ -175,6 +175,7 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
       </div>
     );
   }
+
   return (
     <div className={classes.container}>
       {!token && (

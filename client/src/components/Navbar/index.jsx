@@ -12,7 +12,9 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { Lock, Logout, Person, Public } from '@mui/icons-material';
+import { Lock, Logout, Person } from '@mui/icons-material';
+
+import Logo from '@components/Logo';
 
 import { setLocale } from '@containers/App/actions';
 import { getUserById, logout } from '@containers/Client/actions';
@@ -59,10 +61,6 @@ const Navbar = ({ title, locale, token }) => {
     handleClose();
   };
 
-  const goHome = () => {
-    navigate('/');
-  };
-
   const [anchorEl, setAnchorEl] = useState(null);
   const opened = Boolean(anchorEl);
   const handleClickProfile = (event) => {
@@ -91,11 +89,14 @@ const Navbar = ({ title, locale, token }) => {
       data-testid="navbar"
     >
       <div className={classes.contentWrapper}>
-        <div className={classes.logoImage} onClick={goHome}>
-          <div className={classes.title}>
-            <Public />
-            {title}
-          </div>
+        <div className={classes.left}>
+          <Logo title={title} />
+
+          {token && (
+            <div className={classes.leaderboard}>
+              <FormattedMessage id="app_leaderboard" />
+            </div>
+          )}
         </div>
         <div className={classes.toolbar}>
           {!token && location.pathname !== '/register' && location.pathname !== '/login' && (

@@ -43,6 +43,41 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          content: 'Find China',
+          answer: 'China',
+          quizId: 2,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          content: 'Find Russia',
+          answer: 'Russia',
+          quizId: 2,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          content: 'Find Australia',
+          answer: 'Australia',
+          quizId: 2,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          content: 'Find Indonesia',
+          answer: 'Indonesia',
+          quizId: 2,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          content: 'Find The United States of America',
+          answer: 'United States of America',
+          quizId: 2,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );

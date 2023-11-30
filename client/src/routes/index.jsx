@@ -6,10 +6,10 @@ import ForgotPassword from '@pages/ForgotPassword';
 import Home from '@pages/Home';
 import Login from '@pages/Login';
 import NotFound from '@pages/NotFound';
-import Map from '@pages/Map';
-// import IndonesiaMap from '@pages/IndonesiaMap';
+import Map from '@pages/Map';- Add GameLayout
 import Register from '@pages/Register';
 import ChangePassword from '@pages/ChangePassword';
+import GameLayout from '@layouts/GameLayout';
 
 const routes = [
   {
@@ -24,7 +24,7 @@ const routes = [
     name: 'Map',
     protected: false,
     component: Map,
-    layout: MainLayout,
+    layout: GameLayout,
   },
   // {
   //   path: '/IndonesiaMap',
