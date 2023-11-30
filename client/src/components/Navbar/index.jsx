@@ -76,6 +76,10 @@ const Navbar = ({ title, locale, token }) => {
     navigate('/login');
   };
 
+  const navigateChangePassword = () => {
+    navigate('/change-password');
+  };
+
   const handleLogout = () => {
     dispatch(logout());
     navigateLogin();
@@ -150,7 +154,7 @@ const Navbar = ({ title, locale, token }) => {
                   </ListItemIcon>
                   Profile
                 </MenuItem>
-                <MenuItem onClick="/">
+                <MenuItem onClick={navigateChangePassword}>
                   <ListItemIcon>
                     <Lock fontSize="small" />
                   </ListItemIcon>

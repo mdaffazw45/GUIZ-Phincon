@@ -6,9 +6,10 @@ import ForgotPassword from '@pages/ForgotPassword';
 import Home from '@pages/Home';
 import Login from '@pages/Login';
 import NotFound from '@pages/NotFound';
-import Map from '@pages/Map'
-import IndonesiaMap from '@pages/IndonesiaMap'
+import Map from '@pages/Map';
+// import IndonesiaMap from '@pages/IndonesiaMap';
 import Register from '@pages/Register';
+import ChangePassword from '@pages/ChangePassword';
 
 const routes = [
   {
@@ -51,6 +52,13 @@ const routes = [
     name: 'ForgotPassword',
     protected: false,
     component: ForgotPassword,
+    layout: MainLayout,
+  },
+  {
+    path: '/change-password',
+    name: 'ChangePassword',
+    protected: false,
+    component: ChangePassword,
     layout: MainLayout,
   },
   {
