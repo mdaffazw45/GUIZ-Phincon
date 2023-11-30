@@ -1,0 +1,2 @@
+export const GET_USER_BY_USERNAME = 'Profile/GET_USER_BY_USERNAME';
+export const SET_USER_BY_USERNAME = 'Profile/SET_USER_BY_USERNAME';

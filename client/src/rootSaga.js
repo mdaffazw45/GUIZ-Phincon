@@ -9,6 +9,8 @@ import editQuizSaga from '@pages/EditQuiz/saga';
 import forgotSaga from '@pages/ForgotPassword/saga';
 import changeSaga from '@pages/ChangePassword/saga';
 import leaderboardSaga from '@pages/Leaderboard/saga';
+import updateProfileSaga from '@pages/UpdateProfile/saga';
+import profileSaga from '@pages/Profile/saga';
 
 export default function* rootSaga() {
   yield all([
@@ -21,5 +23,7 @@ export default function* rootSaga() {
     forgotSaga(),
     changeSaga(),
     leaderboardSaga(),
+    profileSaga(),
+    updateProfileSaga(),
   ]);
 }

@@ -47,6 +47,10 @@ export default {
   app_change_password_current: 'Enter Your Current Password',
   app_change_password_new: 'Enter Your New Password',
   app_change_password_save: 'Save Change',
+
+  // Profile
+  app_profile_edit: 'Update Profile',
+  app_profile_change: 'Change Password',
   app_back: 'Back',
   app_username: 'Username',
   app_email: 'Email Address',

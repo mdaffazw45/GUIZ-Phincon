@@ -8,8 +8,12 @@ const {
   loginValidator,
   forgotPasswordValidator,
   changePasswordValidator,
+  updateProfileValidator,
 } = require('../validators/userValidator');
+const { Op, Sequelize } = require('sequelize');
 const { hashPassword, comparePassword } = require('../utils/bcrypt');
+const fs = require('fs');
+const path = require('path');
 const { generateToken } = require('../utils/jwt');
 const { sendForgotPasswordEmail } = require('../utils/nodemailer');
 
@@ -163,12 +167,33 @@ exports.getUserById = async (req, res) => {
       return handleResponse(res, 404, { message: 'User Not Found' })
     }
 
-    const { username, email } = user
+    const { username, email, avatar } = user
 
     return handleResponse(res, 200, {
       username,
-      email
+      email,
+      avatar
     })
+
+  } catch (err) {
+    console.log(err);
+    handleServerError(res)
+  }
+}
+
+exports.getUserByUsername = async (req, res) => {
+  try {
+    const { username } = req.params
+
+    const user = await User.findOne({ 
+      where: { username },
+      attributes: ['id', 'username', 'email', 'avatar'],
+    })
+    if (!user) {
+      return handleResponse(res, 404, { message: 'User Not Found' })
+    }
+
+    return handleResponse(res, 200, { user })
 
   } catch (err) {
     console.log(err);
@@ -191,6 +216,53 @@ exports.deleteUser = async (req, res) => {
       data: user,
       message: 'Successfully Deleted User'
     })
+
+  } catch (err) {
+    console.log(err);
+    handleServerError(res)
+  }
+}
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id
+    const profileData = req.body
+
+    const { error, value } = updateProfileValidator.validate(profileData)
+    if (error) {
+      return handleResponse(res, 400, { message: error.details[0].message })
+    }
+
+    const { username, email } = value
+    
+    const user = await User.findByPk(userId)
+    if (!user) {
+      return handleResponse(res, 404, { message: 'User Not Found' })
+    }
+
+    let avatarPath
+    if (req.file) {
+      avatarPath = `/uploads/${req.file.filename}`
+
+      if (user.avatar) {
+        const oldAvatarPath = path.join(__dirname, '..', user.avatar)
+        fs.unlink(oldAvatarPath, (err) => {
+          if(err) {
+            console.error('Failed to delete old avatar image: ', err);
+          }
+        })
+      }
+    }
+
+    await User.update({
+      username,
+      email,
+      avatar: avatarPath || Sequelize.literal('avatar')
+    }, { where: { id: userId }})
+
+    const updatedUser = await User.findOne({ where: { id: userId }})
+
+    return handleResponse(res, 200, { message: 'Successfully Updated Profile' })
 
   } catch (err) {
     console.log(err);

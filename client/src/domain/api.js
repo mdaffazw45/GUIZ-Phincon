@@ -41,6 +41,10 @@ export const changePasswordApi = (data, token) =>
 
 export const getAllUserApi = () => callAPI(`${endpoints.user}/all`, 'GET');
 export const getUserByIdApi = (token) => callAPI(endpoints.user, 'GET', { Authorization: `Bearer ${token}` });
+export const getUserByUsernameApi = (username, token) =>
+  callAPI(`${endpoints.user}/by/${username}`, 'GET', { Authorization: `Bearer ${token}` });
+export const updateProfileApi = (data, token) =>
+  callAPI(`${endpoints.user}/profile`, 'PUT', { Authorization: `Bearer ${token}` }, {}, data);
 export const deleteUserByIdApi = (userId, token) =>
   callAPI(`${endpoints.user}/delete/${userId}`, 'DELETE', { Authorization: `Bearer ${token}` });
 
