@@ -10,12 +10,11 @@ import withReactContent from 'sweetalert2-react-content';
 import { useNavigate, useParams } from 'react-router-dom';
 // import questions from './question.json';
 
+import { selectToken } from '@containers/Client/selectors';
 import { selectQuiz } from './selectors';
 import { finishQuizAction, getQuizById } from './actions';
 
 import classes from './style.module.scss';
-import { EmojiEvents } from '@mui/icons-material';
-import { selectToken } from '@containers/Client/selectors';
 
 const MySwal = withReactContent(Swal);
 

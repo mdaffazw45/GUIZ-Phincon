@@ -6,7 +6,7 @@ import ForgotPassword from '@pages/ForgotPassword';
 import Home from '@pages/Home';
 import Login from '@pages/Login';
 import NotFound from '@pages/NotFound';
-import Map from '@pages/Map';- Add GameLayout
+import Map from '@pages/Map';
 import Register from '@pages/Register';
 import ChangePassword from '@pages/ChangePassword';
 import GameLayout from '@layouts/GameLayout';
