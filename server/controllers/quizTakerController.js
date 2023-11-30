@@ -5,9 +5,11 @@ const {
 const { Quiz, User, QuizTaker, sequelize } = require('../models');
 const { finishQuizValidator } = require('../validators/quizTakerValidator');
 
-exports.getAllQuizTakers = async (req, res) => {
+exports.getQuizTakersByUserId = async (req, res) => {
   try {
+    const userId = req.user.id;
     const quizTakers = await QuizTaker.findAll({
+      where: { userId },
       include: [
         {
           model: User,

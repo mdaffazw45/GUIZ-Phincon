@@ -1,0 +1,49 @@
+@import '@styles/base';
+
+.item {
+  @include flex-items-center;
+  justify-content: space-between;
+  border-radius: 2rem;
+  background-color: $color-primary;
+  padding: 1rem 2rem;
+  color: $color-bg-primary;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  @include apply-at-md-size {
+    @include flex-items-center;
+  }
+  &__left {
+    @include flex-items-center(2rem);
+    .rank {
+      font-weight: 500;
+      font-size: $font-size-large;
+    }
+    .user {
+      @include flex-items-center(1rem);
+      &__avatar {
+        display: none;
+        @include apply-at-xs2-size {
+          display: block;
+        }
+      }
+      &__name {
+        @include truncate(7rem);
+        @include apply-at-sm-size {
+          max-width: 100%;
+          text-overflow: initial;
+        }
+      }
+    }
+  }
+  .score {
+    font-size: $font-size-large;
+    font-weight: 700;
+    @include flex-items-center(0.25rem);
+
+    svg {
+      @include box(1.25rem);
+    }
+  }
+}
