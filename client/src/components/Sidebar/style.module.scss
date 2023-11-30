@@ -1,0 +1,49 @@
+@import '@styles/base';
+
+.sidebar {
+  @include box(11rem, 12rem);
+  box-sizing: border-box;
+  padding: 1rem;
+  position: fixed;
+  right: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: $color-bg-primary;
+  @include flex-center-column(1rem);
+  .country {
+    position: absolute;
+    top: 0;
+    text-align: center;
+    width: 80%;
+    min-height: 1.6rem;
+    margin: 0.5rem;
+    &__name {
+      color: $color-bg-primary;
+    }
+  }
+  .question {
+    @include flex-items-center(0.25rem);
+  }
+  .score {
+    @include flex-center-column(0.25rem);
+    &__label {
+      @include flex-items-center(0.25rem);
+      border-bottom: 3px solid $color-bg-primary;
+    }
+    &__value {
+      font-size: $font-size-large;
+    }
+  }
+  .reset {
+    cursor: pointer;
+    color: $color-text-primary;
+    background-color: $color-bg-primary;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    font-size: $font-size-regular;
+    &:hover {
+      background-color: $color-text-primary;
+      color: $color-bg-primary;
+    }
+  }
+}

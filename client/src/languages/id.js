@@ -76,4 +76,12 @@ export default {
   app_leaderboard: 'Papan Peringkat',
   app_need_login: 'Anda harus login untuk memulai kuis',
   app_must_login: 'You harus login terlebih dahulu',
+
+  app_quiz_complete: 'Kuis Selesai!',
+  app_back_home: 'Kembali ke Home',
+  app_stay: 'Tetap',
+  app_outstanding: 'Wah! Luar biasa pengetahuan anda',
+  app_great: 'Mantap! Memang anda cukup mengenali geografi',
+  app_nice: 'Lumayan, tapi sepertinya anda perlu pelajari lagi',
+  app_attempt: 'Waduh, anda sepertinya tidak tamat SD',
 };
