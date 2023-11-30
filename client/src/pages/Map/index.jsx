@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { injectIntl } from 'react-intl';
@@ -8,30 +7,43 @@ import Swal from 'sweetalert2';
 import { connect, useDispatch } from 'react-redux';
 import withReactContent from 'sweetalert2-react-content';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Star } from '@mui/icons-material';
-// import questions from './question.json';
+import { SportsScore } from '@mui/icons-material';
 
+import { finishQuiz, resetQuiz, startQuiz } from '@utils/quizLogic';
+import CountryInfo from '@components/CountryInfo';
+import Sidebar from '@components/Sidebar';
+import QuizMap from '@components/QuizMap';
+
+import { fetchCountryData } from '@domain/countriesApi';
 import { selectToken } from '@containers/Client/selectors';
 import { selectQuiz } from './selectors';
-import { finishQuizAction, getQuizById } from './actions';
+import { getQuizById } from './actions';
 
 import classes from './style.module.scss';
 
 const MySwal = withReactContent(Swal);
 
-// const shuffleArray = (array) => {
-//   const shuffledArray = [...array];
-//   for (let i = shuffledArray.length - 1; i > 0; i--) {
-//     const j = Math.floor(Math.random() * (i + 1));
-//     [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-//   }
-//   return shuffledArray;
-// };
-
-const Map = ({ quiz, token }) => {
+const Map = ({ quiz, token, intl: { formatMessage } }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+
+  const [score, setScore] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+  const [quizStarted, setQuizStarted] = useState(false);
+  const [hoveredCountry, setHoveredCountry] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [isLoadingCountryData, setIsLoadingCountryData] = useState(false);
+  const [selectedCountryName, setSelectedCountryName] = useState(null);
+  const [mapPosition, setMapPosition] = useState({
+    zoom: 1,
+    center: [20, 0],
+  });
+
+  const questions = quiz?.questions;
 
   useEffect(() => {
     if (id) {
@@ -39,85 +51,59 @@ const Map = ({ quiz, token }) => {
     }
   }, [id, dispatch]);
 
-  const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
-  const [score, setScore] = useState(0);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [isQuizFinished, setIsQuizFinished] = useState(false);
-  const [quizStarted, setQuizStarted] = useState(false);
-  const [hoveredCountry, setHoveredCountry] = useState('');
-  // const [shuffledQuestions, setShuffledQuestions] = useState([]);
-  const [mapPosition, setMapPosition] = useState({
-    zoom: 1,
-    center: [20, 0],
-  });
-  const questions = quiz?.questions;
-
-  const restartQuiz = () => {
-    setScore(0);
-    setIsQuizFinished(false);
-    setQuizStarted(false);
-    // setShuffledQuestions(shuffleArray(questions));
-    setCurrentQuestionIndex(0);
-    setMapPosition({ zoom: 1, center: [0, 0] });
-    // toast('Quiz restart', {
-    //   icon: '🔄',
-    // });
+  const handleReset = () => {
+    resetQuiz(setScore, setQuizStarted, setCurrentQuestionIndex, setMapPosition, toast);
   };
 
-  const startQuiz = () => {
-    setQuizStarted(true);
+  const handleStart = () => {
+    startQuiz(setQuizStarted, setScore);
   };
 
-  const finishQuiz = (finalScore) => {
-    setIsQuizFinished(true);
-    setQuizStarted(false);
-    MySwal.fire({
-      title: 'Congratulations!',
-      text: `You've completed the quiz with a score of ${finalScore}!`,
-      icon: 'success',
-      showCancelButton: true,
-      confirmButtonText: 'Back to Home',
-      cancelButtonText: 'Restart Game',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate('/');
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        restartQuiz();
-      }
-    });
-    dispatch(finishQuizAction(quiz?.id, { score: finalScore }, token));
+  const handleFinish = (finalScore) => {
+    finishQuiz(
+      setQuizStarted,
+      setCurrentQuestionIndex,
+      MySwal,
+      navigate,
+      dispatch,
+      quiz?.id,
+      finalScore,
+      questions.length,
+      token,
+      formatMessage
+    );
   };
 
-  const handleGeographyClick = (geo) => {
-    if (!quizStarted || isQuizFinished || !questions) {
-      return;
+  const fetchAndSetCountryData = async (countryName) => {
+    setIsLoadingCountryData(true);
+    const response = await fetchCountryData(countryName);
+    const countryData = response[0];
+    if (countryData) {
+      setSelectedCountry({
+        name: countryData?.name?.common,
+        flag: countryData?.flags?.svg,
+        capital: countryData?.capital[0],
+        population: countryData?.population,
+        area: countryData?.area,
+      });
     }
+    setIsLoadingCountryData(false);
+  };
 
-    const currentQuestion = questions[currentQuestionIndex];
-    if (!currentQuestion) {
-      return;
-    }
-
-    const { answer } = currentQuestion;
-    const countryName = geo.properties.name;
-
-    const nextQuestionIndex = currentQuestionIndex + 1;
-    const isLastQuestion = nextQuestionIndex >= questions.length;
-
-    if (countryName === answer) {
+  const updateScoreAndCheckFinish = (isCorrect, isLastQuestion, nextQuestionIndex, countryName) => {
+    if (isCorrect) {
       setScore((prevScore) => {
         const newScore = prevScore + 1;
-        if (isLastQuestion) {
-          finishQuiz(newScore);
-        }
+        toast.success(`Correct! It is ${countryName}.`);
+        if (isLastQuestion) handleFinish(newScore);
         return newScore;
       });
-      toast.success(`Correct! It is ${countryName}.`);
     } else {
-      // Incorrect answer
-      toast.error(`Incorrect. The correct answer is ${answer}. You selected ${countryName}`);
+      toast.error(
+        `Incorrect. The correct answer is ${questions[currentQuestionIndex].answer}. You selected ${countryName}`
+      );
       if (isLastQuestion) {
-        finishQuiz(score);
+        handleFinish(score);
       }
     }
 
@@ -125,72 +111,73 @@ const Map = ({ quiz, token }) => {
       setCurrentQuestionIndex(nextQuestionIndex);
     }
   };
+
+  const handleQuizInteraction = (countryName) => {
+    if (!quizStarted || !questions) return;
+
+    const currentQuestion = questions[currentQuestionIndex];
+    if (!currentQuestion) return;
+
+    const { answer } = currentQuestion;
+    const nextQuestionIndex = currentQuestionIndex + 1;
+    const isLastQuestion = nextQuestionIndex >= questions.length;
+
+    if (countryName === answer) {
+      updateScoreAndCheckFinish(true, isLastQuestion, nextQuestionIndex, countryName);
+    } else {
+      updateScoreAndCheckFinish(false, isLastQuestion, nextQuestionIndex, countryName);
+    }
+  };
+
+  const handleCountrySelection = (countryName) => {
+    if (countryName === selectedCountryName) {
+      setSelectedCountryName(null);
+      setSelectedCountry(null);
+    } else {
+      setSelectedCountryName(countryName);
+      fetchAndSetCountryData(countryName);
+    }
+  };
+
+  const handleGeographyClick = async (geo) => {
+    const countryName = geo.properties.name;
+    handleCountrySelection(countryName);
+    handleQuizInteraction(countryName);
+  };
+
   return (
     <div className={classes.mainContainer}>
+      {!quizStarted && selectedCountry && <CountryInfo isLoading={isLoadingCountryData} country={selectedCountry} />}
       {questions && (
         <>
-          <div className={classes.sidebar}>
-            <div className={classes.country}>
-              {!quizStarted && <div className={classes.country__name}>{hoveredCountry}</div>}
-            </div>
-            <div className={classes.score}>
-              <Star /> Score: {score}/{questions.length}
-            </div>
-            <div className={classes.restart} onClick={restartQuiz}>
-              Restart
-            </div>
-          </div>
+          <Sidebar
+            score={score}
+            totalQuestions={questions.length}
+            resetQuiz={handleReset}
+            hoveredCountry={hoveredCountry}
+            quizStarted={quizStarted}
+            currentQuestionIndex={currentQuestionIndex}
+          />
+
           <div className={classes.questionContainer}>
             {quizStarted ? (
               <div>{questions[currentQuestionIndex]?.content}</div>
             ) : (
-              <div className={classes.startButton} onClick={startQuiz}>
-                Start Quiz
+              <div className={classes.startButton} onClick={handleStart}>
+                <SportsScore /> Start Quiz
               </div>
             )}
           </div>
 
           <div className={classes.mapContainer}>
-            <ComposableMap className={classes.mapStyle} projection="geoMercator">
-              <ZoomableGroup zoom={mapPosition.zoom} center={mapPosition.center}>
-                <Geographies geography={geoUrl} className={classes.geographies}>
-                  {({ geographies }) =>
-                    geographies.map((geo) => (
-                      <Geography
-                        key={geo.rsmKey}
-                        geography={geo}
-                        onMouseEnter={() => {
-                          const countryName = geo.properties.name;
-                          setHoveredCountry(countryName);
-                        }}
-                        onMouseLeave={() => {
-                          setHoveredCountry('');
-                        }}
-                        onClick={() => handleGeographyClick(geo)}
-                        className={classes.geography}
-                        style={{
-                          default: {
-                            fill: 'green',
-                            stroke: '#000',
-                            strokeWidth: 0.2,
-                          },
-                          hover: {
-                            fill: 'darkgreen',
-                            stroke: '#DDD',
-                            strokeWidth: 0.75,
-                          },
-                          pressed: {
-                            fill: 'greenyellow',
-                            stroke: '#DDD',
-                            strokeWidth: 0.75,
-                          },
-                        }}
-                      />
-                    ))
-                  }
-                </Geographies>
-              </ZoomableGroup>
-            </ComposableMap>
+            <QuizMap
+              geoUrl={geoUrl}
+              handleGeographyClick={handleGeographyClick}
+              mapPosition={mapPosition}
+              quizStarted={quizStarted}
+              selectedCountryName={selectedCountryName}
+              setHoveredCountry={setHoveredCountry}
+            />
           </div>
         </>
       )}
@@ -201,6 +188,7 @@ const Map = ({ quiz, token }) => {
 Map.propTypes = {
   quiz: PropTypes.object,
   token: PropTypes.string,
+  intl: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

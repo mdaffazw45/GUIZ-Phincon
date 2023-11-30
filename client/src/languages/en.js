@@ -76,4 +76,12 @@ export default {
   app_leaderboard: 'Leaderboard',
   app_need_login: 'You need to be logged in to start a quiz',
   app_must_login: 'You need to login first',
+
+  app_quiz_complete: 'Quiz Completed!',
+  app_back_home: 'Back to Home',
+  app_stay: 'Stay',
+  app_outstanding: 'Wow! You really do know Earth.',
+  app_great: 'Great job! You have a good grasp of the subject.',
+  app_nice: 'Nice effort! You might want to review some areas.',
+  app_attempt: 'Good attempt! Consider revisiting the material for a better score.',
 };
