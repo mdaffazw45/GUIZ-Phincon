@@ -20,6 +20,7 @@ import { selectUsername } from './selectors';
 
 const Profile = ({ user, userName }) => {
   console.log(userName);
+  console.log(user);
   const { username } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,6 +62,7 @@ const Profile = ({ user, userName }) => {
           </div>
         </div>
       </div>
+      <div> Hallo </div>
     </div>
   );
 };

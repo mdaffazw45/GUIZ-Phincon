@@ -1,13 +1,13 @@
 @import '@styles/base';
 
 .container {
-  @include flex-row;
-  justify-content: center;
+  @include flex-center-column;
+  // justify-content: center;
   min-height: 100vh;
 
   &__header {
-    position: absolute;
-    margin-top: 7rem;
+    // position: absolute;
+    // margin-top: 7rem;
     background-color: $color-bg-primary;
     border-radius: 3px;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 8px;

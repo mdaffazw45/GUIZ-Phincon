@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { DELETE_QUIZ_SUCCESS, SET_ALL_QUIZZES, SET_USER } from './constants';
+import { DELETE_QUIZ_SUCCESS, DELETE_USER_SUCCESS, SET_ALL_QUIZZES, SET_USER } from './constants';
 
 export const initialState = {
   quizzes: [],
@@ -19,6 +19,9 @@ const homeReducer = (state = initialState, action) =>
         break;
       case SET_USER:
         draft.allUser = action.user;
+        break;
+      case DELETE_USER_SUCCESS:
+        draft.allUser = draft.allUser.filter((aUser) => aUser.id !== action.payload);
         break;
     }
   });

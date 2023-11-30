@@ -1,6 +1,4 @@
 import {
-  DELETE_USER,
-  DELETE_USER_SUCCESS,
   GET_USER_BY_ID,
   LOGIN_REQUEST,
   LOGOUT,
@@ -50,14 +48,4 @@ export const setUserById = (user, token) => ({
   type: SET_USER_BY_ID,
   payload: user,
   token,
-});
-
-export const deleteUserById = (userId, token) => ({
-  type: DELETE_USER,
-  payload: { userId, token },
-});
-
-export const deleteUserSuccess = (userId) => ({
-  type: DELETE_USER_SUCCESS,
-  payload: userId,
 });

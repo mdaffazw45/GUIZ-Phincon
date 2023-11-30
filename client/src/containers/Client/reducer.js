@@ -1,13 +1,6 @@
 import { produce } from 'immer';
 
-import {
-  DELETE_USER_SUCCESS,
-  LOGOUT,
-  REGISTER_SUCCESS,
-  SET_LOGIN,
-  SET_TOKEN,
-  SET_USER_BY_ID,
-} from '@containers/Client/constants';
+import { LOGOUT, REGISTER_SUCCESS, SET_LOGIN, SET_TOKEN, SET_USER_BY_ID } from '@containers/Client/constants';
 
 export const initialState = {
   login: false,
@@ -34,9 +27,6 @@ const clientReducer = (state = initialState, action) =>
         break;
       case SET_USER_BY_ID:
         draft.user = action.payload;
-        break;
-      case DELETE_USER_SUCCESS:
-        draft.allUser = draft.allUser.filter((aUser) => aUser.id !== action.payload);
         break;
       case LOGOUT:
         return initialState;
