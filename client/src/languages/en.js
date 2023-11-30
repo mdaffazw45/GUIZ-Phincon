@@ -40,6 +40,13 @@ export default {
   app_forgot_password_title: 'Forgot Your Password?',
   app_forgot_password_subTitle: 'Input your email address',
   app_forgot_password_send: 'Send Reset Password',
+
+  // Change Password
+  app_change_password_title: 'Create a new password',
+  app_change_password_subTitle: 'Enter the new password you want',
+  app_change_password_current: 'Enter Your Current Password',
+  app_change_password_new: 'Enter Your New Password',
+  app_change_password_save: 'Save Change',
   app_back: 'Back',
   app_username: 'Username',
   app_email: 'Email Address',

@@ -35,6 +35,8 @@ export const ping = () => callAPI(endpoints.ping, 'get');
 export const loginApi = (user) => callAPI(`${endpoints.auth}/login`, 'POST', {}, {}, user);
 export const registerApi = (user) => callAPI(`${endpoints.auth}/register`, 'POST', {}, {}, user);
 export const forgotPasswordApi = (data) => callAPI(`${endpoints.auth}/forgot-password`, 'POST', {}, {}, data);
+export const changePasswordApi = (data, token) =>
+  callAPI(`${endpoints.user}/change-password`, 'PUT', { Authorization: `Bearer ${token}` }, {}, data);
 
 export const getAllUserApi = () => callAPI(`${endpoints.user}/all`, 'GET');
 export const getUserByIdApi = (token) => callAPI(endpoints.user, 'GET', { Authorization: `Bearer ${token}` });

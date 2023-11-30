@@ -1,5 +1,4 @@
 /* eslint-disable react/button-has-type */
-/* eslint-disable arrow-body-style */
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';

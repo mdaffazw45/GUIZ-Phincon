@@ -7,7 +7,17 @@ import clientSaga from '@containers/Client/saga';
 import quizSaga from '@pages/Map/saga';
 import editQuizSaga from '@pages/EditQuiz/saga';
 import forgotSaga from '@pages/ForgotPassword/saga';
+import changeSaga from '@pages/ChangePassword/saga';
 
 export default function* rootSaga() {
-  yield all([appSaga(), homeSaga(), clientSaga(), createQuizSaga(), quizSaga(), editQuizSaga(), forgotSaga()]);
+  yield all([
+    appSaga(),
+    homeSaga(),
+    clientSaga(),
+    createQuizSaga(),
+    quizSaga(),
+    editQuizSaga(),
+    forgotSaga(),
+    changeSaga(),
+  ]);
 }
