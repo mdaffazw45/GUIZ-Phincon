@@ -5,6 +5,7 @@ import {
   REGISTER_REQUEST,
   SET_LOGIN,
   SET_TOKEN,
+  SET_USER,
   SET_USER_BY_ID,
 } from '@containers/Client/constants';
 
@@ -17,6 +18,11 @@ export const setLogin = (login, role) => ({
 export const setToken = (token) => ({
   type: SET_TOKEN,
   token,
+});
+
+export const setUser = (user) => ({
+  type: SET_USER,
+  user,
 });
 
 export const loginRequest = (data) => ({

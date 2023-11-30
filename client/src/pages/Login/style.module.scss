@@ -22,9 +22,13 @@
       background-color: $color-bg-primary;
       border-radius: 3px;
       box-shadow: 0 0 0 3px rgba(0, 0, 0, .2);
-      width: 20rem;
-      height: 20rem;
+      width: 80%;
+      height: 23rem;
       padding: 0 15px;
+      @include apply-at-sm-size {
+        width: 30%;
+        height: 20rem;
+      }
 
       &__title {
         @include flex-center-column(.3em);

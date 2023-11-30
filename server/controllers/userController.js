@@ -262,7 +262,7 @@ exports.updateProfile = async (req, res) => {
 
     const updatedUser = await User.findOne({ where: { id: userId }})
 
-    return handleResponse(res, 200, { message: 'Successfully Updated Profile' })
+    return handleResponse(res, 200, { message: 'Successfully Updated Profile', data: updatedUser })
 
   } catch (err) {
     console.log(err);

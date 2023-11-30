@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { setLoading } from '@containers/App/actions';
 import { deleteQuizByIdApi, deleteUserByIdApi, getAllQuizzesApi, getAllUserApi } from '@domain/api';
 import { deleteQuizSuccess, deleteUserSuccess, setAllQuizzes, setUser } from './actions';
-import { DELETE_QUIZ, DELETE_USER, GET_ALL_QUIZZES, GET_USER } from './constants';
+import { DELETE_QUIZ, DELETE_USER, GET_ALL_QUIZZES, GET_ALL_USER } from './constants';
 
 export function* doGetAllQuizzes() {
   yield put(setLoading(true));
@@ -53,6 +53,6 @@ function* deleteUser(action) {
 export default function* homeSaga() {
   yield takeLatest(GET_ALL_QUIZZES, doGetAllQuizzes);
   yield takeLatest(DELETE_QUIZ, doDeleteQuiz);
-  yield takeLatest(GET_USER, getAllUser);
+  yield takeLatest(GET_ALL_USER, getAllUser);
   yield takeLatest(DELETE_USER, deleteUser);
 }
