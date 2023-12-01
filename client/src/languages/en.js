@@ -98,4 +98,9 @@ export default {
   app_area: 'Area:',
   app_profile: 'Profile',
   app_logout: 'Logout',
+  app_quiz_history: 'Quiz History',
+  app_quiz_history_description:
+    'Revisit your completed quizzes 📚, review your answers ✅, and reflect on your progress 🌟.',
+  app_quiz_title: 'Quiz Title',
+  app_not_done_quiz: 'You have not done any Quiz',
 };

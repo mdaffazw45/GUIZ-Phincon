@@ -29,6 +29,11 @@ const Register = ({ intl: { formatMessage } }) => {
 
   const handleRegister = () => {
     dispatch(registerRequest(formData));
+    setFormData({
+      username: '',
+      email: '',
+      password: '',
+    });
   };
 
   const handleToLogin = () => {

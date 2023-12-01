@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/button-has-type */
-/* eslint-disable arrow-body-style */
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -10,15 +8,14 @@ import { Avatar, Table, TableBody, TableCell, TableContainer, TableHead, TableRo
 import BackButton from '@components/BackButton';
 import { createStructuredSelector } from 'reselect';
 import { selectToken, selectUser } from '@containers/Client/selectors';
-import { selectHistory } from './selectors';
 import { Edit, Key } from '@mui/icons-material';
 
-import { useEffect } from 'react';
-import { getUserByUsername  , getHistoryByUser } from './action';
+import { selectHistory } from './selectors';
+import { getUserByUsername, getHistoryByUser } from './action';
 
 import classes from './style.module.scss';
 
-const Profile = ({ user, history , token }) => {
+const Profile = ({ user, history, token }) => {
   const { username } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,10 +26,7 @@ const Profile = ({ user, history , token }) => {
 
   useEffect(() => {
     dispatch(getHistoryByUser(token));
-
   }, [dispatch, token]);
-
-  console.log(history , 'History')
 
   const navigateUpdate = () => {
     navigate('/profile/update');
@@ -55,13 +49,13 @@ const Profile = ({ user, history , token }) => {
             <div className={classes.info__email}> {user?.email} </div>
           </div>
           <div className={classes.button}>
-            <button onClick={navigateUpdate}>
+            <button type="button" onClick={navigateUpdate}>
               <div className={classes.updateUser}>
                 <Edit className={classes.edit} />
                 <FormattedMessage id="app_profile_edit" />
               </div>
             </button>
-            <button onClick={navigateChangePassword}>
+            <button type="button" onClick={navigateChangePassword}>
               <div className={classes.changePassword}>
                 <Key className={classes.password} />
                 <FormattedMessage id="app_profile_change" />
@@ -70,28 +64,47 @@ const Profile = ({ user, history , token }) => {
           </div>
         </div>
       </div>
-      <div className={classes.quizHistory}>
-        <h1>Quiz History</h1>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Quiz Title</TableCell>
-                <TableCell align="center">No. of Questions</TableCell>
-                <TableCell align="center">Score</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {history.map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell>{item.quiz.title}</TableCell>
-                  <TableCell align="center">{item.quiz.noOfQuestions}</TableCell>
-                  <TableCell align="center">{item.score}</TableCell>
+      <div className={classes.historyContainer}>
+        <div className={classes.history}>
+          <div className={classes.history__header}>
+            <FormattedMessage id="app_quiz_history" />
+          </div>
+          <div className={classes.history__description}>
+            <FormattedMessage id="app_quiz_history_description" />
+          </div>
+        </div>
+        {history.length > 0 ? (
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <FormattedMessage id="app_quiz_title" />
+                  </TableCell>
+                  <TableCell align="center">
+                    <FormattedMessage id="app_no_of_questions" />
+                  </TableCell>
+                  <TableCell align="center">
+                    <FormattedMessage id="app_quiz_score" />
+                  </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {history.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{item.quiz.title}</TableCell>
+                    <TableCell align="center">{item.quiz.noOfQuestions}</TableCell>
+                    <TableCell align="center">{item.score}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <div className={classes.noQuiz}>
+            <FormattedMessage id="app_not_done_quiz" />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -99,14 +112,14 @@ const Profile = ({ user, history , token }) => {
 
 Profile.propTypes = {
   user: PropTypes.object,
-  history : PropTypes.array,
-  token : PropTypes.string
+  history: PropTypes.array,
+  token: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   user: selectUser,
-  history:selectHistory,
-  token: selectToken
+  history: selectHistory,
+  token: selectToken,
 });
 
 export default connect(mapStateToProps)(Profile);
