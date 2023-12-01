@@ -60,16 +60,20 @@ exports.login = async (req, res) => {
 
     const findUser = await User.findOne({ where: { email } });
     if (!findUser) {
-      return handleResponse(res, 404, { message: 'User with this email does not exist.' });
+      return handleResponse(res, 404, {
+        message: 'User with this email does not exist.',
+      });
     }
 
     const isPassword = await comparePassword(password, findUser.password);
     if (!isPassword) {
-      return handleResponse(res, 404, { message: 'Email or Password is incorrect.' });
+      return handleResponse(res, 404, {
+        message: 'Email or Password is incorrect.',
+      });
     }
 
     if (isPassword) {
-      const role = findUser.role
+      const role = findUser.role;
 
       return handleResponse(res, 200, {
         role,
@@ -86,7 +90,7 @@ exports.login = async (req, res) => {
 // PASSWORD
 exports.forgotPassword = async (req, res) => {
   try {
-    const newData = req.body
+    const newData = req.body;
 
     const { error, value } = forgotPasswordValidator.validate(newData);
     if (error) {
@@ -94,28 +98,30 @@ exports.forgotPassword = async (req, res) => {
     }
     const { email } = value;
 
-    const user = await User.findOne({ where: { email }})
+    const user = await User.findOne({ where: { email } });
     if (!user) {
-      return handleResponse(res, 404, { message: 'Email not Registered' })
+      return handleResponse(res, 404, { message: 'Email not Registered' });
     }
 
-    const temporaryPassword = 'secretpassteamguiz'
-    const hashedPassword = hashPassword(temporaryPassword)
+    const temporaryPassword = 'secretpassteamguiz';
+    const hashedPassword = hashPassword(temporaryPassword);
 
-    await user.update({ password: hashedPassword })
-    await sendForgotPasswordEmail(email, temporaryPassword)
+    await user.update({ password: hashedPassword });
+    await sendForgotPasswordEmail(email, temporaryPassword);
 
-    return handleResponse(res, 200, { message: 'Temporary password sent via email' })
+    return handleResponse(res, 200, {
+      message: 'Temporary password sent via email',
+    });
   } catch (err) {
     console.log(err);
-    handleServerError(res)
+    handleServerError(res);
   }
-}
+};
 
 exports.changePassword = async (req, res) => {
   try {
-    const { currentPassword, newPassword } = req.body
-    const userId = req.user.id
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user.id;
 
     const { error, value } = changePasswordValidator.validate({
       currentPassword,
@@ -125,147 +131,150 @@ exports.changePassword = async (req, res) => {
       return handleResponse(res, 400, { message: error.details[0].message });
     }
 
-    const user = await User.findByPk(userId)
+    const user = await User.findByPk(userId);
     const isPasswordMatch = await comparePassword(
       value.currentPassword,
-      user.password,
-    )
+      user.password
+    );
 
-    if(!isPasswordMatch) {
-      return handleResponse(res, 401, { message: 'Current password is incorrect' })
+    if (!isPasswordMatch) {
+      return handleResponse(res, 401, {
+        message: 'Current password is incorrect',
+      });
     }
 
-    const newHashedPassword = hashPassword(value.newPassword)
-    await user.update({ password: newHashedPassword })
+    const newHashedPassword = hashPassword(value.newPassword);
+    await user.update({ password: newHashedPassword });
 
-    return handleResponse(res, 200, { message: 'Password changed successfully' })
-
+    return handleResponse(res, 200, {
+      message: 'Password changed successfully',
+    });
   } catch (err) {
     console.log(err);
-    handleServerError(res)
+    handleServerError(res);
   }
-}
+};
 
 // USER
 exports.getUser = async (req, res) => {
   try {
-    const user = await User.findAll({})
-    return handleResponse(res, 200, user)
-
+    const user = await User.findAll({});
+    return handleResponse(res, 200, user);
   } catch (err) {
     console.log(err);
-    handleServerError(res)
+    handleServerError(res);
   }
-}
+};
 
 exports.getUserById = async (req, res) => {
   try {
-    const userId = req.user.id
+    const userId = req.user.id;
 
-    const user = await User.findByPk(userId)
+    const user = await User.findByPk(userId);
     if (!user) {
-      return handleResponse(res, 404, { message: 'User Not Found' })
+      return handleResponse(res, 404, { message: 'User Not Found' });
     }
 
-    const { username, email, avatar } = user
+    const { username, email, avatar } = user;
 
     return handleResponse(res, 200, {
       username,
       email,
-      avatar
-    })
-
+      avatar,
+    });
   } catch (err) {
     console.log(err);
-    handleServerError(res)
+    handleServerError(res);
   }
-}
+};
 
 exports.getUserByUsername = async (req, res) => {
   try {
-    const { username } = req.params
+    const { username } = req.params;
 
-    const user = await User.findOne({ 
+    const user = await User.findOne({
       where: { username },
       attributes: ['id', 'username', 'email', 'avatar'],
-    })
+    });
     if (!user) {
-      return handleResponse(res, 404, { message: 'User Not Found' })
+      return handleResponse(res, 404, { message: 'User Not Found' });
     }
 
-    return handleResponse(res, 200, { user })
-
+    return handleResponse(res, 200, { user });
   } catch (err) {
     console.log(err);
-    handleServerError(res)
+    handleServerError(res);
   }
-}
+};
 
 exports.deleteUser = async (req, res) => {
   try {
-    const { userId } = req.params
+    const { userId } = req.params;
 
-    const user = await User.findByPk(userId)
+    const user = await User.findByPk(userId);
     if (!user) {
-      return handleResponse(res, 404, { message: 'User Not Found' })
+      return handleResponse(res, 404, { message: 'User Not Found' });
     }
 
-    await user.destroy()
+    await user.destroy();
 
     return handleResponse(res, 200, {
       data: user,
-      message: 'Successfully Deleted User'
-    })
-
+      message: 'Successfully Deleted User',
+    });
   } catch (err) {
     console.log(err);
-    handleServerError(res)
+    handleServerError(res);
   }
-}
+};
 
 exports.updateProfile = async (req, res) => {
   try {
-    const userId = req.user.id
-    const profileData = req.body
+    const userId = req.user.id;
+    const profileData = req.body;
 
-    const { error, value } = updateProfileValidator.validate(profileData)
+    const { error, value } = updateProfileValidator.validate(profileData);
     if (error) {
-      return handleResponse(res, 400, { message: error.details[0].message })
+      return handleResponse(res, 400, { message: error.details[0].message });
     }
 
-    const { username, email } = value
-    
-    const user = await User.findByPk(userId)
+    const { username, email } = value;
+
+    const user = await User.findByPk(userId);
     if (!user) {
-      return handleResponse(res, 404, { message: 'User Not Found' })
+      return handleResponse(res, 404, { message: 'User Not Found' });
     }
 
-    let avatarPath
+    let avatarPath;
     if (req.file) {
-      avatarPath = `/uploads/${req.file.filename}`
+      avatarPath = `/uploads/${req.file.filename}`;
 
       if (user.avatar) {
-        const oldAvatarPath = path.join(__dirname, '..', user.avatar)
+        const oldAvatarPath = path.join(__dirname, '..', user.avatar);
         fs.unlink(oldAvatarPath, (err) => {
-          if(err) {
+          if (err) {
             console.error('Failed to delete old avatar image: ', err);
           }
-        })
+        });
       }
     }
 
-    await User.update({
-      username,
-      email,
-      avatar: avatarPath || Sequelize.literal('avatar')
-    }, { where: { id: userId }})
+    await User.update(
+      {
+        username,
+        email,
+        avatar: avatarPath || Sequelize.literal('avatar'),
+      },
+      { where: { id: userId } }
+    );
 
-    const updatedUser = await User.findOne({ where: { id: userId }})
-
-    return handleResponse(res, 200, { message: 'Successfully Updated Profile', data: updatedUser })
-
+    const updatedUser = await User.findOne({ where: { id: userId } });
+    return handleResponse(res, 200, {
+      message: 'Successfully Updated Profile',
+      data: updatedUser,
+    });
   } catch (err) {
     console.log(err);
-    handleServerError(res)
+    handleServerError(res);
   }
-}
+};

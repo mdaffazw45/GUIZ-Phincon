@@ -45,6 +45,11 @@ const QuizMap = ({
                     stroke: isCountrySelected ? 'yellow' : '#DDD',
                     strokeWidth: isCountrySelected ? 1 : 0.75,
                   },
+                  pressed: {
+                    fill: 'green',
+                    stroke: 'yellow',
+                    strokeWidth: 1,
+                  },
                 }}
               />
             );

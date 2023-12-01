@@ -8,11 +8,19 @@ const {
   createQuizValidator,
   editQuizValidator,
 } = require('../validators/quizValidator');
+const redisClient = require('../utils/redisClient');
 
 exports.getAllQuiz = async (req, res) => {
   try {
-    const quizzes = await Quiz.findAll({ order: [['createdAt', 'DESC']] });
-    return handleResponse(res, 200, quizzes);
+    const cacheKey = process.env.REDIS_KEY_QUIZZES;
+    const cachedQuizzes = await redisClient.get(cacheKey);
+    if (cachedQuizzes) {
+      return handleResponse(res, 200, JSON.parse(cachedQuizzes));
+    } else {
+      const quizzes = await Quiz.findAll({ order: [['createdAt', 'DESC']] });
+      await redisClient.set(cacheKey, JSON.stringify(quizzes), 'EX', 3600);
+      return handleResponse(res, 200, quizzes);
+    }
   } catch (error) {
     return handleServerError(res);
   }
@@ -21,6 +29,19 @@ exports.getAllQuiz = async (req, res) => {
 exports.getQuizById = async (req, res) => {
   try {
     const { quizId } = req.params;
+    const cacheKey = `quiz:${quizId}`;
+    const questionsCacheKey = `questions:${quizId}`;
+
+    const cachedQuiz = await redisClient.get(cacheKey);
+    const cachedQuestions = await redisClient.get(questionsCacheKey);
+    // Redis can't store nested object, so we split into two then parse them, then combine them
+    if (cachedQuiz && cachedQuestions) {
+      const parsedQuiz = JSON.parse(cachedQuiz);
+      const parsedQuestions = JSON.parse(cachedQuestions);
+      parsedQuiz.questions = parsedQuestions;
+      return handleResponse(res, 200, parsedQuiz);
+    }
+
     const quiz = await Quiz.findByPk(quizId, {
       include: [
         {
@@ -32,8 +53,19 @@ exports.getQuizById = async (req, res) => {
     if (!quiz) {
       return handleResponse(res, 404, { message: 'Quiz not found.' });
     }
+
+    await redisClient.set(cacheKey, JSON.stringify(quiz), 'EX', 1800);
+
+    await redisClient.set(
+      questionsCacheKey,
+      JSON.stringify(quiz.questions),
+      'EX',
+      1800
+    );
+
     return handleResponse(res, 200, quiz);
   } catch (error) {
+    console.log(error);
     return handleServerError(res);
   }
 };
@@ -67,6 +99,9 @@ exports.createQuizWithQuestions = async (req, res) => {
     await Question.bulkCreate(createdQuestions, { transaction: t });
 
     await t.commit();
+
+    await redisClient.del(process.env.REDIS_KEY_QUIZZES);
+
     return handleResponse(res, 201, {
       quiz,
       questions: createdQuestions,
@@ -103,6 +138,7 @@ exports.editQuizWithQuestions = async (req, res) => {
 
     // Update Existing Questions
     const existingQuestionIds = questions.filter((q) => q.id).map((q) => q.id);
+
     const existingQuestions = await Question.findAll({
       where: {
         quizId,
@@ -143,6 +179,29 @@ exports.editQuizWithQuestions = async (req, res) => {
     }
 
     await t.commit();
+
+    if (quiz) {
+      await redisClient.set(`quiz:${quizId}`, JSON.stringify(quiz), 'EX', 1800);
+
+      const updatedQuestions = await Question.findAll({
+        where: { quizId },
+      });
+      await redisClient.set(
+        `questions:${quizId}`,
+        JSON.stringify(updatedQuestions),
+        'EX',
+        1800
+      );
+    }
+
+    const allQuizzes = await Quiz.findAll({ order: [['createdAt', 'DESC']] });
+    await redisClient.set(
+      process.env.REDIS_KEY_QUIZZES,
+      JSON.stringify(allQuizzes),
+      'EX',
+      3600
+    );
+
     return handleResponse(res, 200, {
       quiz,
       message: 'Quiz successfully updated!',
@@ -165,6 +224,9 @@ exports.deleteQuizById = async (req, res) => {
       });
     }
     await quizToDelete.destroy();
+
+    await redisClient.del(`quiz:${quizId}`);
+    await redisClient.del(process.env.REDIS_KEY_QUIZZES);
 
     return handleResponse(res, 200, { message: 'Quiz deleted successfully' });
   } catch (error) {

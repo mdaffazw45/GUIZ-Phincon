@@ -67,7 +67,6 @@
     max-width: 80%;
     margin: 0 auto;
     padding: 5rem 2rem;
-
     .header {
       @include flex-column;
       &__title {

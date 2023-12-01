@@ -1,7 +1,7 @@
 @import '@styles/base';
 
 .sidebar {
-  @include box(11rem, 12rem);
+  @include box(11rem, 16rem);
   box-sizing: border-box;
   padding: 1rem;
   position: fixed;
@@ -20,6 +20,9 @@
     &__name {
       color: $color-bg-primary;
     }
+  }
+  .elapsedTime {
+    @include flex-items-center(0.25rem);
   }
   .question {
     @include flex-items-center(0.25rem);
