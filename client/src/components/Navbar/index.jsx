@@ -7,27 +7,24 @@ import { createStructuredSelector } from 'reselect';
 
 import ProfileIcon from '@static/images/profile.svg';
 
-import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { LeaderboardOutlined, Lock, Logout, Person, Public } from '@mui/icons-material';
+import { LeaderboardOutlined, Logout, Person } from '@mui/icons-material';
 
 import Logo from '@components/Logo';
+import TranslateDropdown from '@components/TranslateDropdown';
 
-import { setLocale } from '@containers/App/actions';
 import { getUserById, logout } from '@containers/Client/actions';
-
 import { selectToken, selectUser } from '@containers/Client/selectors';
+
 import classes from './style.module.scss';
 
-const Navbar = ({ title, locale, token, user }) => {
+const Navbar = ({ title, token, user }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [menuPosition, setMenuPosition] = useState(null);
-  const open = Boolean(menuPosition);
+
   const [color, setColor] = useState(false);
 
   useEffect(() => {
@@ -45,21 +42,6 @@ const Navbar = ({ title, locale, token, user }) => {
   };
 
   window.addEventListener('scroll', changeColor);
-
-  const handleClick = (event) => {
-    setMenuPosition(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setMenuPosition(null);
-  };
-
-  const onSelectLang = (lang) => {
-    if (lang !== locale) {
-      dispatch(setLocale(lang));
-    }
-    handleClose();
-  };
 
   const [anchorEl, setAnchorEl] = useState(null);
   const opened = Boolean(anchorEl);
@@ -110,11 +92,7 @@ const Navbar = ({ title, locale, token, user }) => {
               <FormattedMessage id="app_login_button" />
             </div>
           )}
-          <div className={classes.toggle} onClick={handleClick}>
-            <Avatar className={classes.avatar} src={locale === 'id' ? '/id.png' : '/en.png'} />
-            <div className={classes.lang}>{locale}</div>
-            <ExpandMoreIcon />
-          </div>
+          <TranslateDropdown />
           {token && (
             <>
               <div className={classes.profileIconContainer} onClick={handleClickProfile}>
@@ -183,24 +161,6 @@ const Navbar = ({ title, locale, token, user }) => {
             </>
           )}
         </div>
-        <Menu open={open} anchorEl={menuPosition} onClose={handleClose}>
-          <MenuItem onClick={() => onSelectLang('id')} selected={locale === 'id'}>
-            <div className={classes.menu}>
-              <Avatar className={classes.menuAvatar} src="/id.png" />
-              <div className={classes.menuLang}>
-                <FormattedMessage id="app_lang_id" />
-              </div>
-            </div>
-          </MenuItem>
-          <MenuItem onClick={() => onSelectLang('en')} selected={locale === 'en'}>
-            <div className={classes.menu}>
-              <Avatar className={classes.menuAvatar} src="/en.png" />
-              <div className={classes.menuLang}>
-                <FormattedMessage id="app_lang_en" />
-              </div>
-            </div>
-          </MenuItem>
-        </Menu>
       </div>
     </div>
   );
@@ -208,7 +168,6 @@ const Navbar = ({ title, locale, token, user }) => {
 
 Navbar.propTypes = {
   title: PropTypes.string,
-  locale: PropTypes.string.isRequired,
   token: PropTypes.string,
   user: PropTypes.object,
 };

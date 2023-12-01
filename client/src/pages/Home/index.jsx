@@ -206,7 +206,7 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
           </div>
         </div>
         <div className={classes.content}>
-          {quizzes.map((quiz) => (
+          {quizzes?.map((quiz) => (
             <QuizCard key={quiz?.id} quiz={quiz} />
           ))}
         </div>

@@ -84,4 +84,8 @@ export default {
   app_great: 'Great job! You have a good grasp of the subject.',
   app_nice: 'Nice effort! You might want to review some areas.',
   app_attempt: 'Good attempt! Consider revisiting the material for a better score.',
+  app_country_not_found: 'Country not found for ',
+  app_incorrect: 'Incorrect. The correct answer is',
+  app_you_selected: 'You selected',
+  app_start_quiz: 'Start Quiz',
 };

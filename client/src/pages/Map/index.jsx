@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { toast } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import { connect, useDispatch } from 'react-redux';
@@ -42,6 +42,9 @@ const Map = ({ quiz, token, intl: { formatMessage } }) => {
     zoom: 1,
     center: [20, 0],
   });
+  const [startTime, setStartTime] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [timer, setTimer] = useState(0);
 
   const questions = quiz?.questions;
 
@@ -51,15 +54,42 @@ const Map = ({ quiz, token, intl: { formatMessage } }) => {
     }
   }, [id, dispatch]);
 
+  useEffect(() => {
+    let interval;
+    if (quizStarted) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer + 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+  }, [quizStarted]);
+
   const handleReset = () => {
     resetQuiz(setScore, setQuizStarted, setCurrentQuestionIndex, setMapPosition, toast);
   };
 
   const handleStart = () => {
     startQuiz(setQuizStarted, setScore);
+    setStartTime(Date.now());
+    setTimer(0);
+    const interval = setInterval(() => {
+      if (quizStarted) {
+        const endTime = Date.now();
+        const elapsed = (endTime - startTime) / 1000;
+        setElapsedTime(elapsed);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
   };
 
   const handleFinish = (finalScore) => {
+    const endTime = Date.now();
+    const elapsed = (endTime - startTime) / 1000;
+    setElapsedTime(elapsed);
     finishQuiz(
       setQuizStarted,
       setCurrentQuestionIndex,
@@ -72,22 +102,31 @@ const Map = ({ quiz, token, intl: { formatMessage } }) => {
       token,
       formatMessage
     );
+    setStartTime(null);
   };
 
   const fetchAndSetCountryData = async (countryName) => {
     setIsLoadingCountryData(true);
-    const response = await fetchCountryData(countryName);
-    const countryData = response[0];
-    if (countryData) {
-      setSelectedCountry({
-        name: countryData?.name?.common,
-        flag: countryData?.flags?.svg,
-        capital: countryData?.capital[0],
-        population: countryData?.population,
-        area: countryData?.area,
-      });
+
+    try {
+      const response = await fetchCountryData(countryName);
+      const countryData = response[0];
+
+      if (countryData) {
+        setSelectedCountry({
+          name: countryData?.name?.common,
+          flag: countryData?.flags?.svg,
+          capital: countryData?.capital[0],
+          population: countryData?.population,
+          area: countryData?.area,
+        });
+      }
+    } catch (error) {
+      toast.error(`${formatMessage({ id: 'app_country_not_found' })} ${countryName}`);
+      setSelectedCountry(null);
+    } finally {
+      setIsLoadingCountryData(false);
     }
-    setIsLoadingCountryData(false);
   };
 
   const updateScoreAndCheckFinish = (isCorrect, isLastQuestion, nextQuestionIndex, countryName) => {
@@ -100,7 +139,9 @@ const Map = ({ quiz, token, intl: { formatMessage } }) => {
       });
     } else {
       toast.error(
-        `Incorrect. The correct answer is ${questions[currentQuestionIndex].answer}. You selected ${countryName}`
+        `${formatMessage({ id: 'app_incorrect' })} ${questions[currentQuestionIndex].answer}. ${formatMessage({
+          id: 'app_you_selected',
+        })} ${countryName}`
       );
       if (isLastQuestion) {
         handleFinish(score);
@@ -157,6 +198,8 @@ const Map = ({ quiz, token, intl: { formatMessage } }) => {
             hoveredCountry={hoveredCountry}
             quizStarted={quizStarted}
             currentQuestionIndex={currentQuestionIndex}
+            elapsedTime={elapsedTime}
+            timer={timer}
           />
 
           <div className={classes.questionContainer}>
@@ -164,7 +207,7 @@ const Map = ({ quiz, token, intl: { formatMessage } }) => {
               <div>{questions[currentQuestionIndex]?.content}</div>
             ) : (
               <div className={classes.startButton} onClick={handleStart}>
-                <SportsScore /> Start Quiz
+                <SportsScore /> <FormattedMessage id="app_start_quiz" />
               </div>
             )}
           </div>
