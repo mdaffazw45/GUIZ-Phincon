@@ -30,7 +30,7 @@ exports.getQuizById = async (req, res) => {
       ],
     });
     if (!quiz) {
-      return handleResponse(res, 404, { message: 'Quiz not found.' });
+      return handleResponse(res, 404, { message: 'Quiz not found. ' });
     }
     return handleResponse(res, 200, quiz);
   } catch (error) {
