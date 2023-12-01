@@ -118,7 +118,19 @@ const Navbar = ({ title, locale, token, user }) => {
           {token && (
             <>
               <div className={classes.profileIconContainer} onClick={handleClickProfile}>
-                <img src={ProfileIcon} className={classes.profileIcon} alt="icon" />
+                {user?.avatar ? (
+                  <img
+                    src={
+                      user.avatar.startsWith('blob')
+                        ? user.avatar
+                        : `${import.meta.env.VITE_API_BASE_URL}${user?.avatar}`
+                    }
+                    alt="Avatar"
+                    className={classes.avatar}
+                  />
+                ) : (
+                  <img src={ProfileIcon} className={classes.profileIcon} alt="icon" />
+                )}
               </div>
               <Menu
                 anchorEl={anchorEl}
@@ -198,7 +210,7 @@ Navbar.propTypes = {
   title: PropTypes.string,
   locale: PropTypes.string.isRequired,
   token: PropTypes.string,
-  user: PropTypes.array,
+  user: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

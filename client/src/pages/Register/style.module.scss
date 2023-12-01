@@ -22,13 +22,29 @@
       background-color: $color-bg-primary;
       border-radius: 3px;
       box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
-      width: 30%;
-      height: 25rem;
+      width: 80%;
+      height: 28rem;
       padding: 0 15px;
+      @include apply-at-sm-size {
+        width: 30%;
+        height: 25rem;
+      }
+      // @include apply-at-md-size {
+      //   width: 40%;
+      //   height: 25rem;
+      // }
+      // @include apply-at-lg-size {
+      //   width: 35%;
+      //   height: 25rem;
+      // }
+      @include apply-at-xl-size {
+        width: 30%;
+        height: 23rem;
+      }
 
       &__title {
         @include flex-center-column(0.3em);
-        padding: 1.5rem;
+        padding: 1rem;
         padding-bottom: 2rem;
 
         .title1 {

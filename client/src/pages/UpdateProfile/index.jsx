@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 /* eslint-disable react/button-has-type */
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
@@ -46,7 +46,10 @@ const UpdateProfile = ({ token, user }) => {
     const file = e.target.files[0];
 
     if (file) {
-      setFormData.avatar(URL.createObjectURL(file));
+      setFormData((prevData) => ({
+        ...prevData,
+        avatar: URL.createObjectURL(file),
+      }));
     }
   };
 
@@ -59,8 +62,11 @@ const UpdateProfile = ({ token, user }) => {
       newFormData.append('username', formData.username);
       newFormData.append('email', formData.email);
 
-      dispatch(updateProfile(newFormData, token));
-      navigate(`/profile/${user.username}`);
+      dispatch(
+        updateProfile(newFormData, token, (response) => {
+          navigate(`/profile/${response.username}`);
+        })
+      );
     } catch (err) {
       console.error('Error submitting form:', err);
     }
@@ -75,9 +81,30 @@ const UpdateProfile = ({ token, user }) => {
           </div>
           <div className={classes.body}>
             <div className={classes.body__left}>
-              <IconButton className={classes.avatarIcon}>
-                <AddAPhoto className={classes.addPhotoIcon} />
-              </IconButton>
+              <div className={classes.avatarContainer} onClick={handleAvatarClick}>
+                {formData.avatar ? (
+                  <img
+                    src={
+                      formData.avatar.startsWith('blob')
+                        ? formData.avatar
+                        : `${import.meta.env.VITE_API_BASE_URL}${formData.avatar}`
+                    }
+                    alt="Avatar"
+                    className={classes.avatar}
+                  />
+                ) : (
+                  <IconButton className={classes.avatarIcon}>
+                    <AddAPhoto className={classes.addPhotoIcon} />
+                  </IconButton>
+                )}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleAvatarChange}
+                  style={{ display: 'none' }}
+                  accept="image/*"
+                />
+              </div>
             </div>
             <div className={classes.body__right}>
               <div className={classes.username}>
@@ -88,7 +115,7 @@ const UpdateProfile = ({ token, user }) => {
               <div className={classes.email}>
                 <FormattedMessage id="app_email" />
               </div>
-              <input type="text" id="username" name="username" value={formData.email} onChange={handleChange} />
+              <input type="text" id="email" name="email" value={formData.email} onChange={handleChange} />
             </div>
           </div>
           <div className={classes.save}>

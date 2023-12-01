@@ -1,7 +1,7 @@
 @import '@styles/base';
 
 .sidebar {
-  @include box(10rem, 13rem);
+  @include box(10rem);
   box-sizing: border-box;
   padding: 1rem;
   position: fixed;
@@ -24,7 +24,7 @@
   .score {
     @include flex-items-center(0.25rem);
   }
-  .restart {
+  .reset {
     cursor: pointer;
     color: $color-text-primary;
     background-color: $color-bg-primary;
@@ -38,6 +38,47 @@
   }
 }
 
+.countryInfo {
+  position: fixed;
+  bottom: 40%;
+  left: 1%;
+  background: rgba(0, 0, 0, 0.5);
+  width: 12rem;
+  color: $color-bg-primary;
+  box-sizing: border-box;
+  @include flex-center-column;
+  border: 1px solid $color-text-primary;
+  overflow: hidden;
+  img {
+    min-width: 100%;
+    max-height: 7rem;
+    object-fit: cover;
+  }
+  .countryDetails {
+    align-self: flex-start;
+    padding: 0.25rem;
+    font-size: $font-size-small;
+    .countryName {
+      font-weight: 700;
+      font-size: $font-size-regular;
+    }
+    .countryAttributes {
+      span {
+        font-weight: 700;
+      }
+    }
+  }
+  .skeletonContainer {
+    align-self: flex-start;
+    width: 100%;
+    .skeleton {
+      @include box(100%, 7rem);
+    }
+    .skeletonChild {
+      height: 1.25rem;
+    }
+  }
+}
 .questionContainer {
   width: 50%;
   position: fixed;
@@ -62,6 +103,7 @@
     padding: 0.25rem 0.75rem;
     border-radius: 1rem;
     border: 2px solid transparent;
+    @include flex-items-center(0.25rem);
     &:hover {
       background-color: $color-bg-primary;
       color: $color-text-primary;
@@ -73,13 +115,4 @@
 .mapContainer {
   @include box(100%, 100vh);
   overflow: hidden;
-  .mapStyle {
-    @include box(100%);
-    background-color: #87ceeb;
-    box-sizing: border-box;
-    cursor: grab;
-    .geographies {
-      cursor: pointer;
-    }
-  }
 }

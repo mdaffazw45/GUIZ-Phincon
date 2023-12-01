@@ -10,9 +10,8 @@ import QuizCard from '@components/QuizCard';
 import ConfirmDeleteModal from '@components/ConfirmDeleteModal';
 
 import { selectRole, selectToken } from '@containers/Client/selectors';
-import { deleteUserById } from '@containers/Client/actions';
 import { selectAllUser, selectQuizzes } from './selectors';
-import { deleteQuizById, getAllQuizzes, getUser } from './actions';
+import { deleteQuizById, deleteUserById, getAllQuizzes, getUser } from './actions';
 
 import classes from './style.module.scss';
 

@@ -1,0 +1,53 @@
+@import '@styles/base';
+
+.countryInfo {
+  position: fixed;
+  bottom: 40%;
+  left: 1%;
+  background: rgba(0, 0, 0, 0.5);
+  width: 12rem;
+  color: $color-bg-primary;
+  box-sizing: border-box;
+  @include flex-center-column;
+  border: 1px solid $color-text-primary;
+  overflow: hidden;
+  animation: 0.3s ease-out 0s 1 slideInFromLeft;
+  img {
+    min-width: 100%;
+    max-height: 7rem;
+    object-fit: cover;
+  }
+  .countryDetails {
+    align-self: flex-start;
+    padding: 0.25rem;
+    font-size: $font-size-small;
+    .countryName {
+      font-weight: 700;
+      font-size: $font-size-regular;
+    }
+    .countryAttributes {
+      span {
+        font-weight: 700;
+      }
+    }
+  }
+  .skeletonContainer {
+    align-self: flex-start;
+    width: 100%;
+    .skeleton {
+      @include box(100%, 7rem);
+    }
+    .skeletonChild {
+      height: 1.25rem;
+    }
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

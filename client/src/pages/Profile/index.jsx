@@ -16,10 +16,8 @@ import { getUserById } from '@containers/Client/actions';
 import { getUserByUsername } from './action';
 
 import classes from './style.module.scss';
-import { selectUsername } from './selectors';
 
-const Profile = ({ user, userName }) => {
-  console.log(userName);
+const Profile = ({ user }) => {
   const { username } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,10 +38,10 @@ const Profile = ({ user, userName }) => {
     <div className={classes.container}>
       <div className={classes.container__header}>
         <div className={classes.content}>
-          <Avatar className={classes.img} />
+          <Avatar className={classes.img} src={`${import.meta.env.VITE_API_BASE_URL}${user?.avatar}`} />
           <div className={classes.info}>
-            <div className={classes.info__username}> {userName?.username} </div>
-            <div className={classes.info__email}> {userName?.email} </div>
+            <div className={classes.info__username}> {user?.username} </div>
+            <div className={classes.info__email}> {user?.email} </div>
           </div>
           <div className={classes.button}>
             <button onClick={navigateUpdate}>
@@ -67,12 +65,10 @@ const Profile = ({ user, userName }) => {
 
 Profile.propTypes = {
   user: PropTypes.object,
-  userName: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   user: selectUser,
-  userName: selectUsername,
 });
 
 export default connect(mapStateToProps)(Profile);

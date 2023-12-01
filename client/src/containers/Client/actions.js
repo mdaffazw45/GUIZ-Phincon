@@ -1,12 +1,11 @@
 import {
-  DELETE_USER,
-  DELETE_USER_SUCCESS,
   GET_USER_BY_ID,
   LOGIN_REQUEST,
   LOGOUT,
   REGISTER_REQUEST,
   SET_LOGIN,
   SET_TOKEN,
+  SET_USER,
   SET_USER_BY_ID,
 } from '@containers/Client/constants';
 
@@ -19,6 +18,11 @@ export const setLogin = (login, role) => ({
 export const setToken = (token) => ({
   type: SET_TOKEN,
   token,
+});
+
+export const setUser = (user) => ({
+  type: SET_USER,
+  user,
 });
 
 export const loginRequest = (data) => ({
@@ -50,14 +54,4 @@ export const setUserById = (user, token) => ({
   type: SET_USER_BY_ID,
   payload: user,
   token,
-});
-
-export const deleteUserById = (userId, token) => ({
-  type: DELETE_USER,
-  payload: { userId, token },
-});
-
-export const deleteUserSuccess = (userId) => ({
-  type: DELETE_USER_SUCCESS,
-  payload: userId,
 });
