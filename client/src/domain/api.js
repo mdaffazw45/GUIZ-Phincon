@@ -61,3 +61,5 @@ export const finishQuizApi = (quizId, data, token) =>
   callAPI(`${endpoints.quizTaker}/finish/${quizId}`, 'POST', { Authorization: `Bearer ${token}` }, {}, data);
 export const getAllUsersTotalScoresApi = (token) =>
   callAPI(`${endpoints.quizTaker}/all/score`, 'GET', { Authorization: `Bearer ${token}` });
+  export const getHistoryByUserApi = (token) =>
+  callAPI(`${endpoints.quizTaker}`, 'GET', { Authorization: `Bearer ${token}` });
