@@ -5,20 +5,20 @@ import PropTypes from 'prop-types';
 import { connect, useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Avatar } from '@mui/material';
+import { Avatar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 import BackButton from '@components/BackButton';
 import { createStructuredSelector } from 'reselect';
-import { selectUser } from '@containers/Client/selectors';
+import { selectToken, selectUser } from '@containers/Client/selectors';
+import { selectHistory } from './selectors';
 import { Edit, Key } from '@mui/icons-material';
 
 import { useEffect } from 'react';
-import { getUserById } from '@containers/Client/actions';
-import { getUserByUsername } from './action';
+import { getUserByUsername  , getHistoryByUser } from './action';
 
 import classes from './style.module.scss';
 
-const Profile = ({ user }) => {
+const Profile = ({ user, history , token }) => {
   const { username } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,6 +26,13 @@ const Profile = ({ user }) => {
   useEffect(() => {
     dispatch(getUserByUsername(username));
   }, [dispatch, username]);
+
+  useEffect(() => {
+    dispatch(getHistoryByUser(token));
+
+  }, [dispatch, token]);
+
+  console.log(history , 'History')
 
   const navigateUpdate = () => {
     navigate('/profile/update');
@@ -63,16 +70,43 @@ const Profile = ({ user }) => {
           </div>
         </div>
       </div>
+      <div className={classes.quizHistory}>
+        <h1>Quiz History</h1>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Quiz Title</TableCell>
+                <TableCell align="center">No. of Questions</TableCell>
+                <TableCell align="center">Score</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {history.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell>{item.quiz.title}</TableCell>
+                  <TableCell align="center">{item.quiz.noOfQuestions}</TableCell>
+                  <TableCell align="center">{item.score}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </div>
   );
 };
 
 Profile.propTypes = {
   user: PropTypes.object,
+  history : PropTypes.array,
+  token : PropTypes.string
 };
 
 const mapStateToProps = createStructuredSelector({
   user: selectUser,
+  history:selectHistory,
+  token: selectToken
 });
 
 export default connect(mapStateToProps)(Profile);
