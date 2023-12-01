@@ -59,7 +59,7 @@ exports.getQuizById = async (req, res) => {
       ],
     });
     if (!quiz) {
-      return handleResponse(res, 404, { message: 'Quiz not found.' });
+      return handleResponse(res, 404, { message: 'Quiz not found. ' });
     }
 
     await redisClient.set(cacheKey, JSON.stringify(quiz), 'EX', 1800);
