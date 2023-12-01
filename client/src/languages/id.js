@@ -98,4 +98,9 @@ export default {
   app_area: 'Area:',
   app_profile: 'Profil',
   app_logout: 'Keluar',
+  app_quiz_history: 'Riwayat Kuis',
+  app_quiz_history_description:
+    'Lihat kembali kuis yang telah Anda selesaikan 📚, tinjau jawaban Anda ✅, dan renungkan kemajuan Anda 🌟',
+  app_quiz_title: 'Judul Kuis',
+  app_not_done_quiz: 'Anda belum menyelesaikan kuis apapun',
 };

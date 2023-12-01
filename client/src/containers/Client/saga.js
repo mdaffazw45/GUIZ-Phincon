@@ -12,7 +12,6 @@ function* handleRegister(action) {
     yield call(registerApi, action.payload);
     toast.success('Successfully Registered Account');
     // yield put(registerSuccess(response));
-    window.location.href = '/login';
   } catch (err) {
     if (err.response && err.response.data) {
       toast.error(err.response.data.message);
