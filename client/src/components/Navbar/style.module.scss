@@ -1,10 +1,11 @@
 @import '@styles/base';
 
 .headerWrapper {
-  background-color: var(--color-bg) !important;
-  box-shadow: 0 0.25rem 0.75rem rgba(25, 49, 83, 0.2) !important;
-  position: sticky;
+  background-color: transparent !important;
+  position: fixed;
   top: 0;
+  width: 100%;
+  z-index: 900;
   .contentWrapper {
     @include directionX;
 
@@ -13,39 +14,54 @@
     align-items: center;
     justify-content: space-between;
     font-size: 1rem;
-
-    .logoImage {
-      @include directionX;
-      cursor: pointer;
-      align-items: center;
-
-      .logo {
-        width: 1.5rem;
-        height: 1.5rem;
-        margin-right: 0.5rem;
-      }
-      .title {
-        @include flex-items-center(0.25em);
-        font-weight: 700;
-        color: $color-text-primary;
+    .left {
+      @include flex-items-center(1rem);
+      .leaderboard {
+        @include flex-items-center(0.25rem);
+        cursor: pointer;
+        font-size: $font-size-regular;
+        color: $color-text-secondary;
+        padding: 0.25rem 0.75rem;
         border-radius: 0.5rem;
-        border: 2px solid $color-text-primary;
-        border-bottom-width: 4px;
-        border-right-width: 4px;
-        padding: 0 0.5rem;
-
         &:hover {
-          transform: translateY(-2px);
+          background: rgba(0, 0, 0, 0.1);
+          color: $color-text-primary;
         }
-
         svg {
-          @include box(0.75em);
+          @include box(1rem);
         }
+        &__text {
+          display: none;
+          @include apply-at-sm-size {
+            display: block;
+          }
+        }
+      }
+      .active {
+        background: rgba(0, 0, 0, 0.5);
+        color: $color-bg-primary;
+        font-weight: 500;
       }
     }
 
     .toolbar {
       @include directionX;
+      align-items: center;
+      gap: 1rem;
+      .loginButton {
+        cursor: pointer;
+        background-color: $color-bg-primary;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: $font-size-regular;
+        border: 2px solid $color-text-primary;
+        height: fit-content;
+        &:hover {
+          color: $color-bg-primary;
+          background-color: $color-text-primary;
+          border: 2px solid $color-white;
+        }
+      }
       .theme {
         @include directionX;
         align-items: center;
@@ -56,7 +72,9 @@
         @include directionX;
         align-items: center;
         cursor: pointer;
-
+        -webkit-text-fill-color: $color-white; /* Will override color (regardless of order) */
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: $color-text-primary;
         .avatar {
           width: 1.2rem;
           height: 1.2rem;
@@ -71,8 +89,26 @@
           text-transform: uppercase;
         }
 
-        .arrow {
-          font-size: 1rem;
+        svg {
+          stroke: $color-text-primary;
+          color: $color-white;
+        }
+      }
+      .profileIconContainer {
+        img {
+          @include box(50px);
+          object-fit: cover;
+          cursor: pointer;
+          border: 2px solid transparent;
+          border-radius: 30%;
+          transition:
+            transform 0.3s ease,
+            border-color 0.3s ease;
+          &:hover {
+            transform: scale(1.1);
+            border-radius: 30%;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+          }
         }
       }
     }
@@ -94,4 +130,9 @@
     font-family: Poppins, Arial, Helvetica, sans-serif;
     font-size: 0.8rem;
   }
+}
+
+.headerWrapperBg {
+  background-color: $color-bg-primary !important;
+  border-bottom: 1px solid $color-text-secondary;
 }

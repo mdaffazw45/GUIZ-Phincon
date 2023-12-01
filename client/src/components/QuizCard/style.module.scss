@@ -1,0 +1,54 @@
+@import '@styles/base';
+
+.card {
+  @include box(15rem, auto);
+  @include flex-column(0.5rem);
+  justify-content: space-between;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px 0 $color-primary;
+  position: relative;
+  background-color: $color-white;
+  padding: 1rem;
+  .upper {
+    @include flex-column(0.5rem);
+    &__title {
+      font-size: $font-size-large;
+    }
+    &__description {
+      font-size: $font-size-small;
+      color: $color-text-secondary;
+      text-align: justify;
+
+      //Truncate multiple lines
+      display: -webkit-box;
+      max-width: 100%;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+  .lower {
+    @include flex-column(0.5rem);
+    &__question_number {
+      @include flex-items-center(0.25rem);
+      font-size: $font-size-small;
+      svg {
+        @include box(0.75em);
+      }
+    }
+    &__button {
+      cursor: pointer;
+      font-family: 'Poppins', 'sans-serif';
+      font-weight: 500;
+      font-size: $font-size-small;
+      background-color: $color-text-primary;
+      border: none;
+      color: $color-bg-primary;
+      padding: 0.5em;
+      border-radius: 0.5rem;
+      &:hover {
+        opacity: 75%;
+      }
+    }
+  }
+}

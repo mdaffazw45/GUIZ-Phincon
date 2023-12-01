@@ -1,0 +1,68 @@
+@import '@styles/base';
+
+@mixin elegant-container {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
+  border-radius: 1rem;
+}
+
+.sidebar {
+  @include box(9rem, 14rem);
+  box-sizing: border-box;
+  padding: 1rem;
+  position: fixed;
+  right: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: $color-bg-primary;
+  @include flex-center-column(1rem);
+  font-size: $font-size-regular;
+  @include apply-at-sm-size {
+    @include box(11rem, 16rem);
+  }
+  .country {
+    position: absolute;
+    top: 0;
+    text-align: center;
+    width: 80%;
+    min-height: 1.6rem;
+    margin: 0.5rem;
+    &__name {
+      color: $color-bg-primary;
+    }
+  }
+  .elapsedTime {
+    @include flex-items-center(0.25rem);
+    @include elegant-container;
+  }
+  .question {
+    @include flex-items-center(0.25rem);
+    @include elegant-container;
+  }
+  .score {
+    @include flex-center-column(0.25rem);
+    @include elegant-container;
+    &__label {
+      @include flex-items-center(0.25rem);
+      border-bottom: 3px solid $color-bg-primary;
+    }
+    &__value {
+      font-size: $font-size-large;
+    }
+  }
+  .reset {
+    cursor: pointer;
+    color: $color-text-primary;
+    background-color: $color-bg-primary;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    @include flex-items-center(0.25rem);
+    &:hover {
+      background-color: $color-text-primary;
+      color: $color-bg-primary;
+    }
+  }
+  svg {
+    @include box(1.25rem);
+  }
+}

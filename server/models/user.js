@@ -1,9 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
-const bcrypt = require('bcryptjs')
-const salt = bcrypt.genSaltSync(10)
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -13,17 +9,30 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      User.hasMany(models.Quiz, {
+        as: 'user',
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+      });
+      User.belongsToMany(models.Quiz, {
+        as: 'takenQuizzes',
+        foreignKey: 'userId',
+        through: models.QuizTaker,
+      });
     }
   }
-  User.init({
-    username: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    role: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+  User.init(
+    {
+      username: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      role: DataTypes.STRING,
+      avatar: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: 'User',
+    }
+  );
   return User;
 };

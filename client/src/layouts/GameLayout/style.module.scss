@@ -1,0 +1,19 @@
+@import '@styles/base';
+
+.top {
+  position: fixed;
+  top: 5px;
+  left: 5px;
+  @include flex-column(0.5rem);
+  @include apply-at-sm-size {
+    @include flex-items-center(0.5rem);
+    flex-direction: row;
+  }
+
+  .translate {
+    background-color: $color-bg-primary;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+    scale: 0.9;
+  }
+}

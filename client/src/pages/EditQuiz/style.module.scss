@@ -1,0 +1,138 @@
+@import '@styles/base';
+
+.page {
+  margin: 0 auto;
+  margin-top: 6rem;
+  max-width: 35rem;
+  @include flex-column(1rem);
+  .container {
+    @include flex-column(1rem);
+
+    padding: 1rem 1.5rem;
+    box-shadow: 5px 6px 8px rgba(0, 0, 0, 0.5);
+    background-color: $color-white;
+    @include apply-at-sm-size {
+      border-radius: 1rem;
+    }
+    &__header {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .form {
+      @include flex-column(1rem);
+      &__title {
+        input {
+          text-transform: capitalize;
+        }
+      }
+
+      .question {
+        @include flex-items-center(0.25rem);
+        font-weight: 600;
+        margin: 0 auto;
+        margin-top: 1rem;
+        width: fit-content;
+        text-transform: capitalize;
+        border-bottom: 5px solid $color-text-primary;
+        svg {
+          @include box(1.25rem);
+        }
+        &__item {
+          @include flex-items-center(1rem);
+          justify-content: space-between;
+          width: 100%;
+          box-sizing: border-box;
+          padding-bottom: 1rem;
+          border-bottom: 2px solid $color-secondary;
+          &__remove {
+            align-self: flex-start;
+            @include apply-at-md-size {
+              align-self: flex-end;
+            }
+            svg {
+              cursor: pointer;
+              @include box(2rem);
+              @include apply-at-md-size {
+                @include box(1.5rem);
+              }
+              &:hover {
+                color: red;
+              }
+            }
+          }
+        }
+      }
+      .info {
+        @include flex-center(0.25rem);
+        font-size: $font-size-small;
+        svg {
+          @include box(1rem);
+        }
+      }
+      &__add {
+        cursor: pointer;
+        @include flex-center(0.5rem);
+        border: 3px dashed $color-text-primary;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        position: relative;
+        text-align: center;
+        &:hover {
+          background-color: $color-bg-primary;
+        }
+
+        &__text {
+          font-size: $font-size-small;
+        }
+      }
+      &__create {
+        cursor: pointer;
+        font-family: 'Poppins', 'sans-serif';
+
+        padding: 0.5rem;
+        background-color: $color-text-primary;
+        color: $color-bg-primary;
+        border: none;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        font-size: $font-size-regular;
+        @include apply-at-md-size {
+          align-self: flex-end;
+          padding: 0.25rem 0.5rem;
+        }
+        &:hover {
+          opacity: 75%;
+        }
+      }
+    }
+  }
+
+  .input {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: $color-bg-primary;
+    font-family: 'Poppins', 'sans-serif';
+    width: 90%;
+    &:focus {
+      outline: solid $color-text-primary;
+    }
+  }
+  .form_item_wrapper {
+    @include flex-column(1rem);
+    @include apply-at-md-size {
+      @include flex-row(1rem);
+    }
+  }
+
+  .form_item {
+    @include flex-column(0.25rem);
+    border-left: 5px solid $color-text-primary;
+    padding-left: 0.5rem;
+  }
+
+  .form_label {
+    font-size: $font-size-regular;
+    font-weight: 500;
+  }
+}

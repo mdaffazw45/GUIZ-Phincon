@@ -1,77 +1,159 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
+import { connect, useDispatch } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+
+import { Avatar } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Public } from '@mui/icons-material';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import { LeaderboardOutlined, Logout, Person } from '@mui/icons-material';
 
-import { setLocale } from '@containers/App/actions';
+import Logo from '@components/Logo';
+import TranslateDropdown from '@components/TranslateDropdown';
+
+import { getUserById, logout } from '@containers/Client/actions';
+import { selectToken, selectUser } from '@containers/Client/selectors';
 
 import classes from './style.module.scss';
 
-const Navbar = ({ title, locale }) => {
+const Navbar = ({ title, token, user }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [menuPosition, setMenuPosition] = useState(null);
-  const open = Boolean(menuPosition);
+  const location = useLocation();
 
-  const handleClick = (event) => {
-    setMenuPosition(event.currentTarget);
-  };
+  const [color, setColor] = useState(false);
 
-  const handleClose = () => {
-    setMenuPosition(null);
-  };
-
-  const onSelectLang = (lang) => {
-    if (lang !== locale) {
-      dispatch(setLocale(lang));
+  useEffect(() => {
+    if (token) {
+      dispatch(getUserById(token));
     }
-    handleClose();
+  }, [dispatch, token]);
+
+  const changeColor = () => {
+    if (window.scrollY >= 100) {
+      setColor(true);
+    } else {
+      setColor(false);
+    }
   };
 
-  const goHome = () => {
-    navigate('/');
+  window.addEventListener('scroll', changeColor);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const opened = Boolean(anchorEl);
+  const handleClickProfile = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseProfile = () => {
+    setAnchorEl(null);
+  };
+
+  const navigateLogin = () => {
+    navigate('/login');
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigateLogin();
   };
 
   return (
-    <div className={classes.headerWrapper} data-testid="navbar">
+    <div
+      className={color ? `${classes.headerWrapper} ${classes.headerWrapperBg}` : ` ${classes.headerWrapper} `}
+      data-testid="navbar"
+    >
       <div className={classes.contentWrapper}>
-        <div className={classes.logoImage} onClick={goHome}>
-          <div className={classes.title}>
-            <Public />
-            {title}
-          </div>
+        <div className={classes.left}>
+          <Logo title={title} />
+
+          {token && (
+            <div
+              className={
+                location.pathname === '/leaderboard'
+                  ? `${classes.leaderboard} ${classes.active}`
+                  : `${classes.leaderboard} `
+              }
+              onClick={() => navigate('/leaderboard')}
+            >
+              <LeaderboardOutlined />
+              <div className={classes.leaderboard__text}>
+                <FormattedMessage id="app_leaderboard" />
+              </div>
+            </div>
+          )}
         </div>
         <div className={classes.toolbar}>
-          <div className={classes.toggle} onClick={handleClick}>
-            <Avatar className={classes.avatar} src={locale === 'id' ? '/id.png' : '/en.png'} />
-            <div className={classes.lang}>{locale}</div>
-            <ExpandMoreIcon />
-          </div>
+          {!token && location.pathname !== '/register' && location.pathname !== '/login' && (
+            <div className={classes.loginButton} onClick={() => navigate('/login')}>
+              <FormattedMessage id="app_login_button" />
+            </div>
+          )}
+          <TranslateDropdown />
+          {token && (
+            <>
+              <div className={classes.profileIconContainer} onClick={handleClickProfile}>
+                <Avatar
+                  src={
+                    user?.avatar?.startsWith('blob')
+                      ? user.avatar
+                      : `${import.meta.env.VITE_API_BASE_URL}${user?.avatar}`
+                  }
+                />
+              </div>
+              <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={opened}
+                onClose={handleCloseProfile}
+                onClick={handleCloseProfile}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: 'visible',
+                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                    mt: 1.5,
+                    '& .MuiAvatar-root': {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    '&:before': {
+                      content: '""',
+                      display: 'block',
+                      position: 'absolute',
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: 'background.paper',
+                      transform: 'translateY(-50%) rotate(45deg)',
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+              >
+                <MenuItem onClick={() => navigate(`/profile/${user.username}`)}>
+                  <ListItemIcon>
+                    <Person fontSize="small" />
+                  </ListItemIcon>
+                  <FormattedMessage id="app_profile" />
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <ListItemIcon>
+                    <Logout fontSize="small" />
+                  </ListItemIcon>
+                  <FormattedMessage id="app_logout" />
+                </MenuItem>
+              </Menu>
+            </>
+          )}
         </div>
-        <Menu open={open} anchorEl={menuPosition} onClose={handleClose}>
-          <MenuItem onClick={() => onSelectLang('id')} selected={locale === 'id'}>
-            <div className={classes.menu}>
-              <Avatar className={classes.menuAvatar} src="/id.png" />
-              <div className={classes.menuLang}>
-                <FormattedMessage id="app_lang_id" />
-              </div>
-            </div>
-          </MenuItem>
-          <MenuItem onClick={() => onSelectLang('en')} selected={locale === 'en'}>
-            <div className={classes.menu}>
-              <Avatar className={classes.menuAvatar} src="/en.png" />
-              <div className={classes.menuLang}>
-                <FormattedMessage id="app_lang_en" />
-              </div>
-            </div>
-          </MenuItem>
-        </Menu>
       </div>
     </div>
   );
@@ -79,7 +161,13 @@ const Navbar = ({ title, locale }) => {
 
 Navbar.propTypes = {
   title: PropTypes.string,
-  locale: PropTypes.string.isRequired,
+  token: PropTypes.string,
+  user: PropTypes.object,
 };
 
-export default Navbar;
+const mapStateToProps = createStructuredSelector({
+  token: selectToken,
+  user: selectUser,
+});
+
+export default connect(mapStateToProps)(Navbar);
