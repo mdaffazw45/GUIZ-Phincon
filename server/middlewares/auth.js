@@ -28,7 +28,6 @@ const authentication = async (req, res, next) => {
       next();
     }
   } catch (err) {
-    console.log(err);
     handleServerError(res);
   }
 };
@@ -48,7 +47,6 @@ const authorization = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.log(err);
     handleServerError(res);
   }
 };

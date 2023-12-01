@@ -36,7 +36,7 @@ const EditQuiz = ({ token, role, intl: { formatMessage }, quiz, actionSuccess })
       dispatch(getQuizById(quizId));
     }
   }, [dispatch, formatMessage, navigate, quizId, role]);
-  console.log(quiz, '<<<QUIZZZ');
+
   useEffect(() => {
     if (quiz) {
       setQuizData({

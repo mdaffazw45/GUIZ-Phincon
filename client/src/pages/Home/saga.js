@@ -33,7 +33,6 @@ function* getAllUser() {
     const response = yield call(getAllUserApi);
     yield put(setUser(response));
   } catch (err) {
-    // console.log(err);
     toast.error(err.response.data.error);
   } finally {
     yield put(setLoading(false));

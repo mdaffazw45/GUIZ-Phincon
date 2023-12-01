@@ -5,8 +5,7 @@ import { connect, useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 
-import ProfileIcon from '@static/images/profile.svg';
-
+import { Avatar } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -96,19 +95,13 @@ const Navbar = ({ title, token, user }) => {
           {token && (
             <>
               <div className={classes.profileIconContainer} onClick={handleClickProfile}>
-                {user?.avatar ? (
-                  <img
-                    src={
-                      user.avatar.startsWith('blob')
-                        ? user.avatar
-                        : `${import.meta.env.VITE_API_BASE_URL}${user?.avatar}`
-                    }
-                    alt="Avatar"
-                    className={classes.avatar}
-                  />
-                ) : (
-                  <img src={ProfileIcon} className={classes.profileIcon} alt="icon" />
-                )}
+                <Avatar
+                  src={
+                    user?.avatar?.startsWith('blob')
+                      ? user.avatar
+                      : `${import.meta.env.VITE_API_BASE_URL}${user?.avatar}`
+                  }
+                />
               </div>
               <Menu
                 anchorEl={anchorEl}
@@ -149,13 +142,13 @@ const Navbar = ({ title, token, user }) => {
                   <ListItemIcon>
                     <Person fontSize="small" />
                   </ListItemIcon>
-                  Profile
+                  <FormattedMessage id="app_profile" />
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   <ListItemIcon>
                     <Logout fontSize="small" />
                   </ListItemIcon>
-                  Logout
+                  <FormattedMessage id="app_logout" />
                 </MenuItem>
               </Menu>
             </>
