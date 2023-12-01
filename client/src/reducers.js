@@ -7,7 +7,7 @@ import homeReducer from '@pages/Home/reducer';
 import createQuizReducer from '@pages/CreateQuiz/reducer';
 import quizReducer from '@pages/Map/reducer';
 import leaderboardReducer from '@pages/Leaderboard/reducer';
-
+import profileReducer from '@pages/Profile/reducer';
 import { mapWithPersistor } from './persistence';
 
 const storedReducers = {
@@ -21,6 +21,7 @@ const temporaryReducers = {
   createQuiz: createQuizReducer,
   quiz: quizReducer,
   leaderboard: leaderboardReducer,
+  profile:profileReducer
 };
 
 const createReducer = () => {
