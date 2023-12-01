@@ -10,6 +10,7 @@ import { IconButton } from '@mui/material';
 
 import { createStructuredSelector } from 'reselect';
 
+import BackButton from '@components/BackButton';
 import { getUserById } from '@containers/Client/actions';
 import { selectToken, selectUser } from '@containers/Client/selectors';
 
@@ -74,6 +75,9 @@ const UpdateProfile = ({ token, user }) => {
 
   return (
     <div className={classes.container}>
+      <div className={classes.container__back}>
+        <BackButton />
+      </div>
       <div className={classes.container__header}>
         <div className={classes.content}>
           <div className={classes.title}>

@@ -7,6 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 
+import BackButton from '@components/BackButton';
 import { createStructuredSelector } from 'reselect';
 import { selectUser } from '@containers/Client/selectors';
 import { Edit, Key } from '@mui/icons-material';
@@ -36,6 +37,9 @@ const Profile = ({ user }) => {
 
   return (
     <div className={classes.container}>
+      <div className={classes.container__back}>
+        <BackButton />
+      </div>
       <div className={classes.container__header}>
         <div className={classes.content}>
           <Avatar className={classes.img} src={`${import.meta.env.VITE_API_BASE_URL}${user?.avatar}`} />

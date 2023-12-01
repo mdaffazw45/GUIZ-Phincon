@@ -1,12 +1,14 @@
 /* eslint-disable react/button-has-type */
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { Email } from '@mui/icons-material';
 
 import classes from './style.module.scss';
 import { forgotRequest } from './actions';
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ intl: { formatMessage } }) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
 
@@ -28,10 +30,22 @@ const ForgotPassword = () => {
             </div>
           </div>
           <div className={classes.form__body}>
-            <div className={classes.email}>
-              <FormattedMessage id="app_login_email" />
+            <div className={classes.formForgot}>
+              <div className={classes.email}>
+                <FormattedMessage id="app_login_email" />
+              </div>
+              <div className={classes.inputWithIcon}>
+                <Email />
+                <input
+                  type="text"
+                  id="email"
+                  name="email"
+                  placeholder={formatMessage({ id: 'app_placeholder_email' })}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
             </div>
-            <input type="text" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
 
             <button className={classes.button} onClick={handleSendPassword}>
               <FormattedMessage id="app_forgot_password_send" />
@@ -43,4 +57,8 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+ForgotPassword.propTypes = {
+  intl: PropTypes.object,
+};
+
+export default injectIntl(ForgotPassword);
