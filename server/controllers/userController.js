@@ -42,7 +42,6 @@ exports.register = async (req, res) => {
 
     return handleResponse(res, 201, register);
   } catch (err) {
-    console.log(err);
     handleServerError(res);
   }
 };
@@ -82,7 +81,6 @@ exports.login = async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err);
     handleServerError(res);
   }
 };
@@ -113,7 +111,6 @@ exports.forgotPassword = async (req, res) => {
       message: 'Temporary password sent via email',
     });
   } catch (err) {
-    console.log(err);
     handleServerError(res);
   }
 };
@@ -150,7 +147,6 @@ exports.changePassword = async (req, res) => {
       message: 'Password changed successfully',
     });
   } catch (err) {
-    console.log(err);
     handleServerError(res);
   }
 };
@@ -161,7 +157,6 @@ exports.getUser = async (req, res) => {
     const user = await User.findAll({});
     return handleResponse(res, 200, user);
   } catch (err) {
-    console.log(err);
     handleServerError(res);
   }
 };
@@ -183,7 +178,6 @@ exports.getUserById = async (req, res) => {
       avatar,
     });
   } catch (err) {
-    console.log(err);
     handleServerError(res);
   }
 };
@@ -202,7 +196,6 @@ exports.getUserByUsername = async (req, res) => {
 
     return handleResponse(res, 200, { user });
   } catch (err) {
-    console.log(err);
     handleServerError(res);
   }
 };
@@ -223,7 +216,6 @@ exports.deleteUser = async (req, res) => {
       message: 'Successfully Deleted User',
     });
   } catch (err) {
-    console.log(err);
     handleServerError(res);
   }
 };
@@ -274,7 +266,6 @@ exports.updateProfile = async (req, res) => {
       data: updatedUser,
     });
   } catch (err) {
-    console.log(err);
     handleServerError(res);
   }
 };

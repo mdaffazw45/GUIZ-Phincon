@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 import { Skeleton } from '@mui/material';
 
 import classes from './style.module.scss';
@@ -20,13 +21,22 @@ const CountryInfo = ({ isLoading, country }) => (
           <div className={classes.countryDetails}>
             <div className={classes.countryName}>{country.name}</div>
             <div className={classes.countryAttributes}>
-              <span>Capital:</span> {country.capital}
+              <span>
+                <FormattedMessage id="app_capital" />
+              </span>{' '}
+              {country.capital}
             </div>
             <div className={classes.countryAttributes}>
-              <span>Population:</span> {country.population.toLocaleString()}
+              <span>
+                <FormattedMessage id="app_population" />
+              </span>{' '}
+              {country.population.toLocaleString()}
             </div>
             <div className={classes.countryAttributes}>
-              <span>Area:</span> {country.area.toLocaleString()} km²
+              <span>
+                <FormattedMessage id="app_area" />
+              </span>{' '}
+              {country.area.toLocaleString()} km²
             </div>
           </div>
         </>

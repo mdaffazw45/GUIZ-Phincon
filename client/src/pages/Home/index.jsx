@@ -157,7 +157,7 @@ const Home = ({ quizzes, intl: { formatMessage }, token, role, users }) => {
             </table>
 
             <div className={classes.createButton} onClick={() => navigate('/quiz/create')}>
-              Create Quiz
+              <FormattedMessage id="app_create_quiz" />
             </div>
           </div>
         )}

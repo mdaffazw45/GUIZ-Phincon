@@ -24,7 +24,6 @@ exports.getQuizTakersByUserId = async (req, res) => {
 
     return handleResponse(res, 200, quizTakers);
   } catch (error) {
-    console.log(error);
     return handleServerError(res);
   }
 };
@@ -47,7 +46,6 @@ exports.getAllUsersTotalScores = async (req, res) => {
 
     return handleResponse(res, 200, userScores);
   } catch (error) {
-    console.log(error);
     return handleServerError(res);
   }
 };

@@ -91,4 +91,11 @@ export default {
   app_incorrect: 'Incorrect. The correct answer is',
   app_you_selected: 'You selected',
   app_start_quiz: 'Start Quiz',
+  app_score: 'Score',
+  app_reset: 'Reset',
+  app_capital: 'Capital:',
+  app_population: 'Population:',
+  app_area: 'Area:',
+  app_profile: 'Profile',
+  app_logout: 'Logout',
 };

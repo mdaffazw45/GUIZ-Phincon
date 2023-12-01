@@ -69,6 +69,7 @@ const Map = ({ quiz, token, intl: { formatMessage } }) => {
 
   const handleReset = () => {
     resetQuiz(setScore, setQuizStarted, setCurrentQuestionIndex, setMapPosition, toast);
+    setTimer(0);
   };
 
   const handleStart = () => {
@@ -163,7 +164,9 @@ const Map = ({ quiz, token, intl: { formatMessage } }) => {
     const nextQuestionIndex = currentQuestionIndex + 1;
     const isLastQuestion = nextQuestionIndex >= questions.length;
 
-    if (countryName === answer) {
+    const isCorrectAnswer = countryName.toLowerCase() === answer.toLowerCase();
+
+    if (isCorrectAnswer) {
       updateScoreAndCheckFinish(true, isLastQuestion, nextQuestionIndex, countryName);
     } else {
       updateScoreAndCheckFinish(false, isLastQuestion, nextQuestionIndex, countryName);

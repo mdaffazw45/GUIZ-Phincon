@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import { Quiz, Star, Timer } from '@mui/icons-material';
+import { Quiz, RestartAlt, Star, Timer } from '@mui/icons-material';
+import { FormattedMessage } from 'react-intl';
 
 import classes from './style.module.scss';
 
@@ -37,12 +38,13 @@ const Sidebar = ({
       </div>
       {quizStarted && (
         <div className={classes.question}>
-          <Quiz /> Question {currentQuestionIndex + 1}/{totalQuestions}
+          <Quiz /> <FormattedMessage id="app_question" /> {currentQuestionIndex + 1}/{totalQuestions}
         </div>
       )}
       <div className={classes.score}>
         <div className={classes.score__label}>
-          <Star /> Score
+          <Star />
+          <FormattedMessage id="app_score" />
         </div>
         <div className={classes.score__value} style={{ color: scoreColor }}>
           {percentageScore}%
@@ -50,7 +52,7 @@ const Sidebar = ({
       </div>
       {quizStarted && (
         <div className={classes.reset} onClick={resetQuiz}>
-          Reset
+          <RestartAlt /> <FormattedMessage id="app_reset" />
         </div>
       )}
     </div>
