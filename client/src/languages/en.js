@@ -15,13 +15,16 @@ export default {
   app_home_section_subtitle: 'Challenge Yourself with Our Curated Geography Quizzes! 🗺️🌍',
   app_questions: 'questions',
   app_quiz_card_button: 'Start Quiz',
+  app_placeholder_username: 'John Doe',
+  app_placeholder_email: 'johnDoe@gmail.com',
+  app_placeholder_password: '******',
 
   // Register
   app_register_title: 'Register to',
   app_register_subTitle: 'Geography Quiz System',
-  app_register_username: 'Enter Your Username',
-  app_register_email: 'Enter Your Email',
-  app_register_password: 'Enter Your Password',
+  app_register_username: 'Username',
+  app_register_email: 'Email',
+  app_register_password: 'Password',
   app_register_button: 'Register',
   app_register_already: 'Already have an account!',
   app_register_login: 'Login Here..',
@@ -29,8 +32,8 @@ export default {
   // Login
   app_login_title: 'Login to',
   app_login_subTitle: 'Geography Quiz System',
-  app_login_email: 'Enter Your Email',
-  app_login_password: 'Enter Your Password',
+  app_login_email: 'Email',
+  app_login_password: 'Password',
   app_login_button: 'Login',
   app_login_already: `Don't have an account?`,
   app_login_register: 'Register Here..',
@@ -44,8 +47,8 @@ export default {
   // Change Password
   app_change_password_title: 'Create a new password',
   app_change_password_subTitle: 'Enter the new password you want',
-  app_change_password_current: 'Enter Your Current Password',
-  app_change_password_new: 'Enter Your New Password',
+  app_change_password_current: 'Your Current Password',
+  app_change_password_new: 'Your New Password',
   app_change_password_save: 'Save Change',
 
   // Profile

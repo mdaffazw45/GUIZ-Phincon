@@ -3,7 +3,8 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { Lock } from '@mui/icons-material';
 
 import { createStructuredSelector } from 'reselect';
 import { selectToken } from '@containers/Client/selectors';
@@ -11,7 +12,7 @@ import { selectToken } from '@containers/Client/selectors';
 import classes from './style.module.scss';
 import { changeRequest } from './actions';
 
-const ChangePassword = ({ token }) => {
+const ChangePassword = ({ token, intl: { formatMessage } }) => {
   const dispatch = useDispatch();
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -39,27 +40,41 @@ const ChangePassword = ({ token }) => {
             </div>
           </div>
           <div className={classes.form__body}>
-            <div className={classes.currentPassword}>
-              <FormattedMessage id="app_change_password_current" />
+            {/* Current Password */}
+            <div className={classes.formCurrentPass}>
+              <div className={classes.currentPassword}>
+                <FormattedMessage id="app_change_password_current" />
+              </div>
+              <div className={classes.inputWithIcon}>
+                <Lock />
+                <input
+                  type="password"
+                  id="currentPassword"
+                  name="currentPassword"
+                  placeholder={formatMessage({ id: 'app_placeholder_password' })}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                />
+              </div>
             </div>
-            <input
-              type="password"
-              id="currentPassword"
-              name="currentPassword"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-            />
 
-            <div className={classes.newPassword}>
-              <FormattedMessage id="app_change_password_new" />
+            {/* New Password */}
+            <div className={classes.formNewPass}>
+              <div className={classes.newPassword}>
+                <FormattedMessage id="app_change_password_new" />
+              </div>
+              <div className={classes.inputWithIcon}>
+                <Lock />
+                <input
+                  type="password"
+                  id="newPassword"
+                  name="newPassword"
+                  placeholder={formatMessage({ id: 'app_placeholder_password' })}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </div>
             </div>
-            <input
-              type="password"
-              id="newPassword"
-              name="newPassword"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
 
             <button className={classes.button} onClick={handleChangePassword}>
               <FormattedMessage id="app_change_password_save" />
@@ -73,10 +88,11 @@ const ChangePassword = ({ token }) => {
 
 ChangePassword.propTypes = {
   token: PropTypes.string,
+  intl: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   token: selectToken,
 });
 
-export default connect(mapStateToProps)(ChangePassword);
+export default injectIntl(connect(mapStateToProps)(ChangePassword));

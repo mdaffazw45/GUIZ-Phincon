@@ -15,13 +15,16 @@ export default {
   app_home_section_subtitle: 'Tantang Diri Anda dengan Kuis Geografi Kami! 🗺️🌍',
   app_questions: 'pertanyaan',
   app_quiz_card_button: 'Mulai Kuis',
+  app_placeholder_username: 'John Doe',
+  app_placeholder_email: 'johnDoe@gmail.com',
+  app_placeholder_password: '******',
 
   // Register
   app_register_title: 'Daftar ke',
   app_register_subTitle: 'Sistem Kuis Geografi',
-  app_register_username: 'Masukkan Nama Pengguna Anda',
-  app_register_email: 'Masukkan Email Anda',
-  app_register_password: 'Masukkan Kata Sandi Anda',
+  app_register_username: 'Nama Pengguna',
+  app_register_email: 'Email',
+  app_register_password: 'Kata Sandi',
   app_register_button: 'Daftar',
   app_register_already: 'Sudah memiliki akun!',
   app_register_login: 'Masuk di sini..',
@@ -29,8 +32,8 @@ export default {
   // Login
   app_login_title: 'Masuk ke',
   app_login_subTitle: 'Sistem Kuis Geografi',
-  app_login_email: 'Masukkan Email Anda',
-  app_login_password: 'Masukkan Kata Sandi Anda',
+  app_login_email: 'Email',
+  app_login_password: 'Kata Sandi',
   app_login_button: 'Masuk',
   app_login_already: 'Tidak memiliki akun?',
   app_login_register: 'Daftar disini..',
@@ -44,8 +47,8 @@ export default {
   // Change Password
   app_change_password_title: 'Buat kata sandi baru',
   app_change_password_subTitle: 'Masukkan kata sandi baru yang Anda inginkan',
-  app_change_password_current: 'Masukkan Kata Sandi Anda Saat Ini',
-  app_change_password_new: 'Masukkan Kata Sandi Baru Anda',
+  app_change_password_current: 'Kata Sandi Anda Saat Ini',
+  app_change_password_new: 'Kata Sandi Baru Anda',
   app_change_password_save: 'Simpan Perubahan',
 
   // Profile

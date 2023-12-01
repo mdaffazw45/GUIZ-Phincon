@@ -1,18 +1,31 @@
 @import '@styles/base';
 
 .container {
-  @include flex-row;
+  @include flex-center-column;
   justify-content: center;
   min-height: 100vh;
 
+  &__back {
+    align-self: flex-start;
+    padding-left: 5%;
+    margin-top: -50%;
+
+    @include apply-at-sm-size {
+      align-self: flex-start;
+      margin-top: 0;
+      padding-left: 35%;
+    }
+  }
+
   &__header {
-    margin-top: 7rem;
+    margin-top: 2rem;
     padding: 10px;
     background-color: $color-bg-primary;
     border-radius: 3px;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 8px;
     width: 18rem;
     height: 12rem;
+
     @include apply-at-sm-size {
       width: 15rem;
       height: 11rem;

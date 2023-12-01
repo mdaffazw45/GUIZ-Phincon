@@ -1,14 +1,16 @@
 /* eslint-disable react/button-has-type */
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
+import { Email, Lock, Person } from '@mui/icons-material';
 
 import { registerRequest } from '@containers/Client/actions';
 
 import classes from './style.module.scss';
 
-const Register = () => {
+const Register = ({ intl: { formatMessage } }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -48,20 +50,59 @@ const Register = () => {
             </div>
           </div>
           <div className={classes.form__body}>
-            <div className={classes.username}>
-              <FormattedMessage id="app_register_username" />
+            {/* Username */}
+            <div className={classes.formUsername}>
+              <div className={classes.username}>
+                <FormattedMessage id="app_register_username" />
+              </div>
+              <div className={classes.inputWithIcon}>
+                <Person />
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder={formatMessage({ id: 'app_placeholder_username' })}
+                  value={formData.username}
+                  onChange={handleInput}
+                />
+              </div>
             </div>
-            <input type="text" id="username" name="username" value={formData.username} onChange={handleInput} />
 
-            <div className={classes.email}>
-              <FormattedMessage id="app_register_email" />
+            {/* Email */}
+            <div className={classes.formEmail}>
+              <div className={classes.email}>
+                <FormattedMessage id="app_register_email" />
+              </div>
+              <div className={classes.inputWithIcon}>
+                <Email />
+                <input
+                  type="text"
+                  id="email"
+                  name="email"
+                  placeholder={formatMessage({ id: 'app_placeholder_email' })}
+                  value={formData.email}
+                  onChange={handleInput}
+                />
+              </div>
             </div>
-            <input type="text" id="email" name="email" value={formData.email} onChange={handleInput} />
 
-            <div className={classes.password}>
-              <FormattedMessage id="app_register_password" />
+            {/* Password */}
+            <div className={classes.formPassword}>
+              <div className={classes.password}>
+                <FormattedMessage id="app_register_password" />
+              </div>
+              <div className={classes.inputWithIcon}>
+                <Lock />
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder={formatMessage({ id: 'app_placeholder_password' })}
+                  value={formData.password}
+                  onChange={handleInput}
+                />
+              </div>
             </div>
-            <input type="password" id="password" name="password" value={formData.password} onChange={handleInput} />
 
             <button className={classes.button} onClick={handleRegister}>
               <FormattedMessage id="app_register_button" />
@@ -82,4 +123,8 @@ const Register = () => {
   );
 };
 
-export default Register;
+Register.propTypes = {
+  intl: PropTypes.object,
+};
+
+export default injectIntl(Register);
