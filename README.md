@@ -90,6 +90,380 @@ _Response (403 - Admin Authorization Error)_
 
 # RESTful Endpoints
 
+## Auth API Endpoints
+
+### POST /api/auth/register
+
+> User Registration
+
+_Request Header_
+
+```
+not needed
+```
+
+_Request Body_
+
+```json
+{
+  "username": "<username>",
+  "email": "<email>",
+  "password": "<password>"
+}
+```
+
+_Response (201)_
+
+```json
+{
+  "id": "<user_id>",
+  "username": "<username>",
+  "email": "<email>",
+  "password": "<hashedPassword>",
+  "createdAt": "<timestamp>",
+  "updatedAt": "<timestamp>",
+}
+```
+
+_Response (400)_ - Joi Validation Error
+
+```json
+{
+  "message": "<input_field> is required"
+}
+{
+  "message": "Email must be a valid email"
+}
+
+_Response (404)_
+
+```json
+{
+  "message": "Email already exist"
+}
+```
+
+---
+
+### POST /api/auth/login
+
+> User Login
+
+_Request Header_
+
+```
+not needed
+```
+
+_Request Body_
+
+```json
+{
+  "email": "<email>",
+  "password": "<password>"
+}
+```
+
+_Response (200)_
+
+```json
+{
+  "role": "<user_role>",
+  "token": "<token>",
+  "message": "<email>",
+}
+```
+
+_Response (400)_ - Joi Validation Error
+
+```json
+{
+  "message": "<input_field> is required"
+}
+{
+  "message": "Email must be a valid email"
+}
+
+_Response (400)_
+
+```json
+{
+  "message": "User with this email does not exist."
+}
+{
+  "message": "Email or Password is incorrect."
+}
+```
+
+---
+
+### POST /api/auth/forgot-password
+
+> Forgot Password
+
+_Request Header_
+
+```
+not needed
+```
+
+_Request Body_
+
+```json
+{
+  "email": "<email>",
+}
+```
+
+_Response (200)_
+```json
+{
+  "message": "Temporary password sent via email"
+}
+```
+
+_Response (400)_
+
+```json
+{
+  "message": "<input_field> is required"
+}
+{
+  "message": "Email must be a valid email"
+}
+```
+
+_Response (404)_
+
+```json
+{
+  "message": "Email not Registered"
+}
+```
+
+---
+
+## User API Endpoints
+
+### GET /api/user/all
+
+> Get All User
+
+_Request Header_
+
+```
+Authorization: Bearer <token>
+```
+
+_Response (200)_
+
+```json
+[
+  {
+    "id": "<user_id>",
+    "username": "<username>",
+    "email": "<email>",
+    "password": "<password>",
+    "role": "<role>",
+    "avatar": "<avatar>",
+    "createdAt": "<timestamp>",
+    "updatedAt": "<timestamp>",
+  },
+  {
+    "...": "...",
+  }
+]
+```
+
+### GET /api/user
+
+> Get User By Id
+
+_Request Header_
+
+```
+Authorization: Bearer <token>
+```
+
+_Response (200)_
+
+```json
+{
+  "username": "<username>",
+  "email": "<email>",
+  "avatar": "<avatar_url>",
+}
+```
+
+_Response (404)_
+
+```json
+{
+  "message": "User Not Found"
+}
+```
+
+### GET /api/user/by/:username
+
+> Get User By Username
+
+_Request Header_
+
+```
+Authorization: Bearer <token>
+```
+
+_Request Params_
+
+```
+{
+  "username": "<username>"
+}
+```
+
+_Response (200)_
+
+```json
+{
+  "user": {
+    "id": "<user_id>",
+    "username": "<username>",
+    "email": "<email>",
+    "avatar": "<avatar_url>",
+  }
+}
+```
+
+_Response (404)_
+
+```json
+{
+  "message": "User Not Found"
+}
+```
+
+### DELETE /api/user/delete/:userId
+
+> Delete User by Id
+
+_Request Header_
+
+```
+Authorization: Bearer <token>
+```
+
+_Request Params_
+
+```
+{
+  "userId": <user_id>
+}
+```
+
+_Response (200)_
+
+```json
+{
+  "deletedUser": "<deleted_user_info>",
+  "message": "Successfully Deleted User"
+}
+
+_Response (404)_
+
+```json
+{
+  "message": "User Not Found"
+}
+```
+
+### PUT /api/user/profile
+
+> Update User Profile 
+
+_Request Header_
+
+```
+Authorization: Bearer <token>
+```
+
+_Request Body_
+
+```json
+{
+  "username": "<username>",
+  "email": "<email>",
+  "avatar": "<avatar>"
+}
+```
+
+_Response (200)_
+
+```json
+{
+  "data": "<updated_user_info>",
+  "message": "Successfully Updated Profile"
+}
+```
+
+_Response (400)_ - Joi Validation Error
+
+```json
+{
+  "message": "<validation_error_message>"
+}
+```
+
+_Response (404)_
+
+```json
+{
+  "message": "User Not Found"
+}
+```
+
+### PUT /api/user/change-password
+
+> Change Password User
+
+_Request Header_
+
+```
+Authorization: Bearer <token>
+```
+
+_Request Body_
+
+```json
+{
+  "currentPassword": "<current_password>",
+  "newPassword": "<new_password>"
+}
+```
+
+_Response (200)_
+
+```json
+{
+  "message": "Password changed successfully"
+}
+```
+
+_Response (400)_ - Joi Validation Error
+
+```json
+{
+  "message": "<validation_error_message>"
+}
+```
+
+_Response (401)_
+
+```json
+{
+  "message": "Current password is incorrect"
+}
+```
+
 ## Quiz API Endpoints
 
 ### GET /api/quiz/all
